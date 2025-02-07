@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Publications" href="publications.html" />
+    <link rel="prev" title="Start Here!" href="starthere.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-python-virtual-environment-recommended">Using Python Virtual Environment (Recommended)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-create-a-virtual-environment">Step 1: Create a Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-activate-the-environment">Step 2: Activate the Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-install-the-compactobject-package">Step 3: Install the CompactObject Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alternative-installation-method">Alternative Installation Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-using-the-package">Step 4: Using the Package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#alternative-using-anaconda">Alternative: Using Anaconda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Step 1: Create a Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Step 2: Activate the Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Step 3: Install the CompactObject Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Alternative Installation Method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-you-re-ready-to-use-compactobject">Step 4: You’re Ready to Use CompactObject!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>CompactObject is an open-source package designed for comprehensive neutron star EOS inference. It is built to be easy to install and use. Follow the step-by-step installation guide below to get started.</p>
+<section id="using-python-virtual-environment-recommended">
+<h2>Using Python Virtual Environment (Recommended)<a class="headerlink" href="#using-python-virtual-environment-recommended" title="Link to this heading"></a></h2>
+<p>If you are not using Anaconda, you can create a virtual environment using Python’s <code class="docutils literal notranslate"><span class="pre">venv</span></code> module:</p>
+<section id="step-1-create-a-virtual-environment">
+<h3>Step 1: Create a Virtual Environment<a class="headerlink" href="#step-1-create-a-virtual-environment" title="Link to this heading"></a></h3>
+<p>Run the following command to create a virtual environment named <code class="docutils literal notranslate"><span class="pre">CompactObject</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>CompactObject
+</pre></div>
+</div>
+<p><em>You can specify a different path by replacing ``CompactObject`` with your desired directory name.</em></p>
+</section>
+<section id="step-2-activate-the-environment">
+<h3>Step 2: Activate the Environment<a class="headerlink" href="#step-2-activate-the-environment" title="Link to this heading"></a></h3>
+<p>Activate the virtual environment with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>CompactObject/bin/activate
+</pre></div>
+</div>
+</section>
+<section id="step-3-install-the-compactobject-package">
+<h3>Step 3: Install the CompactObject Package<a class="headerlink" href="#step-3-install-the-compactobject-package" title="Link to this heading"></a></h3>
+<p>Once the environment is activated, you can install the package from PyPI, which is called <code class="docutils literal notranslate"><span class="pre">CompactObject-TOV</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CompactObject-TOV
+</pre></div>
+</div>
+<p>The dependencies should be automatically installed for you.</p>
+</section>
+<section id="alternative-installation-method">
+<h3>Alternative Installation Method<a class="headerlink" href="#alternative-installation-method" title="Link to this heading"></a></h3>
+<p>If you encounter issues using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>, you can install the package manually:</p>
+<ol class="arabic">
+<li><p><strong>Clone the Repository</strong></p>
+<p>Clone the CompactObject repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ChunHuangPhy/CompactObject.git
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install the Required Dependencies</strong></p>
+<p>Navigate to the repository directory and install the dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install the CompactObject Package</strong></p>
+<p>Install the package in editable mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+</ol>
+<p>To upgrade to the latest version on PyPI, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CompactObject-TOV<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</section>
+<section id="step-4-using-the-package">
+<h3>Step 4: Using the Package<a class="headerlink" href="#step-4-using-the-package" title="Link to this heading"></a></h3>
+<p>You are now ready to use CompactObject. Each time you want to use the package, ensure you activate the environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>CompactObject/bin/activate
+</pre></div>
+</div>
+</section>
+</section>
+<section id="alternative-using-anaconda">
+<h2>Alternative: Using Anaconda<a class="headerlink" href="#alternative-using-anaconda" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Step 1: Create a Virtual Environment<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>You can also create a virtual environment for CompactObject using Anaconda:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>CompactObject
+</pre></div>
+</div>
+<p>When prompted to proceed, type <code class="docutils literal notranslate"><span class="pre">y</span></code> and press Enter.</p>
+</section>
+<section id="id2">
+<h3>Step 2: Activate the Environment<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Activate your newly created environment with the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>CompactObject
+</pre></div>
+</div>
+<p><strong>Note:</strong> Once you create this environment, you don’t need to create it again. Simply activate it whenever you want to use CompactObject.</p>
+</section>
+<section id="id3">
+<h3>Step 3: Install the CompactObject Package<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>Once the environment is activated, you can install the package from PyPI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CompactObject-TOV
+</pre></div>
+</div>
+<p>The dependencies should be automatically installed for you.</p>
+</section>
+<section id="id4">
+<h3>Alternative Installation Method<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>If you encounter issues using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>, you can install the package manually:</p>
+<ol class="arabic">
+<li><p><strong>Clone the Repository</strong></p>
+<p>Clone the CompactObject repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ChunHuangPhy/CompactObject.git
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install the Required Dependencies</strong></p>
+<p>Navigate to the repository directory and install the dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</li>
+<li><p><strong>Install the CompactObject Package</strong></p>
+<p>Install the package in editable mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+</ol>
+<p>To upgrade to the latest version on PyPI, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>CompactObject-TOV<span class="w"> </span>--upgrade
+</pre></div>
+</div>
+</section>
+<section id="step-4-you-re-ready-to-use-compactobject">
+<h3>Step 4: You’re Ready to Use CompactObject!<a class="headerlink" href="#step-4-you-re-ready-to-use-compactobject" title="Link to this heading"></a></h3>
+<p>Whenever you want to use this package, remember to activate the environment first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>CompactObject
+</pre></div>
+</div>
+<p>By following these instructions, you should have CompactObject installed and ready to use. If you encounter any issues during installation, please refer to the project’s documentation or seek assistance from the community.</p>
+<p><cite>CompactObject-TOV</cite> optionally depends on <cite>numbaminpack</cite>. However, it may hard to install if don’t have a fortran complier. Please
+refer to this page <a class="reference external" href="https://pypi.org/project/NumbaMinpack/">NumbaMinpack documentation</a>, and you can skip
+this dependency if you are not using “fastRMF_EoS” and “pQCD”</p>
+<p>If you encounter any issues or have questions, feel free to reach out for support. Happy computing!</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="starthere.html" class="btn btn-neutral float-left" title="Start Here!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="publications.html" class="btn btn-neutral float-right" title="Publications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CompactObject &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Start Here!" href="starthere.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CompactObject</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="compactobject">
+<span id="readme"></span><span id="module-CompactObject"></span><h1>CompactObject<a class="headerlink" href="#compactobject" title="Link to this heading"></a></h1>
+<p><strong>An Open-Source Package for Neutron Stars</strong>
+<strong>Comprehensive Workflow for Bayesian Inference Constraining</strong>
+<strong>Neutron Star EOS Package</strong></p>
+<p><strong>CompactObject</strong> is an open-source package designed to perform Bayesian inference
+on neutron star equation of state (EOS) constraints. It offers a comprehensive workflow
+that integrates astrophysical observations and nuclear measurements to explore the interior
+composition of neutron stars. The package is built to be user-friendly, easily extendable,
+and thoroughly documented, making it an essential tool for researchers in nuclear astrophysics.
+The package integrates three independent modules:</p>
+<ol class="arabic simple">
+<li><p><strong>Tolman–Oppenheimer–Volkoff (TOV) Equation Solver</strong>
+A user-friendly solver for determining neutron star structure based on a given EOS.</p></li>
+<li><p><strong>Neutron Star EOS Generator</strong>
+Generates EOS across the full density range. Currently, it includes the relativistic mean
+field theory EOS solver and will support polytropes and additional EOS models in the future.</p></li>
+<li><p><strong>Bayesian Inference Workflow</strong>
+A complete package for constraining the EOS of neutron stars. This includes defining the
+likelihood from observations (X-ray timing, gravitational waves, radio timing) and nuclear
+experiments (nuclear quantities, pQCD, chiral EFT), as well as from simulated astrophysical
+observations. It also involves defining priors for the parameters and running nested sampling
+of the posterior space.</p></li>
+</ol>
+<p>These three components are independent, allowing users to integrate them into their workflows
+seamlessly. The package’s functionality extends beyond inference studies, and we welcome
+contributions of new features.</p>
+<p>For installation instructions, please refer to the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/installation.html">Installation Page</a>.</p>
+<p><strong>Publications</strong></p>
+<p>Package paper, please cite us if you are using it:</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p><strong>Huang, C., Malik, T., Cartaxo, J., et al.</strong> (2024).
+<em>CompactObject: An open-source Python package for full-scope neutron star equation of state inference</em>
+<a class="reference external" href="https://arxiv.org/abs/2411.14615">arXiv:2411.14615</a></p>
+</aside>
+</aside>
+<p>Papers generated using this package include:</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p><strong>Huang, C., Raaijmakers, G., Watts, A. L., Tolos, L., &amp; Providência, C.</strong> (2024).
+<em>Constraining fundamental nuclear physics parameters using neutron star mass-radius measurements I: Nucleonic models</em>.
+<em>Monthly Notices of the Royal Astronomical Society</em>, 529.
+<a class="reference external" href="https://academic.oup.com/mnras/article/529/4/4650/7634362">DOI:10.1093/mnras/stae844</a></p>
+</aside>
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p><strong>Huang, C., Tolos, L., Providência, C., &amp; Watts, A.</strong> (2024).
+<em>Constraining a relativistic mean field model using neutron star mass-radius measurements II: Hyperonic models</em>.
+<em>arXiv preprint arXiv:2410.14572</em>.
+<a class="reference external" href="https://arxiv.org/abs/2410.14572">https://arxiv.org/abs/2410.14572</a></p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<p><strong>Huang, C., &amp; Zheng, X.-P.</strong> (2024).
+<em>Bayesian Insights into post-Glitch Dynamics: Model comparison and parameter constraint from decades-long observation data of the Crab pulsar</em>.
+<em>arXiv preprint arXiv:2409.18432</em>.
+<a class="reference external" href="https://arxiv.org/abs/2409.18432">https://arxiv.org/abs/2409.18432</a></p>
+</aside>
+</aside>
+<p>If you use our software, please consider citing us with the following standard citation:</p>
+<p>The inference conducted here relies on the framework in the <span class="math notranslate nohighlight">\(\textit{CompactObject}\)</span> package <a class="reference internal" href="publications.html#compactobject" id="id5"><span>[CompactObject]</span></a> cite{CompactObject}.
+This is an open-source, full-scope package designed to implement Bayesian constraints on the neutron star EOS. Other work based on this package is ….</p>
+<section id="concept">
+<h2>Concept<a class="headerlink" href="#concept" title="Link to this heading"></a></h2>
+<p>Bayesian inference studies of the neutron star equation of state have become a trending
+field, particularly due to significant advancements such as the Neutron Star
+Interior Composition Explorer (NICER) measuring neutron star masses and radii through X-ray timing, and the detection of neutron star merger events through gravitational wave observations by the LIGO detector.</p>
+<p>Below is the overall pipeline of this field:</p>
+<img alt="Workflow Diagram" src="_images/workflow.png" />
+<p>As depicted in this diagram, fundamental physics provides the EOS for neutron stars. By inputting the EOS into the Tolman–Oppenheimer–Volkoff (TOV) equation, we can obtain parameters related to the neutron star structure, such as mass, radius, and tidal properties. Instruments like NICER and LIGO measure these properties, providing data for Bayesian inference. This process constrains the EOS by determining the region in the Mass-Radius space where neutron stars can exist, ultimately offering insights into the fundamental composition of their interiors.</p>
+</section>
+<section id="equation-of-state">
+<h2>Equation of State<a class="headerlink" href="#equation-of-state" title="Link to this heading"></a></h2>
+<p>The neutron star equation of state (EOS) plays a crucial role in determining the composition of a neutron star. It is closely connected to the microphysical properties of neutron stars. Here, we introduce an EOS derived from the Relativistic Mean Field (RMF) theory. The Lagrangian of this model is represented as follows:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L} = \sum_N \mathcal{L}_N + \mathcal{L}_{\mathcal{M}} + \sum_l \mathcal{L}_l\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}_N\)</span> is the nucleonic Lagrangian</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}_{\mathcal{M}}\)</span> is the meson part of the Lagrangian</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{L}_l\)</span> is the lepton Lagrangian</p></li>
+</ul>
+<p>Details of the Lagrangian are illustrated below:</p>
+<img alt="Lagrangian Diagram" src="_images/lagrangian.png" />
+<p>In the equation:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\Psi_{N}\)</span> and <span class="math notranslate nohighlight">\(\psi_{l}\)</span> are the nucleon and lepton spinors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\bar{I}_{N}\)</span> is the nucleon isospin operator</p></li>
+<li><p><span class="math notranslate nohighlight">\(g\)</span> denotes the strong interaction coupling of a meson to a nucleon</p></li>
+<li><p><span class="math notranslate nohighlight">\(m\)</span> represents the masses of the nucleons, mesons, and leptons</p></li>
+<li><p>The parameters <span class="math notranslate nohighlight">\(\kappa\)</span>, <span class="math notranslate nohighlight">\(\lambda_0\)</span>, <span class="math notranslate nohighlight">\(\zeta\)</span>, and <span class="math notranslate nohighlight">\(\Lambda_{\omega}\)</span> are coupling constants to be determined by the inference method</p></li>
+</ul>
+<p>These free parameters represent the degrees of freedom in the RMF model and can be determined through nuclear experiments. Additionally, astrophysical observations can help constrain these parameters. The complete list of parameters includes:</p>
+<img alt="Free Parameters Diagram" src="_images/free_para.png" />
+<p>These parameters should be inputted to generate the EOS using our EOS generators module. Different EOS parameters will affect mass-radius relations, as demonstrated here. For more details on the physics, refer to <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1996cost.book.....G/abstract">Glendenning (1996)</a>.</p>
+</section>
+<section id="tolmanoppenheimervolkoff-tov-equation">
+<h2>Tolman–Oppenheimer–Volkoff (TOV) Equation<a class="headerlink" href="#tolmanoppenheimervolkoff-tov-equation" title="Link to this heading"></a></h2>
+<p>The TOV equation is a general relativity equation that constrains the structure of a spherically symmetrical body under gravity. The original equation is:</p>
+<div class="math notranslate nohighlight">
+\[\frac{d P}{d r} = -\frac{G m}{r^2} \rho \left(1 + \frac{P}{\rho c^2}\right) \left(1 + \frac{4 \pi r^3 P}{m c^2}\right) \left(1 - \frac{2 G m}{r c^2}\right)^{-1}\]</div>
+<p>To solve this equation, the essential ingredient is the EOS. The basic strategy is as follows: at a given central density, input it into the neutron star EOS to obtain the pressure. Then, integrate the density from the center to the boundary, repeating this process across the entire possible density range.</p>
+<p>In our code, we provide two different functions:</p>
+<ol class="arabic simple">
+<li><p><strong>Default Solver:</strong>
+Solves the TOV equation within a predefined density range (log(14.3, 15.6) on a scale of 10).</p></li>
+<li><p><strong>Point-by-Point Solver:</strong>
+Allows solving the equation for any chosen central density range.</p></li>
+</ol>
+<p>For more information on the TOV equation, visit the <a class="reference external" href="https://en.wikipedia.org/wiki/Tolman–Oppenheimer–Volkoff_equation">Wikipedia page</a>.</p>
+</section>
+<section id="bayesian-inference">
+<h2>Bayesian Inference<a class="headerlink" href="#bayesian-inference" title="Link to this heading"></a></h2>
+<p>Using Bayesian inference tools to explore constraints on the neutron star EOS is increasingly common. The foundational equation is Bayes’ Theorem:</p>
+<div class="math notranslate nohighlight">
+\[P(A \mid B) = \frac{P(B \mid A) P(A)}{P(B)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><strong>Posterior Probability</strong> (<span class="math notranslate nohighlight">\(P(A \mid B)\)</span>): The probability of hypothesis A after observing B.</p></li>
+<li><p><strong>Prior Probability</strong> (<span class="math notranslate nohighlight">\(P(A)\)</span>): The initial probability of hypothesis A before observing B.</p></li>
+<li><p><strong>Likelihood</strong> (<span class="math notranslate nohighlight">\(P(B \mid A)\)</span>): The probability of observing B given that hypothesis A is true.</p></li>
+<li><p><strong>Evidence</strong> (<span class="math notranslate nohighlight">\(P(B)\)</span>): The probability of observing B under all possible hypotheses.</p></li>
+</ul>
+<p>In this context:</p>
+<ul class="simple">
+<li><p><strong>Posterior</strong> is the updated probability after considering new observations or experiments.</p></li>
+<li><p><strong>Prior</strong> is the initial belief before new data is considered.</p></li>
+<li><p><strong>Likelihood</strong> is the influence of new data on the belief.</p></li>
+</ul>
+<p>The likelihood in our studies primarily comes from four sources:</p>
+<ol class="arabic simple">
+<li><p><strong>Mass-Radius Measurements from X-ray Timing</strong> (e.g., NICER)</p></li>
+<li><p><strong>Tidal Measurements from Gravitational Wave Detection</strong></p></li>
+<li><p><strong>Mass Measurements from Radio Timing</strong></p></li>
+<li><p><strong>Nuclear Physics Constraints from Experiments</strong></p></li>
+</ol>
+<p>NICER’s mass-radius measurements are a significant achievement in neutron star physics, comparable to gravitational wave detections. For the connection between our EOS and nuclear quantities, refer to <a class="reference external" href="https://journals.aps.org/prc/abstract/10.1103/PhysRevC.90.044305">Chen &amp; Piekarewicz (2014a)</a>.</p>
+<p>The nuclear physics quantities we consider are:</p>
+<ul class="simple">
+<li><p><strong>K</strong>: Compressibility of nuclear matter</p></li>
+<li><p><strong>J</strong>: Symmetry energy at saturation density</p></li>
+<li><p><strong>L</strong>: Slope of symmetry energy at saturation density</p></li>
+</ul>
+<p>There are more on constraining the EOS by Pure neutron matter (PNM):</p>
+<ul class="simple">
+<li><p><strong>chiral EFT constraint</strong> taken from <a class="reference external" href="https://doi.org/10.1088/0004-637X/773/1/11">Hebeler et al. (2013)</a>, <a class="reference external" href="https://doi.org/10.1038/s41586-022-04750-w">Huth, S., &amp; others. (2022)</a> and same as people did in <a class="reference external" href="https://arxiv.org/abs/2407.18452">Marquez et al. (2024)</a></p></li>
+<li><p><strong>pQCD constraint</strong> taken from <a class="reference external" href="https://arxiv.org/abs/2204.11877">Gorda et al. (2022)</a>.</p></li>
+</ul>
+<p>These can be computed from posterior samples (we will add the nuclear properties computation code in the near future). They also serve as independent constraints on the neutron star EOS.</p>
+<p>When performing real astrophysical sampling, it is crucial to sample the neutron star central density corresponding to each measurement used. For instance, if investigating the constraining effect of two mass-radius measurements on the EOS, you need to define two additional free parameters—the central densities for each measurement. Otherwise, the inference would not represent a full-scope EOS analysis. Therefore, our likelihood functions include a parameter <span class="math notranslate nohighlight">\(d_1\)</span>, representing the density parameter of each observation.</p>
+<p>We derive posterior probability distributions and the Bayesian evidence with the nested sampling Monte Carlo algorithm MLFriends (<a class="reference external" href="https://arxiv.org/abs/1407.5459">Buchner, 2014</a>; <a class="reference external" href="https://arxiv.org/abs/1707.04476">2019</a>) using the [UltraNest](<a class="reference external" href="https://johannesbuchner.github.io/UltraNest/">https://johannesbuchner.github.io/UltraNest/</a>) package (<a class="reference external" href="https://arxiv.org/abs/2101.09604">Buchner, 2021</a>).</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p><strong>CompactObject</strong> provides a comprehensive suite of tools for Bayesian inference on neutron star EOS constraints. By integrating astrophysical observations with nuclear experiments, it facilitates a deeper understanding of neutron star interiors.</p>
+<p>For more information, tutorials, and support, please refer to our documentation or contact the development team.</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starthere.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starthere.html#depending-on-your-scientific-goal">Depending on Your Scientific Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starthere.html#computation-requirements-and-citation">Computation requirements and citation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starthere.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starthere.html#contact">Contact</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#using-python-virtual-environment-recommended">Using Python Virtual Environment (Recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#alternative-using-anaconda">Alternative: Using Anaconda</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="publications.html#citing-compactobject">Citing CompactObject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publications.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publications.html#contact">Contact</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html#computation-time-scaling">Computation Time Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cluster.html#parallelization">Parallelization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#contributing-an-equation-of-state-eos">Contributing an Equation of State (EOS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#contributing-inference-components">Contributing Inference Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#guidelines-for-key-functions-and-permissions">Guidelines for Key Functions and Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contributor.html#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#RMF-EOS">RMF EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#Example-of-RMF">Example of RMF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#A-Microscopic-Approach-with-Density-Dependent-Coupling-in-Relativistic-Mean-field-Models">A Microscopic Approach with Density-Dependent Coupling in Relativistic Mean field Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#(a)-Compute-DDH-EOS">(a) Compute DDH EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#(b)-Compute-the-TOV">(b) Compute the TOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#(c)-DDH-exciting-feature-on-User-defined-functions">(c) DDH exciting feature on User defined functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#Illustrating-the-power-of-Numba-accelerated-EoS-Generation">Illustrating the power of Numba accelerated EoS Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#Polytrope-EOS">Polytrope EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#Strangeon-matter-EOS">Strangeon matter EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#Speed-of-sound-EOS">Speed of sound EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_EOSgenerators.html#MIT-bag-model-EOS">MIT bag model EOS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference.html#Set-up-prior">Set up prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference.html#Set-up-likelihood">Set up likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference.html#Set-up-sampler">Set up sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference.html#Posterior-plot">Posterior plot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Advantages-of-the-DDH-Approach">Advantages of the DDH Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Literature-Overview">Literature Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Set-up-prior-ranges-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">Set up prior ranges (DDH model ([Malik, 2023] https://doi.org/10.3847/1538-4357/ac5d3c ))</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Setup-Likelihood-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">Setup Likelihood (DDH model ([Malik, 2023] https://doi.org/10.3847/1538-4357/ac5d3c ))</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#likelihood_transform-Function"><code class="docutils literal notranslate"><span class="pre">likelihood_transform</span></code> Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Test-log_likelihood-function">Test log_likelihood function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_DDH.html#Inference">Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html#Set-up-prior">Set up prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html#Set-up-likehood">Set up likehood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html#Set-up-sampler">Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html#(a)-Import-packages">(a) Import packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html#(b)-Set-up-priors">(b) Set up priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html#(c)-Set-up-likehood">(c) Set up likehood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html#(d)-Set-up-sampler">(d) Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html#Set-up-prior">Set up prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html#Set-up-likehood">Set up likehood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html#Set-up-sampler">Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference_polytrope.html#Set-up-prior">Set up prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference_polytrope.html#Set-up-likelihood">Set up likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_Inference_polytrope.html#Set-up-sampler">Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#What-EMCEE-does-?">What EMCEE does ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Import-necessary-libraries">Import necessary libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Loading-Crust-Model-Data">Loading Crust Model Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Prior">Prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Log-Likelihood-in-EMCEE">Log Likelihood in EMCEE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Likelihood-for-our-NS-model">Likelihood for our NS model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Random-Walker-and-log-Probability-Function">Random Walker and log Probability Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Setting-up-the-sampler">Setting up the sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Initialize-and-Run">Initialize and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#For-our-NS-Model">For our NS Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_RMF.html#Results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Import-Libraries">Import Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Define-parameter-dimensions">Define parameter dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Define-the-Prior-Transform-Function">Define the Prior Transform Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Define-likelihood-transform">Define likelihood transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Define-Log-Prior-and-Log-Likelihood-Functions">Define Log-Prior and Log-Likelihood Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Define-Combined-Log-Probability-Function">Define Combined Log Probability Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Initialize-Walkers-for-MCMC-Sampling">Initialize Walkers for MCMC Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_strangeon.html#Plotting-use-Corner">Plotting use Corner</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_MIT_bag.html#Defining-the-Constants">Defining the Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_MIT_bag.html#MIT-Bag-EOS">MIT Bag EOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_MIT_bag.html#Defining-the-Likelihood">Defining the Likelihood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_MIT_bag.html#Defining-the-Prior">Defining the Prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_MIT_bag.html#Running-EMCEE">Running EMCEE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Import-the-libraries">Import the libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Define-the-Constants">Define the Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Defining-the-Maximum-Central-Density">Defining the Maximum Central Density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Load-the-data">Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Define-the-Prior">Define the Prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Define-the-Log-likelihood-and-the-log-posterior">Define the Log likelihood and the log posterior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Define-the-parameters-to-the-Mass-and-Radius-points">Define the parameters to the Mass and Radius points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EMCEE_polytrope.html#Run-the-EMCEE-for-MCMC-Analysis">Run the EMCEE for MCMC Analysis</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="crust_EOS.html#EOSgenerators.crust_EOS.PolyInterpolate"><code class="docutils literal notranslate"><span class="pre">PolyInterpolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.Energy_density_Pressure"><code class="docutils literal notranslate"><span class="pre">Energy_density_Pressure()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.compute_EOS"><code class="docutils literal notranslate"><span class="pre">compute_EOS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.fields_alpha"><code class="docutils literal notranslate"><span class="pre">fields_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.functie"><code class="docutils literal notranslate"><span class="pre">functie()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.get_energy_pressure_alpha"><code class="docutils literal notranslate"><span class="pre">get_energy_pressure_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.get_eos_alpha"><code class="docutils literal notranslate"><span class="pre">get_eos_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.initial_guess_alpha"><code class="docutils literal notranslate"><span class="pre">initial_guess_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="RMF_EOS.html#EOSgenerators.RMF_EOS.initial_values"><code class="docutils literal notranslate"><span class="pre">initial_values()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Strangeon_EOS.html#EOSgenerators.Strangeon_EOS.compute_EOS"><code class="docutils literal notranslate"><span class="pre">compute_EOS()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="MITbag_EOS.html#EOSgenerators.MITbag_EOS.MITbag_compute_EOS"><code class="docutils literal notranslate"><span class="pre">MITbag_compute_EOS()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Polytrope_EOS.html#EOSgenerators.Polytrope_EOS.compute_EOS"><code class="docutils literal notranslate"><span class="pre">compute_EOS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Polytrope_EOS.html#EOSgenerators.Polytrope_EOS.fun_gamma_max"><code class="docutils literal notranslate"><span class="pre">fun_gamma_max()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Compose_eos.html#EOSgenerators.Compose_eos.read_Lal"><code class="docutils literal notranslate"><span class="pre">read_Lal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compose_eos.html#EOSgenerators.Compose_eos.read_README"><code class="docutils literal notranslate"><span class="pre">read_README()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Compose_eos.html#EOSgenerators.Compose_eos.read_compose"><code class="docutils literal notranslate"><span class="pre">read_compose()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.Energy_density_Pressure"><code class="docutils literal notranslate"><span class="pre">Energy_density_Pressure()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.compute_EOS"><code class="docutils literal notranslate"><span class="pre">compute_EOS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.fields_alpha"><code class="docutils literal notranslate"><span class="pre">fields_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.get_energy_pressure_alpha"><code class="docutils literal notranslate"><span class="pre">get_energy_pressure_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.get_eos_alpha"><code class="docutils literal notranslate"><span class="pre">get_eos_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.initial_guess_alpha"><code class="docutils literal notranslate"><span class="pre">initial_guess_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.initial_values"><code class="docutils literal notranslate"><span class="pre">initial_values()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="EoS_import.html#TOVsolver.EoS_import.EOS_check"><code class="docutils literal notranslate"><span class="pre">EOS_check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="EoS_import.html#TOVsolver.EoS_import.EOS_import"><code class="docutils literal notranslate"><span class="pre">EOS_import()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="EoS_import.html#TOVsolver.EoS_import.file_read"><code class="docutils literal notranslate"><span class="pre">file_read()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#TOVsolver.main.OutputC_s"><code class="docutils literal notranslate"><span class="pre">OutputC_s()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#TOVsolver.main.OutputMR"><code class="docutils literal notranslate"><span class="pre">OutputMR()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#TOVsolver.main.OutputMRT"><code class="docutils literal notranslate"><span class="pre">OutputMRT()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#TOVsolver.main.OutputMRTpoint"><code class="docutils literal notranslate"><span class="pre">OutputMRTpoint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TOV_solver.html#TOVsolver.solver_code.TOV_def"><code class="docutils literal notranslate"><span class="pre">TOV_def()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="TOV_solver.html#TOVsolver.solver_code.m1_from_mc_m2"><code class="docutils literal notranslate"><span class="pre">m1_from_mc_m2()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="TOV_solver.html#TOVsolver.solver_code.solveTOV"><code class="docutils literal notranslate"><span class="pre">solveTOV()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="TOV_solver.html#TOVsolver.solver_code.solveTOV_tidal"><code class="docutils literal notranslate"><span class="pre">solveTOV_tidal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="TOV_solver.html#TOVsolver.solver_code.tidal_deformability"><code class="docutils literal notranslate"><span class="pre">tidal_deformability()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="speed_of_sound.html#TOVsolver.speed_of_sound.speed_of_sound_calc"><code class="docutils literal notranslate"><span class="pre">speed_of_sound_calc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="BayesianSampler.html#InferenceWorkflow.BayesianSampler.UltranestSampler"><code class="docutils literal notranslate"><span class="pre">UltranestSampler()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="BayesianSampler.html#InferenceWorkflow.BayesianSampler.UltranestSamplerResume"><code class="docutils literal notranslate"><span class="pre">UltranestSamplerResume()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="prior.html#InferenceWorkflow.prior.flat_prior"><code class="docutils literal notranslate"><span class="pre">flat_prior()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="prior.html#InferenceWorkflow.prior.normal_Prior"><code class="docutils literal notranslate"><span class="pre">normal_Prior()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.Jliklihood"><code class="docutils literal notranslate"><span class="pre">Jliklihood()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.Kliklihood"><code class="docutils literal notranslate"><span class="pre">Kliklihood()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.Lliklihood"><code class="docutils literal notranslate"><span class="pre">Lliklihood()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.MRlikihood_Gaussian"><code class="docutils literal notranslate"><span class="pre">MRlikihood_Gaussian()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.MRlikihood_kernel"><code class="docutils literal notranslate"><span class="pre">MRlikihood_kernel()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.Masslikihood_Gaussian"><code class="docutils literal notranslate"><span class="pre">Masslikihood_Gaussian()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.TidalLikihood_kernel"><code class="docutils literal notranslate"><span class="pre">TidalLikihood_kernel()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.chiEFT_PNM"><code class="docutils literal notranslate"><span class="pre">chiEFT_PNM()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="Likelihood.html#InferenceWorkflow.Likelihood.ln_pQCD"><code class="docutils literal notranslate"><span class="pre">ln_pQCD()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Cornerplot.html#postprocessing.Cornerplot.overlapping_corner_three"><code class="docutils literal notranslate"><span class="pre">overlapping_corner_three()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="starthere.html" class="btn btn-neutral float-right" title="Start Here!" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

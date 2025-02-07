@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOVsolver.main &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4320943d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">TOVsolver.main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for TOVsolver.main</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Python packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="c1"># Import files</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.solver_code</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">TOV_solver</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.EoS_import</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">EoS_import</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.speed_of_sound</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">speed_of_sound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">c</span>
+
+<span class="c1"># Global Variables</span>
+<div class="viewcode-block" id="OutputMR">
+<a class="viewcode-back" href="../../main.html#TOVsolver.main.OutputMR">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">OutputMR</span><span class="p">(</span><span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="p">[],</span> <span class="n">pressure</span><span class="o">=</span><span class="p">[],</span> <span class="n">central_density_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_cm_3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the mass, radius, and tidal deformability</span>
+<span class="sd">    Args:</span>
+<span class="sd">        file_name (string, optional): string. CSV file to be opened.</span>
+<span class="sd">        density (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+<span class="sd">        pressure (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        MR (tuple): tuple with mass, radius.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#############This is something we need to change, like the input for this EOS import should</span>
+    <span class="c1">############# be one file contatining Whole EOS. that first column is density and second is pressure</span>
+    <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">=</span> <span class="n">EoS_import</span><span class="o">.</span><span class="n">EOS_import</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+    <span class="c1">############# Lets the user only input the EOS file path, then this EOS_import should have file</span>
+    <span class="c1">############# as input. and the outputMR should have a file as input too?</span>
+
+    <span class="c1"># Notice that we only rescale quantities inside this function</span>
+    <span class="n">energy_density</span> <span class="o">=</span> <span class="n">energy_density</span> <span class="o">*</span> <span class="n">G</span> <span class="o">/</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span> <span class="o">*</span> <span class="n">G</span> <span class="o">/</span> <span class="n">c</span><span class="o">**</span><span class="mi">4</span>
+
+    <span class="c1"># eos = UnivariateSpline(np.log10(energy_density), np.log10(pres), k=1, s=0)</span>
+    <span class="c1"># inveos = UnivariateSpline(np.log10(pres), np.log10(energy_density), k=1, s=0)</span>
+    <span class="c1"># We could change this to Double Log Interpolation。</span>
+
+    <span class="n">unique_pressure_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">unique_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_pressure_indices</span><span class="p">)]</span>
+
+    <span class="c1"># Interpolate pressure vs. energy density</span>
+    <span class="n">eos</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Interpolate energy density vs. pressure</span>
+    <span class="n">inveos</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span>
+        <span class="n">unique_pressure</span><span class="p">,</span>
+        <span class="n">energy_density</span><span class="p">[</span><span class="n">unique_pressure_indices</span><span class="p">],</span>
+        <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span>
+        <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">Pmin</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+
+    <span class="n">Radius</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Mass</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># This following step is to make a dicision whether the EOS ingredients is always increase. We can do that outsie of this main to the</span>
+    <span class="c1"># EOS import.</span>
+    <span class="c1"># if   all(x&lt;y for x, y in zip(eps_total_poly[:], eps_total_poly[[1:])) and all(x&lt;y for x, y in zip(pres_total_poly[j][:], pres_total_poly[j][1:])):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">central_density_range</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">center_rho</span> <span class="o">=</span> <span class="n">central_density_range</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">G</span> <span class="o">/</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">M</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">TOV_solver</span><span class="o">.</span><span class="n">solveTOV</span><span class="p">(</span><span class="n">center_rho</span><span class="p">,</span> <span class="n">Pmin</span><span class="p">,</span> <span class="n">eos</span><span class="p">,</span> <span class="n">inveos</span><span class="p">)</span>
+            <span class="n">Mass</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+            <span class="n">Radius</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="c1"># This is sentense is for avoiding the outflow of the result, like when solveTOV blow up because of ill EOS, we need to stop</span>
+        <span class="k">except</span> <span class="ne">OverflowError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(&quot;This EOS is ill-defined to reach an infinity result, that is not phyiscal, No Mass radius will be generated.&quot;)</span>
+            <span class="k">break</span>
+    <span class="n">MR</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Mass</span><span class="p">,</span> <span class="n">Radius</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># print(&quot;Mass Radius file will be generated and stored as  2-d array. The first column is mass, second one is Radius&quot;)</span>
+
+    <span class="k">return</span> <span class="n">MR</span></div>
+
+
+
+<div class="viewcode-block" id="OutputMRT">
+<a class="viewcode-back" href="../../main.html#TOVsolver.main.OutputMRT">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">OutputMRT</span><span class="p">(</span><span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="p">[],</span> <span class="n">pressure</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the mass, radius, and tidal deformability</span>
+<span class="sd">    Args:</span>
+<span class="sd">        file_name (string, optional): string. CSV file to be opened.</span>
+<span class="sd">        density (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+<span class="sd">        pressure (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        MRT (tuple): tuple with mass, radius, and tidal deformability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#############This is something we need to change, like the input for this EOS import should</span>
+    <span class="c1">############# be one file contatining Whole EOS. that first column is density and second is pressure</span>
+    <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">=</span> <span class="n">EoS_import</span><span class="o">.</span><span class="n">EOS_import</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+    <span class="c1">############# Lets the user only input the EOS file path, then this EOS_import should have file</span>
+    <span class="c1">############# as input. and the outputMR should have a file as input too?</span>
+
+    <span class="n">Radius</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Mass</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tidal</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+    <span class="c1"># This following step is to make a dicision whether the EOS ingredients is always increase. We can do that outsie of this main to the</span>
+    <span class="c1"># EOS import.</span>
+    <span class="c1"># if   all(x&lt;y for x, y in zip(eps_total_poly[:], eps_total_poly[[1:])) and all(x&lt;y for x, y in zip(pres_total_poly[j][:], pres_total_poly[j][1:])):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">density</span><span class="p">)):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">M</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">TOV_solver</span><span class="o">.</span><span class="n">solveTOV_tidal</span><span class="p">(</span><span class="n">density</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+            <span class="n">Radius</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+            <span class="n">Mass</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+            <span class="n">tidal</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="c1"># This is sentense is for avoiding the outflow of the result, like when solveTOV blow up because of ill EOS, we need to stop</span>
+        <span class="k">except</span> <span class="ne">OverflowError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># print(&quot;This EOS is ill-defined to reach an infinity result, that is not phyiscal, No Mass radius will be generated.&quot;)</span>
+            <span class="k">break</span>
+    <span class="n">MRT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Radius</span><span class="p">,</span> <span class="n">Mass</span><span class="p">,</span> <span class="n">tidal</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># print(&quot;Mass Radius and tidal will be generated as the 3-d array. The first column is Radius, second one is mass,last is tidal&quot;)</span>
+
+    <span class="k">return</span> <span class="n">MRT</span></div>
+
+
+
+<div class="viewcode-block" id="OutputC_s">
+<a class="viewcode-back" href="../../main.html#TOVsolver.main.OutputC_s">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">OutputC_s</span><span class="p">(</span><span class="n">input_file</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="p">[],</span> <span class="n">pressure</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calls function to open csv (if needed) and check equation of state validity.</span>
+<span class="sd">        Then calls function to calculate speed of sound.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_name (string, optional): string. CSV file to be opened.</span>
+<span class="sd">        density (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+<span class="sd">        pressure (array, optional): numpy 1Darray. Passed into a check function and returned if valid.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        C_s (array): numpy 1D array. List of speeds of sound.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span> <span class="o">=</span> <span class="n">EoS_import</span><span class="o">.</span><span class="n">EOS_import</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+    <span class="n">C_s</span> <span class="o">=</span> <span class="n">speed_of_sound</span><span class="o">.</span><span class="n">speed_of_sound_calc</span><span class="p">(</span><span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">C_s</span></div>
+
+
+
+<div class="viewcode-block" id="OutputMRTpoint">
+<a class="viewcode-back" href="../../main.html#TOVsolver.main.OutputMRTpoint">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">OutputMRTpoint</span><span class="p">(</span><span class="n">central_density</span><span class="p">,</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the mass, radius, and tidal deformability (single point)</span>
+<span class="sd">    Args:</span>
+<span class="sd">        central_density (float): central density that we want to compute</span>
+<span class="sd">        density (array, optional): numpy 1Darray. Density of EoS</span>
+<span class="sd">        pressure (array, optional): numpy 1Darray. pressure of EoS</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        MRT (tuple): tuple with mass, radius and tidal.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Radius</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Mass</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tidal</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># This following step is to make a dicision whether the EOS ingredients is always increase. We can do that outsie of this main to the</span>
+    <span class="c1"># EOS import.</span>
+    <span class="c1"># if   all(x&lt;y for x, y in zip(eps_total_poly[:], eps_total_poly[[1:])) and all(x&lt;y for x, y in zip(pres_total_poly[j][:], pres_total_poly[j][1:])):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">M</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span> <span class="o">=</span> <span class="n">TOV_solver</span><span class="o">.</span><span class="n">solveTOV_tidal</span><span class="p">(</span><span class="n">central_density</span><span class="o">*</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+        <span class="n">Mass</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+        <span class="n">Radius</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="n">tidal</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="c1"># This is sentense is for avoiding the outflow of the result, like when solveTOV blow up because of ill EOS, we need to stop</span>
+    <span class="k">except</span> <span class="ne">OverflowError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;This EOS is ill-defined to reach an infinity result, that is not phyiscal, No Mass radius will be generated.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">MRT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Radius</span><span class="p">,</span> <span class="n">Mass</span><span class="p">,</span> <span class="n">tidal</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">return</span> <span class="n">MRT</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

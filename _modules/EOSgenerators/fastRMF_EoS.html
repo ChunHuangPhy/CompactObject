@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EOSgenerators.fastRMF_EoS &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4320943d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">EOSgenerators.fastRMF_EoS</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for EOSgenerators.fastRMF_EoS</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">NumbaMinpack</span><span class="w"> </span><span class="kn">import</span> <span class="n">lmdif</span><span class="p">,</span> <span class="n">hybrd</span><span class="p">,</span> <span class="n">minpack_sig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">dyn_cm_2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">cfunc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="mf">2.99792458e10</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">6.67428e-8</span>
+<span class="n">Msun</span> <span class="o">=</span> <span class="mf">1.989e33</span>
+
+<span class="n">dyncm2_to_MeVfm3</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.6022e33</span><span class="p">)</span>
+<span class="n">gcm3_to_MeVfm3</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.7827e12</span><span class="p">)</span>
+<span class="n">oneoverfm_MeV</span> <span class="o">=</span> <span class="mf">197.327053</span>
+
+<span class="n">m_e</span> <span class="o">=</span> <span class="mf">2.5896041</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>
+<span class="n">m_mu</span> <span class="o">=</span> <span class="mf">0.5354479981</span>
+<span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+<span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+<span class="n">J_B</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span>
+<span class="n">b_B</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">m_l</span> <span class="o">=</span> <span class="p">[</span><span class="n">m_e</span><span class="p">,</span> <span class="n">m_mu</span><span class="p">]</span>
+<span class="n">m_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">m_p</span><span class="p">,</span> <span class="n">m_n</span><span class="p">]</span>
+
+<span class="n">Matrix_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="n">Matrix_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">]])</span>
+
+
+<div class="viewcode-block" id="initial_values">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.initial_values">[docs]</a>
+<span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">initial_values</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the the sigma, omega, rho term and chemical potential of electron and neutron at</span>
+<span class="sd">    given initial density.</span>
+<span class="sd">    </span>
+<span class="sd">    (Compiled Version)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): given nuclear density</span>
+<span class="sd">        theta (array): parameters of determine a RMF model in Lagrangian; here, we have 10 parameters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        sigma (float): sigma term in Lagrangian</span>
+<span class="sd">        omega (float): omega term in Lagrangian</span>
+<span class="sd">        rho_03 (float): rho term in Lagrangian</span>
+<span class="sd">        mu_n (float): chemical potential of neutron matter</span>
+<span class="sd">        mu_e (float): chemical potential of electron portion</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">theta</span>
+
+    <span class="n">m_e</span> <span class="o">=</span> <span class="mf">2.5896041</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>
+    <span class="n">m_mu</span> <span class="o">=</span> <span class="mf">0.5354479981</span>
+    <span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+    <span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+    <span class="n">rho_0</span> <span class="o">=</span> <span class="mf">0.1505</span>
+
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">g_sigma</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">/</span> <span class="p">(</span><span class="n">m_sig</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rho_03</span> <span class="o">=</span> <span class="o">-</span><span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">(((</span><span class="n">m_w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">g_omega</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">Lambda_w</span> <span class="o">*</span> <span class="p">((</span><span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho_03</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_omega</span><span class="p">))</span>
+        <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="n">m_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">g_sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">mu_n</span> <span class="o">=</span> <span class="n">m_eff</span> <span class="o">+</span> <span class="n">g_omega</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">+</span> <span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho_03</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">mu_e</span> <span class="o">=</span> <span class="mf">0.12</span> <span class="o">*</span> <span class="n">m_e</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">/</span> <span class="n">rho_0</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">rho_03</span><span class="p">,</span> <span class="n">mu_n</span><span class="p">,</span> <span class="n">mu_e</span></div>
+
+
+
+<span class="nd">@cfunc</span><span class="p">(</span><span class="n">minpack_sig</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">myfunc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fvec</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Outputs the the sigma, omega, rho term and chemical potential of electron and neutron at</span>
+<span class="sd">    a given initial density,</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): given nuclear density.</span>
+<span class="sd">        theta (array): parameters of specific a RMF model in Lagrangian; here, we have 10 parameters.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        sigma (float): sigma term in Lagrangian.</span>
+<span class="sd">        omega (float): omega term in Lagrangian.</span>
+<span class="sd">        rho_03 (float): rho term in Lagrangian.</span>
+<span class="sd">        mu_n (float): chemical potential of neutron matter.</span>
+<span class="sd">        mu_e (float): chemical potential of electron portion.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">g_sigma</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">g_omega</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">g_rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">lambda_0</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">zeta</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+    <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+
+    <span class="n">m_e</span> <span class="o">=</span> <span class="mf">2.5896041</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>
+    <span class="n">m_mu</span> <span class="o">=</span> <span class="mf">0.5354479981</span>
+    <span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+    <span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+    <span class="n">J_B</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">b_B</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">m_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_e</span><span class="p">,</span> <span class="n">m_mu</span><span class="p">])</span>
+    <span class="n">m_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_p</span><span class="p">,</span> <span class="n">m_n</span><span class="p">])</span>
+
+    <span class="n">Matrix_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+    <span class="p">)</span>
+
+    <span class="n">Matrix_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">]])</span>
+
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rho_03</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">mu_n</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">mu_e</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+    <span class="n">rho_B_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rho_SB_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">q_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="n">m_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">g_sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="c1"># i = 0</span>
+    <span class="c1"># j = 0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Matrix_b</span><span class="p">)):</span>
+        <span class="c1"># while i &lt; len(Matrix_b):</span>
+
+        <span class="n">mu_b</span> <span class="o">=</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_n</span> <span class="o">-</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_e</span>
+
+        <span class="n">E_fb</span> <span class="o">=</span> <span class="n">mu_b</span> <span class="o">-</span> <span class="n">g_omega</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">-</span> <span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho_03</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">k_fb_sq</span> <span class="o">=</span> <span class="n">E_fb</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">k_fb_sq</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">k_fb_sq</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">E_fb</span> <span class="o">=</span> <span class="n">m_eff</span>
+
+        <span class="n">k_fb</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_fb_sq</span><span class="p">)</span>
+
+        <span class="n">rho_B</span> <span class="o">=</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">J_B</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_B</span> <span class="o">*</span> <span class="n">k_fb</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">rho_SB</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_eff</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">E_fb</span> <span class="o">*</span> <span class="n">k_fb</span> <span class="o">-</span> <span class="p">(</span><span class="n">m_eff</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">E_fb</span> <span class="o">+</span> <span class="n">k_fb</span><span class="p">)</span> <span class="o">/</span> <span class="n">m_eff</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">rho_B_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rho_B</span><span class="p">)</span>
+        <span class="n">rho_SB_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rho_SB</span><span class="p">)</span>
+
+        <span class="n">Q_B</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">J_B</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">k_fb</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">q_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Q_B</span><span class="p">)</span>
+        <span class="c1"># i += 1</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Matrix_l</span><span class="p">)):</span>
+        <span class="c1"># while j &lt; len(Matrix_l):</span>
+
+        <span class="n">mu_l</span> <span class="o">=</span> <span class="n">Matrix_l</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_n</span> <span class="o">-</span> <span class="n">Matrix_l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_e</span>
+        <span class="n">E_fl</span> <span class="o">=</span> <span class="n">mu_l</span>
+
+        <span class="n">k_fl_sq</span> <span class="o">=</span> <span class="n">E_fl</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m_l</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+        
+        <span class="k">if</span> <span class="n">k_fl_sq</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">k_fl_sq</span> <span class="o">=</span> <span class="mf">0.0</span>
+    
+        <span class="n">k_fl</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_fl_sq</span><span class="p">)</span>
+
+        <span class="n">Q_L</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">J_B</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">Matrix_l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_fl</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">q_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Q_L</span><span class="p">)</span>
+
+        <span class="c1"># rho_l = k_fl**3 / (3.*(math.pi**2))</span>
+        <span class="c1"># rho_list.append(rho_l)</span>
+        
+    <span class="n">sum1</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sum2</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sum3</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sum4</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">sum5</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rho_SB_list</span><span class="p">)):</span>
+        <span class="n">sum1</span> <span class="o">=</span> <span class="n">sum1</span> <span class="o">+</span> <span class="n">rho_SB_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[:,</span><span class="mi">3</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rho_B_list</span><span class="p">)):</span>
+        <span class="n">sum2</span> <span class="o">=</span> <span class="n">sum2</span> <span class="o">+</span> <span class="n">rho_B_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[:,</span><span class="mi">4</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rho_B_list</span><span class="p">)):</span>
+        <span class="n">sum3</span> <span class="o">=</span> <span class="n">sum3</span> <span class="o">+</span> <span class="n">rho_B_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[:,</span><span class="mi">5</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[:,</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rho_B_list</span><span class="p">)):</span>
+        <span class="n">sum4</span> <span class="o">=</span> <span class="n">sum4</span> <span class="o">+</span> <span class="n">rho_B_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q_list</span><span class="p">)):</span>
+        <span class="n">sum5</span> <span class="o">=</span> <span class="n">sum5</span> <span class="o">+</span> <span class="n">q_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">fvec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span><span class="o">*</span><span class="p">(</span><span class="n">m_sig</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_sigma</span> <span class="o">-</span> <span class="n">sum1</span> <span class="o">+</span><span class="p">(</span><span class="n">kappa</span><span class="o">*</span><span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>\
+              <span class="o">+</span> <span class="p">(</span><span class="n">lambda_0</span><span class="o">*</span><span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">fvec</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="p">(</span><span class="n">m_w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_omega</span> <span class="o">-</span> <span class="n">sum2</span> <span class="o">+</span> <span class="p">(</span><span class="n">zeta</span><span class="o">*</span><span class="p">(</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">6.</span>\
+              <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="p">(</span><span class="n">rho_03</span><span class="o">*</span><span class="n">g_rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">fvec</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho_03</span><span class="o">*</span><span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_rho</span> <span class="o">-</span> <span class="n">sum3</span> <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="n">g_rho</span><span class="o">*</span><span class="n">rho_03</span><span class="o">*</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">g_omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    
+    <span class="n">fvec</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span> <span class="n">sum4</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">fvec</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">sum5</span><span class="o">**</span><span class="mi">2</span>
+
+    
+<span class="n">funcptr</span> <span class="o">=</span> <span class="n">myfunc</span><span class="o">.</span><span class="n">address</span> <span class="c1"># address in memory to myfunc</span>
+
+<div class="viewcode-block" id="Energy_density_Pressure">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.Energy_density_Pressure">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Energy_density_Pressure</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">return_tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the pressure and energy density for the equation of state (EOS) </span>
+<span class="sd">    based on the Relativistic Mean Field (RMF) model parameters,</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        x (array): An array containing the initial values for sigma, omega, rho, </span>
+<span class="sd">                   and chemical potential, obtained from the `initial_values` function.</span>
+<span class="sd">        rho (float): The central density at which the EOS computation begins.</span>
+<span class="sd">        theta (array): An array of 10 parameters that define the RMF model in the </span>
+<span class="sd">                       Lagrangian.</span>
+<span class="sd">        return_tag (bool, optional): If False (default), returns only the energy </span>
+<span class="sd">                                     density and pressure. If True, returns additional </span>
+<span class="sd">                                     EOS components.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple:</span>
+<span class="sd">            If `return_tag` is False:</span>
+<span class="sd">                energy_density (float): The energy density in natural units </span>
+<span class="sd">                                        (to convert to MeV.fm-3, divide by MeV.fm-3).</span>
+<span class="sd">                pressure (float): The pressure in natural units.</span>
+<span class="sd">            </span>
+<span class="sd">            If `return_tag` is True:</span>
+<span class="sd">                numpy array: A 1D array representing EOS components:</span>
+<span class="sd">                    - EoS[0]: Number density in fm-3.</span>
+<span class="sd">                    - EoS[1]: Energy density in natural units.</span>
+<span class="sd">                    - EoS[2]: Pressure in natural units.</span>
+<span class="sd">                    - EoS[3]: Proton chemical potential in natural units.</span>
+<span class="sd">                    - EoS[4]: Neutron chemical potential in natural units.</span>
+<span class="sd">                    - EoS[5]: Electron chemical potential in natural units.</span>
+<span class="sd">                    - EoS[6]: Muon chemical potential in natural units.</span>
+<span class="sd">                    - EoS[7]: Proton fraction (dimensionless).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sigma</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">rho_03</span><span class="p">,</span> <span class="n">mu_n</span><span class="p">,</span> <span class="n">mu_e</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">theta</span>
+
+    <span class="n">m_e</span> <span class="o">=</span> <span class="mf">2.5896041</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">3</span>
+    <span class="n">m_mu</span> <span class="o">=</span> <span class="mf">0.5354479981</span>
+    <span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+    <span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+    <span class="n">J_B</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">b_B</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">m_l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_e</span><span class="p">,</span> <span class="n">m_mu</span><span class="p">])</span>
+    <span class="n">m_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_p</span><span class="p">,</span> <span class="n">m_n</span><span class="p">])</span>
+
+    <span class="n">energy_b</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">energy_l</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">multi</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">EoS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="c1">#[&quot;rho&quot;, &quot;energy density&quot;, &quot;pressure&quot;, &quot;mu_p&quot;, &quot;mu_n&quot;, &quot;mu_e&quot;, &quot;mu_mu&quot;, &quot;proton_fraction&quot;]</span>
+    
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="n">m_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">g_sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Matrix_b</span><span class="p">)):</span>
+        <span class="n">mu_b</span> <span class="o">=</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_n</span> <span class="o">-</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_e</span>
+
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_b</span>
+
+        <span class="n">E_fb</span> <span class="o">=</span> <span class="n">mu_b</span> <span class="o">-</span> <span class="n">g_omega</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">-</span> <span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho_03</span> <span class="o">*</span> <span class="n">Matrix_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">k_fb_sq</span> <span class="o">=</span> <span class="n">E_fb</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">if</span> <span class="n">k_fb_sq</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">k_fb_sq</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">E_fb</span> <span class="o">=</span> <span class="n">m_eff</span>
+
+        <span class="n">k_fb</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_fb_sq</span><span class="p">)</span>
+
+        <span class="n">rho_B</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">J_B</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">b_B</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_fb</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">6.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1">#when b = proton,</span>
+            <span class="n">EoS</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho_B</span> <span class="o">/</span> <span class="n">rho</span>
+
+        <span class="n">multi</span> <span class="o">=</span> <span class="n">multi</span> <span class="o">+</span> <span class="n">mu_b</span> <span class="o">*</span> <span class="n">rho_B</span>
+        <span class="n">energy_baryon</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">k_fb</span> <span class="o">*</span> <span class="p">(</span><span class="n">E_fb</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+            <span class="o">+</span> <span class="p">(</span><span class="n">k_fb</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">E_fb</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">k_fb</span> <span class="o">+</span> <span class="n">E_fb</span><span class="p">)</span> <span class="o">/</span> <span class="n">m_eff</span><span class="p">)</span> <span class="o">*</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">4</span>
+        <span class="p">)</span>
+
+        <span class="n">energy_b</span> <span class="o">=</span> <span class="n">energy_b</span> <span class="o">+</span> <span class="n">energy_baryon</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Matrix_l</span><span class="p">)):</span>
+        <span class="n">mu_l</span> <span class="o">=</span> <span class="n">Matrix_l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_n</span> <span class="o">-</span> <span class="n">Matrix_l</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">mu_e</span>
+
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">5</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_l</span>
+
+        <span class="n">k_fl_sq</span> <span class="o">=</span> <span class="n">mu_l</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">m_l</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">k_fl_sq</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">k_fl_sq</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">k_fl</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">k_fl_sq</span><span class="p">)</span>
+
+        <span class="n">rho_l</span> <span class="o">=</span> <span class="n">k_fl</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">multi</span> <span class="o">=</span> <span class="n">multi</span> <span class="o">+</span> <span class="n">mu_l</span> <span class="o">*</span> <span class="n">rho_l</span>
+        <span class="n">energy_lepton</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="n">k_fl</span> <span class="o">*</span> <span class="p">(</span><span class="n">mu_l</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">mu_l</span> <span class="o">*</span> <span class="p">(</span><span class="n">k_fl</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span>
+            <span class="o">-</span> <span class="p">(</span><span class="n">m_l</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">**</span> <span class="mi">4</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">k_fl</span> <span class="o">+</span> <span class="n">mu_l</span><span class="p">)</span> <span class="o">/</span> <span class="n">m_l</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="n">energy_l</span> <span class="o">=</span> <span class="n">energy_l</span> <span class="o">+</span> <span class="n">energy_lepton</span>
+
+    <span class="n">sigma_terms</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">m_sig</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">kappa</span> <span class="o">*</span> <span class="p">((</span><span class="n">g_sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">))</span> <span class="o">/</span> <span class="mf">6.0</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">lambda_0</span> <span class="o">*</span> <span class="p">((</span><span class="n">g_sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">/</span> <span class="mf">24.0</span>
+    <span class="p">)</span>
+
+    <span class="n">omega_terms</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">omega</span> <span class="o">*</span> <span class="n">m_w</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">zeta</span> <span class="o">*</span> <span class="p">((</span><span class="n">g_omega</span> <span class="o">*</span> <span class="n">omega</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span><span class="p">))</span> <span class="o">/</span> <span class="mf">8.0</span>
+
+    <span class="n">rho_terms</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">rho_03</span> <span class="o">*</span> <span class="n">m_rho</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="o">+</span><span class="mf">3.0</span> <span class="o">*</span> <span class="n">Lambda_w</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">g_rho</span> <span class="o">*</span> <span class="n">rho_03</span> <span class="o">*</span> <span class="n">g_omega</span> <span class="o">*</span> <span class="n">omega</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">)</span>
+
+    <span class="n">energy_density</span> <span class="o">=</span> <span class="n">energy_b</span> <span class="o">+</span> <span class="n">energy_l</span> <span class="o">+</span> <span class="n">sigma_terms</span> <span class="o">+</span> <span class="n">omega_terms</span> <span class="o">+</span> <span class="n">rho_terms</span>
+
+    <span class="n">Pressure</span> <span class="o">=</span> <span class="n">multi</span> <span class="o">-</span> <span class="n">energy_density</span>
+
+    <span class="k">if</span> <span class="n">return_tag</span><span class="p">:</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rho</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_density</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Pressure</span>
+        <span class="k">return</span> <span class="n">EoS</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_density</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Pressure</span>
+        <span class="k">return</span> <span class="n">EoS</span></div>
+
+
+<span class="c1"># define a function that computes the EoS </span>
+<div class="viewcode-block" id="compute_EOS">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.compute_EOS">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_EOS</span><span class="p">(</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">pres_crust</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">return_tag</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate core part equation of state, main function, from RMF model,</span>
+
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        eps_crust (array): the energy density of crust EoS in g.cm-3.</span>
+<span class="sd">        pres_crust (array): the pressure from crust EoS model in dyn.cm-2.</span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the</span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 10 parameters.</span>
+
+<span class="sd">        return_tag (bool, optional): If False (default), returns only the energy </span>
+<span class="sd">                                     density and pressure. If True, returns additional </span>
+<span class="sd">                                     EOS components.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        If `return_tag` is False:</span>
+<span class="sd">                energy_density (float): The energy density in natural units </span>
+<span class="sd">                                        (to convert to MeV.fm-3, divide by MeV.fm-3).</span>
+<span class="sd">                pressure (float): The pressure in natural units.</span>
+<span class="sd">            </span>
+<span class="sd">        If `return_tag` is True:</span>
+<span class="sd">                numpy array: A 1D array representing EOS components:</span>
+<span class="sd">                    - EoS[0]: Number density in fm-3.</span>
+<span class="sd">                    - EoS[1]: Energy density in natural units.</span>
+<span class="sd">                    - EoS[2]: Pressure in natural units.</span>
+<span class="sd">                    - EoS[3]: Proton chemical potential in natural units.</span>
+<span class="sd">                    - EoS[4]: Neutron chemical potential in natural units.</span>
+<span class="sd">                    - EoS[5]: Electron chemical potential in natural units.</span>
+<span class="sd">                    - EoS[6]: Muon chemical potential in natural units.</span>
+<span class="sd">                    - EoS[7]: Proton fraction (dimensionless).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dt</span>    <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">rho_0</span> <span class="o">=</span> <span class="mf">0.1505</span>
+    
+    <span class="n">x_init</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">initial_values</span><span class="p">(</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">rho_0</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">return_tag</span><span class="p">:</span>
+        <span class="n">EoS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">124</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">Energy</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">124</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">Pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">124</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">125</span><span class="p">):</span>
+
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">rho_0</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span>
+        <span class="n">xsol</span><span class="p">,</span> <span class="n">fvec</span><span class="p">,</span> <span class="n">success</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">lmdif</span><span class="p">(</span><span class="n">funcptr</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+        
+        <span class="n">Re</span>  <span class="o">=</span> <span class="n">Energy_density_Pressure</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">return_tag</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">return_tag</span><span class="p">:</span>
+            <span class="c1"># Re = [ rho , energy_density , pressure, mu_n , mu_p , mu_e , mu_mu , proton_fraction ]</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">gcm3_to_MeVfm3</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">dyncm2_to_MeVfm3</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">Re</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            
+            <span class="n">EoS</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Energy</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>   <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">gcm3_to_MeVfm3</span>
+            <span class="n">Pressure</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Re</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">dyncm2_to_MeVfm3</span>
+
+        <span class="n">x_init</span> <span class="o">=</span> <span class="n">xsol</span>
+    
+    <span class="k">if</span> <span class="n">return_tag</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">EoS</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">EoS</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_crust</span> <span class="o">/</span> <span class="n">g_cm_3</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+                <span class="k">break</span>
+            <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">EoS</span> <span class="o">=</span> <span class="n">EoS</span><span class="p">[</span><span class="n">end</span><span class="p">::]</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">EoS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+        <span class="n">EoS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">EoS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">dyn_cm_2</span>
+
+        <span class="k">return</span> <span class="n">EoS</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">Energy</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">Energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_crust</span> <span class="o">/</span> <span class="n">g_cm_3</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span>
+                <span class="k">break</span>
+            <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="n">Energy</span><span class="p">[</span><span class="n">end</span><span class="p">::]</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">Pressure</span><span class="p">[</span><span class="n">end</span><span class="p">::]</span>
+    
+        <span class="c1"># tzzhou: migrating to new unit convention</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="n">ep</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">pr</span> <span class="o">*</span> <span class="n">dyn_cm_2</span>
+    
+        <span class="k">return</span> <span class="n">ep</span><span class="p">,</span> <span class="n">pr</span></div>
+
+
+
+<span class="c1">##################### Date: 04 Nov 2024 #######################</span>
+<span class="c1">###  João Cartaxo ### Tuhin Malik ### Constança Providência ###</span>
+<div class="viewcode-block" id="initial_guess_alpha">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.initial_guess_alpha">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initial_guess_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Outputs the sigma, omega, rho field value,</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        rho (float): given nuclear density</span>
+<span class="sd">        theta (array): parameters to determine an RMF model in Lagrangian, here there are 11 parameters,</span>
+<span class="sd">        where the last parameters are the proton fraction (alpha) and the number density rho.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        math.sqrt(sigma) (float): square root of the sigma term in the Lagrangian.</span>
+<span class="sd">        math.sqrt(omega) (float): square root of the omega term in the Lagrangian.</span>
+<span class="sd">        rho_03 (float): rho term in the Lagrangian.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">theta</span>
+        
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">g_sigma</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="p">(</span><span class="n">m_sig</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rho_03</span> <span class="o">=</span> <span class="o">-</span><span class="n">g_rho</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="p">((((</span><span class="n">m_w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_omega</span><span class="p">)</span><span class="o">+</span>\
+    <span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="p">((</span><span class="n">g_rho</span><span class="o">*</span><span class="n">rho_03</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">g_omega</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sigma</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">omega</span><span class="p">),</span> <span class="n">rho_03</span></div>
+
+    
+<div class="viewcode-block" id="fields_alpha">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.fields_alpha">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fields_alpha</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Iterate the sigma, omega, and rho fields for a given proton fraction and density.</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        x (array): initial sqrt(sigma) sqrt(omega) and rho from initial_values function.</span>
+<span class="sd">        args (array): parameters to determine a RMF model in Lagrangian; here, we have 12 parameters,</span>
+<span class="sd">        where the last parameters are the proton fraction (alpha) and the density rho. </span>
+<span class="sd">        For pure neutron matter (PNM), alpha is 0, and for symmetric nuclear matter, alpha is 0.5.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        f (array): field equations which are then solved using the scipy root finding function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">rho</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+    <span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+    <span class="n">sigma_sqrt</span><span class="p">,</span> <span class="n">omega_sqrt</span><span class="p">,</span> <span class="n">rho_03</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_sqrt</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">omega_sqrt</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="n">m_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span>
+
+    <span class="c1"># Proton</span>
+    <span class="n">rho_p</span>    <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">rho</span>
+    <span class="n">kf_p</span>     <span class="o">=</span> <span class="p">(</span><span class="n">rho_p</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">E_fp</span>     <span class="o">=</span> <span class="p">(</span><span class="n">kf_p</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rho_SB_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_eff</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">E_fp</span><span class="o">*</span><span class="n">kf_p</span> <span class="o">-</span> <span class="p">(</span><span class="n">m_eff</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">kf_p</span><span class="o">/</span><span class="n">E_fp</span><span class="p">))</span>
+
+    <span class="c1">#Neutron</span>
+    <span class="n">rho_n</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">rho</span>
+    <span class="n">kf_n</span>     <span class="o">=</span> <span class="p">(</span><span class="n">rho_n</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">E_fn</span>     <span class="o">=</span> <span class="p">(</span><span class="n">kf_n</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rho_SB_n</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_eff</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">E_fn</span><span class="o">*</span><span class="n">kf_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">m_eff</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">kf_n</span><span class="o">/</span><span class="n">E_fn</span><span class="p">))</span>
+
+    <span class="n">rho_b</span>  <span class="o">=</span> <span class="n">rho_p</span>    <span class="o">+</span> <span class="n">rho_n</span>      
+    <span class="n">rho_SB</span> <span class="o">=</span> <span class="n">rho_SB_p</span> <span class="o">+</span> <span class="n">rho_SB_n</span>
+    
+    <span class="n">fvec_0</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigma</span><span class="o">*</span><span class="p">(</span><span class="n">m_sig</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_sigma</span> <span class="o">-</span> <span class="n">rho_SB</span> <span class="o">+</span><span class="p">(</span><span class="n">kappa</span><span class="o">*</span><span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>\
+              <span class="o">+</span> <span class="p">(</span><span class="n">lambda_0</span><span class="o">*</span><span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">fvec_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="p">(</span><span class="n">m_w</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_omega</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">+</span> <span class="p">(</span><span class="n">zeta</span><span class="o">*</span><span class="p">(</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">/</span><span class="mf">6.</span>\
+              <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="o">*</span><span class="p">(</span><span class="n">rho_03</span><span class="o">*</span><span class="n">g_rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">fvec_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho_03</span><span class="o">*</span><span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">g_rho</span> <span class="o">-</span> <span class="p">(</span><span class="n">alpha</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span><span class="o">*</span><span class="n">rho</span> <span class="o">+</span> <span class="mf">2.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="n">g_rho</span><span class="o">*</span><span class="n">rho_03</span><span class="o">*</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">g_omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">f</span><span class="o">=</span><span class="p">[(</span><span class="n">fvec_0</span><span class="p">),(</span><span class="n">fvec_1</span><span class="p">),(</span><span class="n">fvec_2</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">f</span></div>
+
+
+<div class="viewcode-block" id="get_energy_pressure_alpha">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.get_energy_pressure_alpha">[docs]</a>
+<span class="nd">@njit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_energy_pressure_alpha</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Generate pressure and energy density at a given number density and proton fraction,</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        x (array): An array that consists of the initial values of sqrt(sigma), sqrt(omega), and rho </span>
+<span class="sd">        obtained from the initial_values function.</span>
+<span class="sd">        rho (float): The central density from which the computation of the equation of state begins.</span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the</span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 11 parameters, where the last parameters</span>
+<span class="sd">        is the proton fraction (alpha).</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        energy_density (float): EOS ingredient, energy density in natural units.</span>
+<span class="sd">        pressure (float): EOS ingredient, pressure in natural units.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sigma_sqrt</span><span class="p">,</span> <span class="n">omega_sqrt</span><span class="p">,</span> <span class="n">rho_03</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">sigma_sqrt</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">omega</span> <span class="o">=</span> <span class="n">omega_sqrt</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">theta</span>
+   
+    
+    <span class="n">m_n</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+    <span class="n">m_p</span> <span class="o">=</span> <span class="mf">4.7583690772</span>
+
+    <span class="n">m_eff</span>    <span class="o">=</span> <span class="n">m_n</span> <span class="o">-</span> <span class="p">(</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span>
+
+   
+    <span class="c1">#Proton</span>
+    <span class="n">rho_p</span>    <span class="o">=</span> <span class="n">alpha</span><span class="o">*</span><span class="n">rho</span>
+    <span class="n">kf_p</span>     <span class="o">=</span> <span class="p">(</span><span class="n">rho_p</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">E_fp</span>     <span class="o">=</span> <span class="p">(</span><span class="n">kf_p</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">energy_p</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">8.</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span><span class="o">*</span><span class="p">(</span><span class="n">kf_p</span><span class="o">*</span><span class="n">E_fp</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kf_p</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">kf_p</span> <span class="o">+</span> <span class="n">E_fp</span><span class="p">)</span><span class="o">/</span><span class="n">m_eff</span><span class="p">)</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">integral_p</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">kf_p</span><span class="o">/</span><span class="n">E_fp</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">kf_p</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">E_fp</span> <span class="o">+</span> <span class="n">kf_p</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">E_fp</span> <span class="p">)</span>
+    <span class="n">Pressure_p</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">integral_p</span><span class="p">)</span> 
+
+    <span class="c1">#Neutron</span>
+    <span class="n">rho_n</span>    <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span><span class="o">*</span><span class="n">rho</span>
+    <span class="n">kf_n</span>     <span class="o">=</span> <span class="p">(</span><span class="n">rho_n</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">E_fn</span>     <span class="o">=</span> <span class="p">(</span><span class="n">kf_n</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">energy_n</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mf">8.</span><span class="o">*</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span><span class="o">*</span><span class="p">(</span><span class="n">kf_n</span><span class="o">*</span><span class="n">E_fn</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kf_n</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">kf_n</span> <span class="o">+</span> <span class="n">E_fn</span><span class="p">)</span><span class="o">/</span><span class="n">m_eff</span><span class="p">)</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">integral_n</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="p">(</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">kf_n</span><span class="o">/</span><span class="n">E_fn</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">kf_n</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">E_fn</span> <span class="o">+</span> <span class="n">kf_n</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">E_fn</span> <span class="p">)</span>
+    <span class="n">Pressure_n</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">integral_n</span><span class="p">)</span> 
+
+    <span class="c1">#Total</span>
+    <span class="n">energy_b</span> <span class="o">=</span> <span class="n">energy_p</span> <span class="o">+</span> <span class="n">energy_n</span>
+    <span class="n">Pressure_b</span> <span class="o">=</span> <span class="n">Pressure_p</span> <span class="o">+</span> <span class="n">Pressure_n</span>
+    
+
+    <span class="n">sigma_terms</span> <span class="o">=</span>  <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">sigma</span><span class="o">*</span><span class="n">m_sig</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">kappa</span><span class="o">*</span><span class="p">((</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span><span class="p">))</span><span class="o">/</span><span class="mf">6.</span>\
+                    <span class="o">+</span> <span class="p">(</span><span class="n">lambda_0</span><span class="o">*</span><span class="p">((</span><span class="n">g_sigma</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="mf">24.</span>
+        
+    <span class="n">omega_terms</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">omega</span><span class="o">*</span><span class="n">m_w</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span><span class="p">(</span><span class="n">zeta</span><span class="o">*</span><span class="p">((</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="mf">8.</span>
+        
+    <span class="n">rho_terms</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="n">rho_03</span><span class="o">*</span><span class="n">m_rho</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span> <span class="mf">3.</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="p">((</span><span class="n">g_rho</span><span class="o">*</span><span class="n">rho_03</span><span class="o">*</span><span class="n">g_omega</span><span class="o">*</span><span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">energy_density</span> <span class="o">=</span> <span class="n">energy_b</span>   <span class="o">+</span> <span class="n">sigma_terms</span> <span class="o">+</span> <span class="n">omega_terms</span> <span class="o">+</span> <span class="n">rho_terms</span>
+    <span class="n">Pressure</span>       <span class="o">=</span> <span class="n">Pressure_p</span> <span class="o">+</span> <span class="n">Pressure_n</span>  <span class="o">-</span> <span class="n">sigma_terms</span> <span class="o">+</span> <span class="n">omega_terms</span> <span class="o">+</span> <span class="n">rho_terms</span>
+
+    <span class="k">return</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">Pressure</span></div>
+
+
+
+<div class="viewcode-block" id="get_eos_alpha">
+<a class="viewcode-back" href="../../fastRMF_EoS.html#EOSgenerators.fastRMF_EoS.get_eos_alpha">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_eos_alpha</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">single_point</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Generate EOS for a given alpha,</span>
+<span class="sd">    </span>
+<span class="sd">    (Faster Version Using Numba)</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the</span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 11 parameters, where the last</span>
+<span class="sd">        defined the proton fraction (alpha).</span>
+<span class="sd">        single_point (boolean): Allows for the return of a single point of the EoS.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        rho (array): EOS ingredient, density in fm-3.</span>
+<span class="sd">        energy_density (array): EOS ingredient, energy density in natural units.</span>
+<span class="sd">        pressure (array): EOS ingredient, pressure in natural units.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">single_point</span><span class="p">:</span>
+        <span class="n">x_init</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">initial_guess_alpha</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+        <span class="n">dt</span>               <span class="o">=</span> <span class="mf">0.006</span>
+        <span class="n">N_points</span>         <span class="o">=</span> <span class="mi">125</span>
+
+        <span class="n">Density</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Energy</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">Pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_points</span><span class="p">):</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.04</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">dt</span>
+
+            <span class="n">arg</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span>
+            <span class="n">sol</span>    <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">fields_alpha</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_init</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;lm&#39;</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+            <span class="n">x_init</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">Re</span>     <span class="o">=</span> <span class="n">get_energy_pressure_alpha</span><span class="p">(</span><span class="n">x_init</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+            <span class="n">Density</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="o">=</span> <span class="p">(</span><span class="n">rho</span><span class="p">)</span>
+            <span class="n">Energy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>   <span class="o">=</span> <span class="p">(</span><span class="n">Re</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">oneoverfm_MeV</span><span class="o">/</span><span class="n">gcm3_to_MeVfm3</span><span class="p">)</span>
+            <span class="n">Pressure</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Re</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">oneoverfm_MeV</span><span class="o">/</span><span class="n">dyncm2_to_MeVfm3</span><span class="p">)</span>
+
+        <span class="n">rh</span> <span class="o">=</span> <span class="n">Density</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="n">Energy</span>   <span class="o">*</span> <span class="n">g_cm_3</span>
+        <span class="n">pr</span> <span class="o">=</span> <span class="n">Pressure</span> <span class="o">*</span> <span class="n">dyn_cm_2</span>
+        
+        <span class="k">return</span> <span class="n">rh</span><span class="p">,</span> <span class="n">ep</span><span class="p">,</span> <span class="n">pr</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rho</span>    <span class="o">=</span> <span class="n">single_point</span>
+        <span class="n">x_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">initial_guess_alpha</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">)</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">optimize</span><span class="o">.</span><span class="n">root</span><span class="p">(</span><span class="n">fields_alpha</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_init</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;lm&#39;</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+        <span class="n">Re</span>  <span class="o">=</span> <span class="n">get_energy_pressure_alpha</span><span class="p">(</span><span class="n">sol</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">Re</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">gcm3_to_MeVfm3</span> <span class="o">*</span> <span class="n">g_cm_3</span> <span class="p">,</span> <span class="n">Re</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="n">dyncm2_to_MeVfm3</span> <span class="o">*</span><span class="n">dyn_cm_2</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InferenceWorkflow.Likelihood &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4320943d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">InferenceWorkflow.Likelihood</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for InferenceWorkflow.Likelihood</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.constant</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">constant</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.solver_code</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">TOV_solver</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.EoS_import</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">EoS_import</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.crust_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">crust</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.main</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">main</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">interpolate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span>  <span class="n">km</span><span class="p">,</span> <span class="n">Msun</span><span class="p">,</span> <span class="n">MeV</span><span class="p">,</span><span class="n">fm</span><span class="p">,</span><span class="n">g_cm_3</span><span class="p">,</span><span class="n">dyn_cm_2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">oneoverfm_MeV</span> <span class="o">=</span> <span class="n">constant</span><span class="o">.</span><span class="n">oneoverfm_MeV</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">constant</span><span class="o">.</span><span class="n">c</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">constant</span><span class="o">.</span><span class="n">G</span>
+
+<div class="viewcode-block" id="MRlikihood_kernel">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.MRlikihood_kernel">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">MRlikihood_kernel</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">d1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a distribution of MR measurement</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        eps_total (array): the energy density of full EoS in MeV/fm3, times a G/c**2 factor</span>
+<span class="sd">        pres_total (array): the pressure from full EoS model in MeV/fm3, times a G/c**4 factor</span>
+<span class="sd">        x (kde.kernel): the distribution kernel of MR measurement.</span>
+<span class="sd">        d1 (float): the sampled density of this measurement</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">MR</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span><span class="mi">0</span> <span class="p">:</span>
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="k">if</span>   <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eps_total</span><span class="p">[:],</span> <span class="n">eps_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_total</span><span class="p">[:],</span> <span class="n">pres_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">MR</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,[</span><span class="n">d1</span><span class="o">*</span><span class="n">g_cm_3</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">kernel</span><span class="o">.</span><span class="n">evaluate</span><span class="p">((</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">km</span><span class="p">,</span> <span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">Msun</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">likelihood</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">1e101</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">likelihood</span></div>
+
+    
+<div class="viewcode-block" id="TidalLikihood_kernel">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.TidalLikihood_kernel">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">TidalLikihood_kernel</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">d1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a distribution of Gravitational wave measurement</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        eps_total (array): the energy density of full EoS in MeV/fm3, times a G/c**2 factor</span>
+<span class="sd">        pres_total (array): the pressure from full EoS model in MeV/fm3, times a G/c**4 factor</span>
+<span class="sd">        x (kde.kernel): containing kernelGW and chirp, kernelGW is the distribution kde.kernel </span>
+<span class="sd">        sampled from full GW measurement, in [chrip mass, M2/M1, tidal of M1, tidal of M2] sequence.</span>
+<span class="sd">        chrip mass is the sampling from chrip mass term in GW events solely.</span>
+<span class="sd">        d1 (float): the sampled density of this measurement</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernelGW</span><span class="p">,</span><span class="n">chrip</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">MRT</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span><span class="mi">0</span> <span class="p">:</span>
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="k">if</span>   <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eps_total</span><span class="p">[:],</span> <span class="n">eps_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_total</span><span class="p">[:],</span> <span class="n">pres_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">MRT</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMRTpoint</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">chrip_mass</span> <span class="o">=</span> <span class="n">chrip</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">M1</span> <span class="o">=</span> <span class="n">TOV_solver</span><span class="o">.</span><span class="n">m1_from_mc_m2</span><span class="p">(</span><span class="n">chrip_mass</span><span class="p">,</span> <span class="n">MRT</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">Tidal_line</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMRT</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MRT</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">Tidal_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">chrip_mass</span> <span class="o">=</span> <span class="n">chrip</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">MTspline</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">Tidal_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Msun</span><span class="p">,</span><span class="n">Tidal_line</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">chrip_mass</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">MRT</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">M1</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],[</span> <span class="n">MTspline</span><span class="p">(</span><span class="n">M1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">MRT</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]]])</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">kernelGW</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">likelihood</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">1e101</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">likelihood</span></div>
+
+
+<div class="viewcode-block" id="MRlikihood_Gaussian">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.MRlikihood_Gaussian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">MRlikihood_Gaussian</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">d1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a simulation gaussian distribution of MR measurement</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        eps_total (array): the energy density of full EoS in MeV/fm3, times a G/c**2 factor</span>
+<span class="sd">        pres_total (array): the pressure from full EoS model in MeV/fm3, times a G/c**4 factor</span>
+<span class="sd">        x (float array): [Mvalue, Rvalue, Mwidth, Rwidth], Mvalue is the Mass center value of this </span>
+<span class="sd">        simulated measurement, Rvalue is the Radius center of it, Mwidth is the 1-sigma width of</span>
+<span class="sd">        this Mass measurement, Rwidth is the 1-sigma width of this radius measurement.</span>
+<span class="sd">        d1 (float): the sampled density of this measurement</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Mvalue</span><span class="p">,</span> <span class="n">Rvalue</span><span class="p">,</span> <span class="n">Mwidth</span><span class="p">,</span><span class="n">Rwidth</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="n">sigma_x</span> <span class="o">=</span> <span class="n">Rwidth</span>
+    <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">Mwidth</span>
+    <span class="n">MR</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="c1"># if all(x&lt;=y for x,y in zip(eps_total[:], eps_total[1:])) and all(x&lt;=y for x, y in zip(pres_total[:], pres_total[1:])):</span>
+        <span class="n">MR</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,[</span><span class="n">d1</span><span class="o">*</span><span class="n">g_cm_3</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="n">fx</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">sigma_x</span><span class="o">*</span><span class="n">sigma_y</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">km</span><span class="o">-</span><span class="n">Rvalue</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma_x</span><span class="p">,</span><span class="mf">2.</span><span class="p">))</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">Msun</span><span class="o">-</span><span class="n">Mvalue</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">,</span><span class="mf">2.</span><span class="p">)))</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+            
+            
+    <span class="k">if</span> <span class="n">likelihood</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">1e101</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">likelihood</span></div>
+
+    
+<div class="viewcode-block" id="Masslikihood_Gaussian">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.Masslikihood_Gaussian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Masslikihood_Gaussian</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">d1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a simulation gaussian distribution of Mass measurement</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        eps_total (array): the energy density of full EoS in MeV/fm3, times a G/c**2 factor</span>
+<span class="sd">        pres_total (array): the pressure from full EoS model in MeV/fm3, times a G/c**4 factor</span>
+<span class="sd">        x (float array): [Mvalue, Mwidth], Mvalue is the Mass center value of this </span>
+<span class="sd">        simulated measurement, Mwidth is the 1-sigma width of this Mass measurement. </span>
+<span class="sd">        d1 (float): the sampled density of this measurement</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Mvalue</span><span class="p">,</span> <span class="n">Mwidth</span> <span class="o">=</span> <span class="n">x</span>
+    
+    <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">Mwidth</span>
+    <span class="n">MR</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span><span class="mi">0</span> <span class="p">:</span>
+        <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+        <span class="k">if</span>   <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eps_total</span><span class="p">[:],</span> <span class="n">eps_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_total</span><span class="p">[:],</span> <span class="n">pres_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">MR</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">eps_total</span><span class="p">,</span><span class="n">pres_total</span><span class="p">,[</span><span class="n">d1</span><span class="o">*</span><span class="n">g_cm_3</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">likelihood</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e101</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&gt;=</span> <span class="n">Mvalue</span><span class="p">:</span>
+                <span class="n">likelihood</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>    
+                <span class="n">fx</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">sigma_y</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">Msun</span><span class="o">-</span><span class="n">Mvalue</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma_y</span><span class="p">,</span><span class="mf">2.</span><span class="p">)))</span>
+                <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">likelihood</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">1e101</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">likelihood</span></div>
+
+
+
+<div class="viewcode-block" id="Kliklihood">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.Kliklihood">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Kliklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="n">K_low</span><span class="p">,</span><span class="n">K_up</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a hard cut constraint of K.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    </span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the </span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 7 parameters. </span>
+<span class="sd">        K_low (float): lower bound of this K constraint.</span>
+<span class="sd">        K_up (float): upper bound of this K constraint.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span><span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">lambda_w</span> <span class="o">=</span> <span class="n">theta</span>
+    
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">495</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="mf">3.96544</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="mf">3.86662</span>
+    
+    <span class="n">m_b</span> <span class="o">=</span> <span class="mi">939</span>
+    <span class="n">E_per</span> <span class="o">=-</span><span class="mf">16.28</span>
+    <span class="n">m_sig</span> <span class="o">=</span><span class="mi">495</span><span class="o">/</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">()</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)</span><span class="o">*</span><span class="n">m_b</span>
+    <span class="n">kappa_one</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_sig_one</span> <span class="o">=</span> <span class="n">m_sig</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w_one</span> <span class="o">=</span> <span class="n">m_w</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.1505</span><span class="o">*</span> <span class="p">(</span><span class="mf">197.33</span><span class="o">**</span><span class="mi">3</span> <span class="p">)</span>
+    <span class="n">k_f</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">3.</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+    <span class="n">E_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_f</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">g_w_omega</span> <span class="o">=</span> <span class="n">E_per</span> <span class="o">-</span> <span class="n">E_f</span> <span class="o">+</span> <span class="n">m_b</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">m_b</span> <span class="o">-</span> <span class="n">m_eff</span>
+    <span class="n">m_sig_star_sqr_g_sig_sqr</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_sig_one</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">g_sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span> <span class="p">(</span><span class="n">kappa_one</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">lambda_0</span><span class="o">*</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">m_w_star_sqr</span> <span class="o">=</span> <span class="n">m_w_one</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">zeta</span><span class="o">*</span><span class="p">(</span><span class="n">g_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">g_w_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Components o f rho_s_prime</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">k_f</span><span class="o">/</span><span class="n">E_f</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">E_f</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">term4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">k_f</span><span class="o">+</span><span class="n">E_f</span><span class="p">)</span><span class="o">/</span><span class="n">m_eff</span><span class="p">)</span>
+    <span class="n">rho_s_prime</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">term1</span><span class="o">*</span><span class="n">term2</span> <span class="o">-</span> <span class="n">term3</span><span class="o">*</span><span class="n">term4</span><span class="p">)</span>
+    <span class="n">dM_drho</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">m_eff</span><span class="o">/</span><span class="n">E_f</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="n">m_sig_star_sqr_g_sig_sqr</span><span class="o">+</span><span class="n">rho_s_prime</span><span class="p">))</span>
+    <span class="n">M_Ef</span> <span class="o">=</span> <span class="n">m_eff</span><span class="o">/</span><span class="n">E_f</span>
+    <span class="n">dEf_drho</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k_f</span><span class="o">*</span><span class="n">E_f</span><span class="p">)</span>
+    <span class="n">dW0_drho</span> <span class="o">=</span> <span class="n">g_omega</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">m_w_star_sqr</span>
+    
+    <span class="n">K</span> <span class="o">=</span> <span class="mf">9.</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="p">(</span><span class="n">dEf_drho</span><span class="o">+</span><span class="n">dW0_drho</span><span class="o">+</span><span class="p">(</span><span class="n">M_Ef</span><span class="o">*</span><span class="n">dM_drho</span><span class="p">))</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">K_low</span> <span class="o">+</span> <span class="n">K_up</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">K_up</span> <span class="o">-</span> <span class="n">K_low</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">p_K</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span> <span class="n">center</span> <span class="o">-</span> <span class="n">K</span><span class="p">)</span><span class="o">**</span><span class="mf">10.</span><span class="o">/</span><span class="n">width</span><span class="o">**</span><span class="mf">10.</span>
+    <span class="k">return</span> <span class="n">p_K</span></div>
+
+
+<div class="viewcode-block" id="Jliklihood">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.Jliklihood">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Jliklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="n">J_low</span><span class="p">,</span><span class="n">J_up</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a hard cut constraint of J.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    </span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the </span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 7 parameters.</span>
+<span class="sd">        K_low (float): lower bound of this J constraint.</span>
+<span class="sd">        K_up (float): upper bound of this J constraint.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span><span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">theta</span>
+    
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">495</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="mf">3.96544</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="mf">3.86662</span>
+    
+    <span class="n">m_b</span> <span class="o">=</span> <span class="mi">939</span>
+    <span class="n">E_per</span> <span class="o">=-</span><span class="mf">16.28</span>
+    <span class="n">m_sig</span> <span class="o">=</span><span class="mi">495</span><span class="o">/</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">()</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)</span><span class="o">*</span><span class="n">m_b</span>
+    <span class="n">kappa_one</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_sig_one</span> <span class="o">=</span> <span class="n">m_sig</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w_one</span> <span class="o">=</span> <span class="n">m_w</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.1505</span><span class="o">*</span> <span class="p">(</span><span class="mf">197.33</span><span class="o">**</span><span class="mi">3</span> <span class="p">)</span>
+    <span class="n">k_f</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">3.</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+    <span class="n">E_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_f</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">g_w_omega</span> <span class="o">=</span> <span class="n">E_per</span> <span class="o">-</span> <span class="n">E_f</span> <span class="o">+</span> <span class="n">m_b</span>
+    <span class="n">J_0</span> <span class="o">=</span> <span class="n">k_f</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">E_f</span><span class="p">)</span>
+    <span class="n">J_1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">8.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">g_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="p">(</span><span class="n">g_w_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">g_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="n">J_0</span> <span class="o">+</span> <span class="n">J_1</span>
+    
+    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">J_low</span> <span class="o">+</span> <span class="n">J_up</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">J_up</span> <span class="o">-</span> <span class="n">J_low</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">p_J</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span> <span class="n">center</span> <span class="o">-</span> <span class="n">J</span><span class="p">)</span><span class="o">**</span><span class="mf">10.</span><span class="o">/</span><span class="n">width</span><span class="o">**</span><span class="mf">10.</span>
+    <span class="k">return</span> <span class="n">p_J</span></div>
+
+
+<div class="viewcode-block" id="Lliklihood">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.Lliklihood">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">Lliklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="n">L_low</span><span class="p">,</span><span class="n">L_up</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computing likelihood from a hard cut constraint of L.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    </span>
+<span class="sd">        theta (array): An array representing the parameters used to determine a RMF model in the </span>
+<span class="sd">        Lagrangian. In this case, the RMF model is defined by 7 parameters. </span>
+<span class="sd">        K_low (float): lower bound of this L constraint.</span>
+<span class="sd">        K_up (float): upper bound of this L constraint.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): likelihood feed back for this given paramter set-up.</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span><span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">theta</span>
+    
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">495</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="mf">3.96544</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="mf">3.86662</span>
+    
+    <span class="n">m_b</span> <span class="o">=</span> <span class="mi">939</span>
+    <span class="n">E_per</span> <span class="o">=-</span><span class="mf">16.28</span>
+    <span class="n">m_sig</span> <span class="o">=</span><span class="mi">495</span><span class="o">/</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_eff</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.55</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">()</span><span class="o">*</span><span class="mf">0.1</span><span class="p">)</span><span class="o">*</span><span class="n">m_b</span>
+    <span class="n">kappa_one</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_sig_one</span> <span class="o">=</span> <span class="n">m_sig</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w_one</span> <span class="o">=</span> <span class="n">m_w</span><span class="o">*</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="mf">0.1505</span><span class="o">*</span> <span class="p">(</span><span class="mf">197.33</span><span class="o">**</span><span class="mi">3</span> <span class="p">)</span>
+    <span class="n">k_f</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="mf">3.</span><span class="o">*</span><span class="n">rho</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span>
+    <span class="n">E_f</span> <span class="o">=</span> <span class="p">(</span><span class="n">k_f</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">J_0</span> <span class="o">=</span> <span class="n">k_f</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">6</span><span class="o">*</span><span class="n">E_f</span><span class="p">)</span>
+    <span class="n">J_1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">8.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">rho</span><span class="o">*</span><span class="n">g_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m_rho</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="p">(</span><span class="n">g_w_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">g_rho</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">J</span><span class="o">=</span> <span class="n">J_0</span> <span class="o">+</span> <span class="n">J_1</span> 
+    <span class="n">g_w_omega</span> <span class="o">=</span> <span class="n">E_per</span> <span class="o">-</span> <span class="n">E_f</span> <span class="o">+</span> <span class="n">m_b</span>
+    <span class="n">m_star_sqr_E_f_sqr</span> <span class="o">=</span> <span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">E_f</span><span class="o">**</span><span class="mi">2</span> 
+    <span class="n">rho_m_star</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">rho</span><span class="o">/</span><span class="n">m_eff</span> 
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">m_b</span> <span class="o">-</span> <span class="n">m_eff</span>
+    <span class="n">m_sig_star_sqr_g_sig_sqr</span> <span class="o">=</span> <span class="p">(</span><span class="n">m_sig</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">g_sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span>\
+    <span class="p">(</span><span class="n">kappa</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">lambda_0</span><span class="o">*</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span>
+    
+    <span class="c1"># Components o f rho_s_prime</span>
+    <span class="n">term1</span> <span class="o">=</span> <span class="n">k_f</span><span class="o">/</span><span class="n">E_f</span>
+    <span class="n">term2</span> <span class="o">=</span> <span class="n">E_f</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">term3</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">m_eff</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">term4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">k_f</span><span class="o">+</span><span class="n">E_f</span><span class="p">)</span><span class="o">/</span><span class="n">m_eff</span><span class="p">)</span>
+    <span class="n">rho_s_prime</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">term1</span><span class="o">*</span><span class="n">term2</span> <span class="o">-</span> <span class="n">term3</span><span class="o">*</span><span class="n">term4</span><span class="p">)</span>
+    <span class="n">dM_drho</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">m_eff</span><span class="o">/</span><span class="n">E_f</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="p">(</span><span class="n">m_sig_star_sqr_g_sig_sqr</span><span class="o">+</span><span class="n">rho_s_prime</span><span class="p">))</span>
+    <span class="n">m_w_star_sqr</span> <span class="o">=</span> <span class="n">m_w</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">zeta</span><span class="o">*</span><span class="p">(</span><span class="n">g_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">g_w_omega</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">L_0</span> <span class="o">=</span> <span class="n">J_0</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">m_star_sqr_E_f_sqr</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span><span class="p">(</span><span class="n">rho_m_star</span><span class="o">*</span><span class="n">dM_drho</span><span class="p">))))</span>
+    <span class="n">L_1</span> <span class="o">=</span> <span class="mf">3.</span><span class="o">*</span><span class="n">J_1</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">-</span> <span class="mf">32.</span><span class="o">*</span><span class="p">(</span><span class="n">g_omega</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">m_w_star_sqr</span><span class="p">)</span><span class="o">*</span><span class="n">g_w_omega</span><span class="o">*</span><span class="n">Lambda_w</span><span class="o">*</span><span class="n">J_1</span><span class="p">)</span>
+    <span class="n">L</span><span class="o">=</span> <span class="n">L_0</span> <span class="o">+</span> <span class="n">L_1</span>
+    
+    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">L_low</span> <span class="o">+</span> <span class="n">L_up</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">L_up</span> <span class="o">-</span> <span class="n">L_low</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">p_L</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span> <span class="n">center</span> <span class="o">-</span> <span class="n">J</span><span class="p">)</span><span class="o">**</span><span class="mf">10.</span><span class="o">/</span><span class="n">width</span><span class="o">**</span><span class="mf">10.</span>
+    <span class="k">return</span> <span class="n">p_L</span></div>
+
+
+
+
+<span class="c1">############################################ Date: 04 Nov 2024 #########################################################</span>
+<div class="viewcode-block" id="chiEFT_PNM">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.chiEFT_PNM">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">chiEFT_PNM</span><span class="p">(</span> <span class="n">EoS_PNM</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span> <span class="n">contraint_quantity</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="n">enlargement</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Authors: João Cartaxo, Tuhin Malik, Constança Providência</span>
+<span class="sd">    </span>
+<span class="sd">    Calculate the log-likelihood for the equation of state (EoS) of pure neutron matter using </span>
+<span class="sd">    chiEFT data extracted from chiral effective field theory. This can be achieved by assigning </span>
+<span class="sd">    constants to the energy per neutron ( E/N ) or the pressure ( p ), utilizing either a </span>
+<span class="sd">    Gaussian or Super-Gaussian likelihood model.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    EoS_PNM : np.ndarray</span>
+<span class="sd">        Array with PNM equation of state data, where:</span>
+<span class="sd">        - EoS_PNM[0] is the density in fm^-3,</span>
+<span class="sd">        - EoS_PNM[1] is the energy density MeV.fm^-3.</span>
+<span class="sd">        - EoS_PNM[2] is the pressure in MeV.fm^-3.</span>
+<span class="sd">        </span>
+<span class="sd">    type : str, optional</span>
+<span class="sd">        Specifies the type of distribution to use for the likelihood function.</span>
+<span class="sd">        - &quot;Gaussian&quot; (default) or &quot;Super Gaussian&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">    contraint_quantity : str, optional</span>
+<span class="sd">        Specifies which quantity (energy or pressure) to use for the log-likelihood calculation.</span>
+<span class="sd">        - &quot;e&quot; for energy, &quot;p&quot; for pressure. The default is &quot;e&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">    enlargement : float, optional</span>
+<span class="sd">        Enlargement factor (as a percentage in decimal form) for the Super-Gaussian distribution, e.g., 0.05 for 5%.</span>
+<span class="sd">        Only applicable if type=&quot;Super Gaussian&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    log_likelihood : float</span>
+<span class="sd">    The sum of log-likelihoods over constraint on number density 0.08, 0.12 and 0.16 fm^-3.</span>
+<span class="sd">    </span>
+<span class="sd">    Explanation:</span>
+<span class="sd">    ------------</span>
+<span class="sd">    - The likelihood calculation:</span>
+<span class="sd">      - &quot;Gaussian&quot;: Uses a standard Gaussian log-likelihood based on the discrepancy between EoS data and constraints.</span>
+<span class="sd">      - &quot;Super Gaussian&quot;: Employs an adjusted likelihood featuring a flattened peak of the Gaussian distribution.  </span>
+<span class="sd">      </span>
+<span class="sd">    Data Sources:</span>
+<span class="sd">    -------------</span>
+<span class="sd">    - Energy per neutron constraints are taken from: Huth et al., Nature, vol 606, pp 276–280 (2022).</span>
+<span class="sd">    - Pressure constraints are taken from: K. Hebeler et al., ApJ 773, 11 (2013).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the log of a Gaussian (Normal) probability density function (PDF).</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        x : float or np.ndarray</span>
+<span class="sd">            The data point(s) at which to evaluate the Gaussian PDF.</span>
+<span class="sd">        mu : float</span>
+<span class="sd">            The mean (center) of the Gaussian distribution.</span>
+<span class="sd">        sigma : float</span>
+<span class="sd">            The standard deviation (spread) of the Gaussian distribution.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        log_pdf : np.ndarray</span>
+<span class="sd">            The log of the Gaussian PDF at each value of `x`.</span>
+<span class="sd">        </span>
+<span class="sd">        Explanation:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        - The Gaussian PDF is defined as:</span>
+<span class="sd">          f(x) = (1 / sqrt(2 * pi * sigma^2)) * exp(-0.5 * ((x - mu) / sigma)^2)</span>
+<span class="sd">        - We compute the log of this PDF for numerical stability:</span>
+<span class="sd">          log(f(x)) = -0.5 * log(2 * pi * sigma^2) - 0.5 * ((x - mu) / sigma)^2</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Calculate the normalization term: -0.5 * log(2 * pi * sigma^2)</span>
+        <span class="n">log_of_norm</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate the exponent term: -0.5 * ((x - mu) / sigma)^2</span>
+        <span class="n">log_of_exp</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        
+        <span class="c1"># Return the sum of both terms, representing the log of the Gaussian PDF</span>
+        <span class="k">return</span> <span class="n">log_of_norm</span> <span class="o">+</span> <span class="n">log_of_exp</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">Super_Gaussian</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">enlargement</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the log of a Super-Gaussian probability density function (PDF).</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">        x : float or np.ndarray</span>
+<span class="sd">            The data point(s) at which to evaluate the Super-Gaussian PDF.</span>
+<span class="sd">        mu : float</span>
+<span class="sd">            The mean (center) of the Super-Gaussian distribution.</span>
+<span class="sd">        sigma : float</span>
+<span class="sd">            The standard deviation (spread) of the original Gaussian distribution.</span>
+<span class="sd">        enlargement : float</span>
+<span class="sd">            The percentage enlargement factor for `sigma` to increase the width of the distribution.</span>
+<span class="sd">            For example, 0.05 for 5% enlargement, or 0.10 for 10% enlargement.</span>
+<span class="sd">    </span>
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        log_pdf : float or np.ndarray</span>
+<span class="sd">            The log of the Super-Gaussian PDF at each value of `x`.</span>
+<span class="sd">        </span>
+<span class="sd">        Explanation:</span>
+<span class="sd">        ------------</span>
+<span class="sd">        - The Super-Gaussian function extends the Gaussian by applying an enlargement factor to `sigma`,</span>
+<span class="sd">          effectively &quot;widening&quot; the distribution.</span>
+<span class="sd">        - Based on the reference: https://arxiv.org/pdf/2407.18452</span>
+<span class="sd">        </span>
+<span class="sd">        - The PDF calculation involves:</span>
+<span class="sd">          - Adjusted variance term, `denom_1 = 2 * sigma_enlarged^2`</span>
+<span class="sd">          - A damping factor, `denom_2 = 1 + exp((|x - mu| - sigma_enlarged) / 0.015)`, which modulates the tail behavior.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Calculate the enlarged standard deviation by applying the percentage increase to sigma</span>
+        <span class="n">sigma_enlarged</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">enlargement</span><span class="p">)</span>
+    
+        <span class="c1"># Compute the first denominator term, incorporating the enlarged standard deviation</span>
+        <span class="n">denom_1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_enlarged</span> <span class="o">**</span> <span class="mi">2</span>
+        
+        <span class="c1"># Compute the second denominator term, which dampens large deviations from the mean</span>
+        <span class="n">denom_2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">-</span> <span class="n">sigma_enlarged</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.015</span><span class="p">)</span>
+        
+        <span class="c1"># Calculate the Super-Gaussian PDF</span>
+        <span class="n">fx</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">denom_1</span> <span class="o">*</span> <span class="n">denom_2</span><span class="p">)</span>
+    
+        <span class="n">log_fx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+    
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">log_fx</span><span class="p">,</span> <span class="o">-</span><span class="mf">1e20</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">infty</span><span class="p">)</span>
+
+    
+    <span class="n">EoS_PNM</span> <span class="o">=</span> <span class="p">(</span><span class="n">EoS_PNM</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="n">EoS_PNM</span><span class="o">.</span><span class="n">T</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="n">chidata_rho</span><span class="o">=</span><span class="p">[</span><span class="mf">0.08</span><span class="p">,</span><span class="mf">0.12</span><span class="p">,</span><span class="mf">0.16</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">contraint_quantity</span><span class="o">==</span><span class="s2">&quot;e&quot;</span><span class="p">:</span>
+        <span class="c1">#### https://www.nature.com/articles/s41586-022-04750-w</span>
+        <span class="c1">### Nature volume 606, pages276–280 (2022), Huth et al</span>
+        <span class="c1">### Combined band including all the chiEFT sources in Fig. 4</span>
+        <span class="n">chidata_e</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">8.90713476783698</span><span class="p">,</span> <span class="mf">12.3640996602492</span><span class="p">,</span> <span class="mf">16.1183465458664</span><span class="p">])</span>  <span class="c1">## E/N : energy per neutron in MeV scale</span>
+        <span class="n">chidata_e_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.64779161947911</span><span class="p">,</span> <span class="mf">2.36976217440553</span><span class="p">,</span> <span class="mf">3.98357870894679</span><span class="p">])</span>  <span class="c1">## error +- sigma</span>
+        <span class="n">real_e</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">chidata_rho</span><span class="p">,</span> <span class="n">EoS_PNM</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EoS_PNM</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">chidata_rho</span> <span class="o">-</span> <span class="mf">939.0</span>
+    
+        <span class="k">if</span> <span class="nb">type</span><span class="o">==</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">real_e</span><span class="p">,</span> <span class="n">chidata_e</span><span class="p">,</span> <span class="n">chidata_e_err</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="o">==</span><span class="s2">&quot;Super Gaussian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Super_Gaussian</span><span class="p">(</span><span class="n">real_e</span><span class="p">,</span> <span class="n">chidata_e</span><span class="p">,</span> <span class="n">chidata_e_err</span><span class="p">,</span> <span class="n">enlargement</span><span class="p">))</span>
+    
+    <span class="k">elif</span> <span class="n">contraint_quantity</span><span class="o">==</span><span class="s2">&quot;p&quot;</span><span class="p">:</span>
+        <span class="c1">### K. Hebeler et al 2013 ApJ 773 11</span>
+        <span class="c1">## NN+3N data (Figure 2) </span>
+        <span class="n">chidata_p</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.505714285714279</span><span class="p">,</span><span class="mf">1.24142857142857</span><span class="p">,</span> <span class="mf">2.4857142857143</span><span class="p">])</span>    <span class="c1">## in MeV.fm-3 units</span>
+        <span class="n">chidata_p_err</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.097142857142855</span><span class="p">,</span><span class="mf">0.304285714285714</span><span class="p">,</span> <span class="mf">0.691428571428572</span><span class="p">])</span> <span class="c1">## error +-sigma</span>
+        <span class="n">real_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">chidata_rho</span><span class="p">,</span> <span class="n">EoS_PNM</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EoS_PNM</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="o">==</span><span class="s2">&quot;Gaussian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Gaussian</span><span class="p">(</span><span class="n">real_p</span><span class="p">,</span> <span class="n">chidata_p</span><span class="p">,</span> <span class="n">chidata_p_err</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="o">==</span><span class="s2">&quot;Super Gaussian&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Super_Gaussian</span><span class="p">(</span><span class="n">real_p</span><span class="p">,</span> <span class="n">chidata_p</span><span class="p">,</span> <span class="n">chidata_p_err</span><span class="p">,</span> <span class="n">enlargement</span><span class="p">))</span></div>
+
+            
+<span class="c1">########################################################################################################################</span>
+
+
+<span class="c1">############################################ Date: 05 Nov 2024 #########################################################</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">InferenceWorkflow.pQCD</span><span class="w"> </span><span class="kn">import</span> <span class="n">constraints</span>
+<div class="viewcode-block" id="ln_pQCD">
+<a class="viewcode-back" href="../../Likelihood.html#InferenceWorkflow.Likelihood.ln_pQCD">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ln_pQCD</span><span class="p">(</span><span class="n">EOS</span><span class="p">,</span> <span class="n">rho_list</span><span class="o">=</span><span class="p">[</span><span class="mf">0.92</span><span class="p">],</span> <span class="n">points</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the log-likelihood for the beta-equilibrium equation of state (EoS) using pQCD data. </span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    EoS : np.ndarray</span>
+<span class="sd">        Array with beta-equilibrium equation of state data, where:</span>
+<span class="sd">        - EoS[0] is the density in fm^-3,</span>
+<span class="sd">        - EoS[1] is the energy density GeV.fm^-3.</span>
+<span class="sd">        - EoS[2] is the pressure in GeV.fm^-3.</span>
+<span class="sd">        </span>
+<span class="sd">    rho_list : list, optional</span>
+<span class="sd">       Specifies at which number densities (in fm^-3) to compute the pQCD contraint at.</span>
+<span class="sd">        </span>
+<span class="sd">    points : int, optional</span>
+<span class="sd">        Number of points used to compute the weight, a higher number allows for greater precisions.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    log_mean : float</span>
+<span class="sd">    The averaged sum of log-likelihoods over constraint on number density specified by rho_list fm^-3.</span>
+<span class="sd">    </span>
+<span class="sd">      </span>
+<span class="sd">    Data Sources:</span>
+<span class="sd">    -------------</span>
+<span class="sd">    - @article{Komoltsev:2021jzg,</span>
+<span class="sd">        author = &quot;Komoltsev, Oleg and Kurkela, Aleksi&quot;,</span>
+<span class="sd">        title = &quot;{How perturbative QCD constrains the Equation of State at Neutron-Star densities}&quot;,</span>
+<span class="sd">        eprint = &quot;2111.05350&quot;,</span>
+<span class="sd">        archivePrefix = &quot;arXiv&quot;,</span>
+<span class="sd">        primaryClass = &quot;nucl-th&quot;,</span>
+<span class="sd">        month = &quot;11&quot;,</span>
+<span class="sd">        year = &quot;2021&quot;}</span>
+
+<span class="sd">    -@article{Gorda:2022jvk,</span>
+<span class="sd">        author = &quot;Gorda, Tyler and Komoltsev, Oleg and Kurkela, Aleksi&quot;,</span>
+<span class="sd">        title = &quot;{Ab-initio QCD calculations impact the inference of the neutron-star-matter equation of state}&quot;,</span>
+<span class="sd">        eprint = &quot;2204.11877&quot;,</span>
+<span class="sd">        archivePrefix = &quot;arXiv&quot;,</span>
+<span class="sd">        primaryClass = &quot;nucl-th&quot;,</span>
+<span class="sd">        month = &quot;4&quot;,</span>
+<span class="sd">        year = &quot;2022&quot;}</span>
+
+<span class="sd">    -@article{PhysRevLett.127.162003,</span>
+<span class="sd">      title = {Soft Interactions in Cold Quark Matter},</span>
+<span class="sd">      author = {Gorda, Tyler and Kurkela, Aleksi and Paatelainen, Risto and S\&quot;appi, Saga and Vuorinen, Aleksi},</span>
+<span class="sd">      journal = {Phys. Rev. Lett.},</span>
+<span class="sd">      volume = {127},</span>
+<span class="sd">      issue = {16},</span>
+<span class="sd">      pages = {162003},</span>
+<span class="sd">      numpages = {6},</span>
+<span class="sd">      year = {2021},</span>
+<span class="sd">      month = {Oct},</span>
+<span class="sd">      publisher = {American Physical Society},</span>
+<span class="sd">      doi = {10.1103/PhysRevLett.127.162003},</span>
+<span class="sd">      url = {https://link.aps.org/doi/10.1103/PhysRevLett.127.162003}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">log_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">rho</span> <span class="ow">in</span> <span class="n">rho_list</span><span class="p">:</span>
+        <span class="n">energy</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">EOS</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EOS</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">EOS</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">EOS</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">weight</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">points</span><span class="p">):</span>    
+            <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">))</span> <span class="c1"># Exp of the Log-linear distribution</span>
+            <span class="c1"># To apply random weightage of the renormalization scale between X=1 to X=4            </span>
+            <span class="n">weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">constraints</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">rho</span><span class="p">))</span> 
+        <span class="n">log_mean</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    <span class="n">log_mean</span> <span class="o">=</span> <span class="n">log_mean</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">rho_list</span><span class="p">)</span>
+                            
+    <span class="k">return</span> <span class="n">log_mean</span></div>
+
+
+
+<span class="c1">########################################################################################################################</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

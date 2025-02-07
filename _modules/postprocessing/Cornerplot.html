@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>postprocessing.Cornerplot &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=4320943d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">postprocessing.Cornerplot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for postprocessing.Cornerplot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">corner</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.lines</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mlines</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">overlapping_corner_three</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">,</span> <span class="n">array3</span><span class="p">,</span> <span class="n">param_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sample_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;corner_plot.pdf&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a corner plot using three 2D arrays, overlapping them with different colors,</span>
+<span class="sd">    and displays histograms with consistent binning for comparison. Histograms are unfilled,</span>
+<span class="sd">    the y-axis is kept on the first histogram, the x-axis is kept on the last histogram, and</span>
+<span class="sd">    the last histogram has a label beneath the x-axis showing the parameter it represents.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    array1, array2, array3 : 2D arrays</span>
+<span class="sd">        The input datasets. Each should be of shape (n_samples, n_params), where `n_samples`</span>
+<span class="sd">        is the number of samples, and `n_params` is the number of parameters. Arrays can</span>
+<span class="sd">        have different lengths (n_samples).</span>
+<span class="sd">    param_labels : list of str, optional</span>
+<span class="sd">        The labels for each parameter to use in the corner plot. Defaults to None, in which</span>
+<span class="sd">        case generic labels will be used.</span>
+<span class="sd">    save_plot : bool, optional</span>
+<span class="sd">        Whether to save the plot to a file. Defaults to False.</span>
+<span class="sd">    filename : str, optional</span>
+<span class="sd">        The filename to save the plot if `save_plot=True`. Defaults to &quot;corner_plot.pdf&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    None</span>
+<span class="sd">        Displays the corner plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up colors for the three datasets</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Compute consistent bin edges based on combined data</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_consistent_bins</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n_params</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_params</span><span class="p">):</span>
+            <span class="n">combined_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+            <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram_bin_edges</span><span class="p">(</span><span class="n">combined_data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">)</span>
+            <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bin_edges</span>
+
+    <span class="c1"># Compute bin edges for all parameters</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">,</span> <span class="n">array3</span><span class="p">]</span>
+    <span class="n">n_params</span> <span class="o">=</span> <span class="n">array1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">get_consistent_bins</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n_params</span><span class="p">)</span>
+
+    <span class="c1"># Create the corner plot for the first dataset (without 1D histograms)</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                           <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">),</span>
+                           <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                           <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                           <span class="n">labels</span><span class="o">=</span><span class="n">param_labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                           <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Overlap the second and third datasets onto the existing figure</span>
+    <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">array2</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                  <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">),</span>
+                  <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                  <span class="n">labels</span><span class="o">=</span><span class="n">param_labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fig</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                  <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">array3</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                  <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">),</span>
+                  <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                  <span class="n">labels</span><span class="o">=</span><span class="n">param_labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">fig</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                  <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Add histograms with consistent binning to the 1D marginal plots (diagonal panels)</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_params</span><span class="p">,</span> <span class="n">n_params</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_params</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Clear the existing diagonal histogram (which was automatically created by `corner`)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">param_name</span> <span class="o">=</span> <span class="n">param_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">param_labels</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Param </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>  <span class="c1"># Increase padding to make space for mean/std</span>
+        
+        <span class="c1"># Plot unfilled histograms with consistent bins for each dataset on the diagonal</span>
+        <span class="k">for</span> <span class="n">array</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">bins</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">sample_labels</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">*</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Compute and add mean and 68% quantile range in LaTeX format</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">colors</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+            <span class="n">lower_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="n">upper_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="mi">84</span><span class="p">)</span>
+            <span class="n">lower_diff</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">-</span> <span class="n">lower_quantile</span>
+            <span class="n">upper_diff</span> <span class="o">=</span> <span class="n">upper_quantile</span> <span class="o">-</span> <span class="n">mean</span>
+            <span class="c1"># Use LaTeX-like format for displaying the uncertainties</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.17</span> <span class="o">*</span> <span class="n">idx</span><span class="p">,</span> 
+                    <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">_</span><span class="se">{{</span><span class="s2">-</span><span class="si">{</span><span class="n">lower_diff</span><span class="si">:</span><span class="s2">.3f</span><span class="se">}}</span><span class="si">}</span><span class="s2">^</span><span class="se">{{</span><span class="s2">+</span><span class="si">{</span><span class="n">upper_diff</span><span class="si">:</span><span class="s2">.3f</span><span class="se">}}</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> 
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Keep y-axis visible for the first histogram, x-axis visible for the last histogram</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>  <span class="c1"># Hide y-axis for all other diagonal histograms</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n_params</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Keep x-axis visible for the last histogram</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">param_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># Add label beneath the x-axis for the last histogram</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">rotation_mode</span><span class="o">=</span><span class="s1">&#39;anchor&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>  <span class="c1"># Hide x-axis for all other diagonal histograms</span>
+    <span class="c1"># Adjust layout: Reduce the spacing between the panels</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="c1"># Add the legend</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">sample_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_labels</span><span class="p">))</span>
+    <span class="p">]</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Set tick label font size for non-diagonal plots</span>
+    <span class="n">label_font_size</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">figure</span><span class="o">.</span><span class="n">get_axes</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="n">label_font_size</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">param_labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.38</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;axes fraction&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="c1"># Show or save the plot</span>
+    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corner plot saved as </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        
+
+
+<div class="viewcode-block" id="overlapping_corner_three">
+<a class="viewcode-back" href="../../Cornerplot.html#postprocessing.Cornerplot.overlapping_corner_three">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">overlapping_corner_three</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">,</span> <span class="n">param_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">save_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;corner_plot.pdf&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a corner plot using three 2D arrays, overlapping them with different colors,</span>
+<span class="sd">    and displays histograms with consistent binning for comparison. Histograms are unfilled,</span>
+<span class="sd">    the y-axis is kept on the first histogram, the x-axis is kept on the last histogram, and</span>
+<span class="sd">    the last histogram has a label beneath the x-axis showing the parameter it represents.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    array1, array2 : 2D arrays</span>
+<span class="sd">        The input datasets. Each should be of shape (n_samples, n_params), where `n_samples`</span>
+<span class="sd">        is the number of samples, and `n_params` is the number of parameters. Arrays can</span>
+<span class="sd">        have different lengths (n_samples).</span>
+<span class="sd">    param_labels : list of str, optional</span>
+<span class="sd">        The labels for each parameter to use in the corner plot. Defaults to None, in which</span>
+<span class="sd">        case generic labels will be used.</span>
+<span class="sd">    save_plot : bool, optional</span>
+<span class="sd">        Whether to save the plot to a file. Defaults to False.</span>
+<span class="sd">    filename : str, optional</span>
+<span class="sd">        The filename to save the plot if `save_plot=True`. Defaults to &quot;corner_plot.pdf&quot;.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    None</span>
+<span class="sd">        Displays the corner plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up colors for the three datasets</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Compute consistent bin edges based on combined data</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_consistent_bins</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n_params</span><span class="p">,</span> <span class="n">n_bins</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">bin_edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_params</span><span class="p">):</span>
+            <span class="n">combined_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+            <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram_bin_edges</span><span class="p">(</span><span class="n">combined_data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">)</span>
+            <span class="n">bin_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bin_edges</span>
+
+    <span class="c1"># Compute bin edges for all parameters</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">array1</span><span class="p">,</span> <span class="n">array2</span><span class="p">,]</span>
+    <span class="n">n_params</span> <span class="o">=</span> <span class="n">array1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">get_consistent_bins</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n_params</span><span class="p">)</span>
+
+    <span class="c1"># Create the corner plot for the first dataset (without 1D histograms)</span>
+    <span class="n">figure</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">array1</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                           <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">),</span>
+                           <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                           <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                           <span class="n">labels</span><span class="o">=</span><span class="n">param_labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                           <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Overlap the second and third datasets onto the existing figure</span>
+    <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">array2</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                  <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">),</span>
+                  <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+                  <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                  <span class="n">labels</span><span class="o">=</span><span class="n">param_labels</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fig</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+                  <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+    <span class="c1"># Add histograms with consistent binning to the 1D marginal plots (diagonal panels)</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">figure</span><span class="o">.</span><span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n_params</span><span class="p">,</span> <span class="n">n_params</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_params</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># Clear the existing diagonal histogram (which was automatically created by `corner`)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">param_name</span> <span class="o">=</span> <span class="n">param_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">param_labels</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;Param </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">55</span><span class="p">)</span>  <span class="c1"># Increase padding to make space for mean/std</span>
+        
+        <span class="c1"># Plot unfilled histograms with consistent bins for each dataset on the diagonal</span>
+        <span class="k">for</span> <span class="n">array</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">bins</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">sample_labels</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="n">bin_edges</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">*</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Compute and add mean and 68% quantile range in LaTeX format</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">colors</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+            <span class="n">lower_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="n">upper_quantile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">array</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="mi">84</span><span class="p">)</span>
+            <span class="n">lower_diff</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">-</span> <span class="n">lower_quantile</span>
+            <span class="n">upper_diff</span> <span class="o">=</span> <span class="n">upper_quantile</span> <span class="o">-</span> <span class="n">mean</span>
+            <span class="c1"># Use LaTeX-like format for displaying the uncertainties</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.17</span> <span class="o">*</span> <span class="n">idx</span><span class="p">,</span> 
+                    <span class="sa">f</span><span class="s2">&quot;$</span><span class="si">{</span><span class="n">mean</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">_</span><span class="se">{{</span><span class="s2">-</span><span class="si">{</span><span class="n">lower_diff</span><span class="si">:</span><span class="s2">.3f</span><span class="se">}}</span><span class="si">}</span><span class="s2">^</span><span class="se">{{</span><span class="s2">+</span><span class="si">{</span><span class="n">upper_diff</span><span class="si">:</span><span class="s2">.3f</span><span class="se">}}</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> 
+                    <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Keep y-axis visible for the first histogram, x-axis visible for the last histogram</span>
+        
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>  <span class="c1"># Hide y-axis for all other diagonal histograms</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">n_params</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Keep x-axis visible for the last histogram</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">param_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># Add label beneath the x-axis for the last histogram</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">rotation_mode</span><span class="o">=</span><span class="s1">&#39;anchor&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>  <span class="c1"># Hide x-axis for all other diagonal histograms</span>
+        
+    <span class="c1"># Adjust layout: Reduce the spacing between the panels</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="c1"># Add the legend</span>
+    <span class="n">handles</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">mlines</span><span class="o">.</span><span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">sample_labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_labels</span><span class="p">))</span>
+    <span class="p">]</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">handles</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Set tick label font size for non-diagonal plots</span>
+    <span class="n">label_font_size</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">figure</span><span class="o">.</span><span class="n">get_axes</span><span class="p">():</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="n">label_font_size</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">param_labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.38</span><span class="p">),</span> <span class="n">xycoords</span><span class="o">=</span><span class="s1">&#39;axes fraction&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="c1"># Show or save the plot</span>
+    <span class="k">if</span> <span class="n">save_plot</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Corner plot saved as </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

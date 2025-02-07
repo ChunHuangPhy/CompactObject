@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Start Here! &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="CompactObject" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Start Here!</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#depending-on-your-scientific-goal">Depending on Your Scientific Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computation-requirements-and-citation">Computation requirements and citation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Start Here!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/starthere.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="start-here">
+<h1>Start Here!<a class="headerlink" href="#start-here" title="Link to this heading"></a></h1>
+<p>Welcome to <strong>CompactObject</strong>! This guide will help you get started after successfully installing the package and activating your virtual environment. Follow the steps below to achieve your scientific goals using the functionalities of the <strong>CompactObject</strong> package.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Package Installation:</strong> Ensure you have installed <strong>CompactObject</strong> successfully, see installation instructions here: <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/installation.html">Installation</a> .</p></li>
+<li><p><strong>Virtual Environment:</strong> Activate your virtual environment where <strong>CompactObject</strong> is installed , also see installation instructions here: <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/installation.html">Installation</a> .</p></li>
+</ul>
+</section>
+<section id="depending-on-your-scientific-goal">
+<h2>Depending on Your Scientific Goal<a class="headerlink" href="#depending-on-your-scientific-goal" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p>If you are new to <strong>CompactObject</strong> and wish to familiarize yourself with its basic concepts and introduction:</p>
+<ul class="simple">
+<li><p><strong>Index Page:</strong> Explore the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/index.html">Index Page</a> for an overview of the package.</p></li>
+<li><p><strong>README:</strong> Review the <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/blob/main/README.md">README</a> on GitHub to understand the package’s purpose and features.</p></li>
+</ul>
+</li>
+<li><p>To use <strong>CompactObject</strong> for generating equations of state:</p>
+<ul class="simple">
+<li><p><strong>EOS Generators Tutorial:</strong> Start with the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_EOSgenerators.html">EOS Generators Tutorial</a>, which showcases all currently integrated EOS computations in the package. The supported EOS models include:</p>
+<ul>
+<li><p><strong>Relativistic Mean Field (RMF) Model</strong>: Here we adopted the RMF model from the <a class="reference external" href="https://ui.adsabs.harvard.edu/link_gateway/1997PhRvC..55..540L/doi:10.1103/PhysRevC.55.540">(Lalazissis et al. 1997)</a> and <a class="reference external" href="https://arxiv.org/abs/1610.00919">(Tolos et al. 2016)</a>.</p></li>
+<li><p><strong>Strangeon Star Model</strong>: Original model proposed in <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2003ApJ...596L..59X/abstract">(Xu 2003)</a></p></li>
+<li><p><strong>Quark Star Model:</strong> MIT Bag Model in <a class="reference external" href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.9.3471">(Chodos 1974)</a></p></li>
+<li><p><strong>Polytropic Model</strong> proposed in <a class="reference external" href="https://iopscience.iop.org/article/10.1088/0004-637X/773/1/11">(Hebeler et al. 2013)</a>, here we adapted the original code definition of “eos_core_pp” from NEoST software <a class="reference external" href="https://joss.theoj.org/papers/10.21105/joss.06003.pdf">(Raaijmakers et al. 2025)</a>, see the page in <a class="reference external" href="https://github.com/xpsi-group/neost/blob/main/neost/eos/polytropes.py">Polytrope model</a>.</p></li>
+<li><p><strong>Speed of Sound Model</strong> proposed in <a class="reference external" href="https://academic.oup.com/mnras/article/485/4/5363/5374528">(Grief et al. 2019)</a>.</p></li>
+<li><p><strong>Density-Dependent EOS Model</strong> proposed in <a class="reference external" href="https://journals.aps.org/prc/abstract/10.1103/PhysRevC.81.015803">(Typel et al. 2010)</a>.</p></li>
+<li><p><em>…and more</em></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>To utilize the TOV solver integrated within <strong>CompactObject</strong>:</p>
+<ul class="simple">
+<li><p><strong>TOV Solver Tutorial:</strong> Refer to the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_TOVsolver.html">TOV Solver Tutorial</a>. This tutorial demonstrates how to perform TOV computations using table-based EOS.</p></li>
+<li><p><strong>Inputting an Array:</strong> If you prefer to input an array instead of a table, refer back to the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_EOSgenerators.html">EOS Generators Tutorial</a>. The quantities currently available are:</p>
+<ul>
+<li><p><strong>Mass</strong></p></li>
+<li><p><strong>Radius</strong></p></li>
+<li><p><strong>Tidal Deformability</strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>CompactObject</strong> offers robust tools for Bayesian inference related to neutron star EOS. There are two primary scenarios:</p>
+<ol class="loweralpha">
+<li><p><strong>Using Integrated EOS for Inference</strong></p>
+<p>If you wish to perform Bayesian inference using the EOS models already integrated into <strong>CompactObject</strong>, follow these examples:</p>
+<ol class="arabic simple">
+<li><p><strong>RMF EOS Inference Pipeline:</strong> Explore the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Inference.html">RMF EOS Inference Pipeline</a>.</p></li>
+<li><p><strong>density-dependent Hartree EOS Inference Pipeline:</strong> Explore the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Bayesian_inference_DDH.html">DDH EOS Inference Pipeline</a>.</p></li>
+<li><p><strong>Strangeon EOS Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS Inference Pipeline</a>.</p></li>
+<li><p><strong>MIT Bag Model EOS Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Bayesian_inference_MITbag_EOS.html">MIT Bag Model EOS Inference Pipeline</a>.</p></li>
+<li><p><strong>Speed of Sound EOS Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference Pipeline</a>.</p></li>
+<li><p><strong>Polytrope EOS Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Inference_polytrope.html">Polytrope EOS Inference Pipeline</a>.</p></li>
+</ol>
+<p>If you computer don’t have OpenMPI and only want to parallelize your code in your labtop or a server, we also provide options for
+implementing the MCMC sampling method, to do the inference, which could easily scale up in a personal computer. Except for using
+UltraNest, we use EMCEE in this version of pipeline, here below are some of the examples (not all the equation of state we provided
+the EMCEE version, since some of them could be time-consuming and we default recommend you to use UltraNest to scale up computation
+in a High performance computation facility)</p>
+<ol class="arabic simple">
+<li><p><strong>RMF EOS Inference MCMC Pipeline:</strong>, see <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/EMCEE_RMF.html">RMF EOS EMCEE Inference Pipeline</a></p></li>
+<li><p><strong>Strangeon EOS MCMC Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/EMCEE_strangeon.html">Strangeon EOS EMCEE Inference Pipeline</a>.</p></li>
+<li><p><strong>MIT Bag Model EOS MCMC Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/EMCEE_MIT_bag.html">MIT Bag Model EOS EMCEE Inference Pipeline</a>.</p></li>
+<li><p><strong>Polytrope EOS MCMC Inference Pipeline:</strong> Check out the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/EMCEE_polytrope.html">Polytrope EOS EMCEE Inference Pipeline</a>.</p></li>
+</ol>
+</li>
+<li><p><strong>Using Your Own EOS for Inference</strong></p>
+<p>If you have developed your own EOS and wish to perform Bayesian inference:</p>
+<ol class="arabic simple">
+<li><p><strong>Contributor Instructions:</strong> Follow the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/Contributor.html">Instructions for Contributors</a> to define your EOS without conflicts and understand the necessary tests to ensure computational accuracy.</p></li>
+<li><p><strong>Constructing a New Pipeline:</strong> Utilize the existing inference pipelines, such as the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Inference.html">RMF EOS Inference Pipeline</a> and the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS Inference Pipeline</a>, as reference points to build your own inference workflow based on <strong>CompactObject</strong>.</p></li>
+<li><p><strong>Performance Considerations:</strong> Ensure that the computation time for a single EOS is within the sub-second range to handle millions of samples required for Bayesian inference efficiently.</p></li>
+</ol>
+</li>
+</ol>
+<p><strong>Contribution Invitation:</strong>
+Consider contributing your EOS to our community if you are using our package! This will boost the influence of your work and make you a collaborator on this project. We can also promote your results on our page. Please check the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/Contributor.html">Instructions for Contributors</a> if you wish to contribute.</p>
+</li>
+<li><p>If you aim to use the inference modules of <strong>CompactObject</strong> for Bayesian inference outside of EOS studies, such as in high-energy physics or other astrophysical fields:</p>
+<ul class="simple">
+<li><p><strong>Example Notebook:</strong> Refer to the <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/blob/main/Test_Case/Sample_glitchBayesian.ipynb">Sample Glitch Bayesian Inference Notebook</a> for an example of how to apply <strong>CompactObject</strong> to different inference scenarios.</p></li>
+</ul>
+</li>
+<li><p>If the existing tutorials do not cover your specific needs, such as:</p>
+<ul class="simple">
+<li><p><strong>Modifying the TOV Solver:</strong> For example, changing to a double-fluid TOV solver.</p></li>
+<li><p><strong>Investigating Additional EOS-Related Quantities:</strong> Beyond pressure and density used in TOV solving.</p></li>
+</ul>
+<p>You can:</p>
+<ul class="simple">
+<li><p><strong>API Documentation:</strong> Consult the detailed API documentation to identify and utilize the functions you need.</p></li>
+<li><p><strong>GitHub Repository:</strong> Visit our <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/tree/main">GitHub Page</a> to explore the source code and understand the internal workings of <strong>CompactObject</strong>.</p></li>
+</ul>
+<p><strong>Note:</strong>
+The key functions, including the <strong>TOVsolver module</strong> code, form the foundation for all inference and computations. Modifying them may require substantial code restructuring. Therefore, if you clone the repository locally and need to make changes to the <strong>TOVsolver</strong>, proceed with caution to avoid extensive code rebuilding. Only original contributors have permission to modify the <strong>TOVsolver</strong> module code, and such commits must undergo detailed reviews by the original members of the project.</p>
+</li>
+</ol>
+</section>
+<section id="computation-requirements-and-citation">
+<h2>Computation requirements and citation<a class="headerlink" href="#computation-requirements-and-citation" title="Link to this heading"></a></h2>
+<p>Bayesian inference could be quite computation expensive especially when the EOS parameters dimensions increase, So we provide a detailed <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/cluster.html">Computation guide</a> on estimating how many computation resources are required if you would like to use the integrated EOS functions in our package and what is the computation speed requirement if you would like to implement a self-defined EOS functions.</p>
+<p>If you used our pipeline and code in your study, please consider to cite us, there is the list of publication you could cite in <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/publications.html">Publications page</a></p>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading"></a></h2>
+<p>We welcome feedback and contributions to expand the functionalities of <strong>CompactObject</strong>. Your support helps enhance the tool for the entire research community.</p>
+</section>
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading"></a></h2>
+<p>For inquiries, contributions, or to be featured in our publications list, please contact us at <a class="reference external" href="mailto:chun&#46;h&#37;&#52;&#48;wustl&#46;edu">chun<span>&#46;</span>h<span>&#64;</span>wustl<span>&#46;</span>edu</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="CompactObject" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
