@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computation Guide &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Call for Contributions" href="Contributor.html" />
+    <link rel="prev" title="Publications" href="publications.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Computation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#computation-time-scaling">Computation Time Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parallelization">Parallelization</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Computation Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cluster.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="computation-guide">
+<h1>Computation Guide<a class="headerlink" href="#computation-guide" title="Link to this heading"></a></h1>
+<section id="computation-time-scaling">
+<h2>Computation Time Scaling<a class="headerlink" href="#computation-time-scaling" title="Link to this heading"></a></h2>
+<p>Fully converged Bayesian inference requires numerous iterations to explore the entire prior parameter space. This process demands substantial computation time, which can be very expensive depending on the Equation of State (EOS) you are using.</p>
+<blockquote>
+<div><p><strong>1. Using Integrated EOS Models</strong></p>
+</div></blockquote>
+<p>If you are utilizing the EOS models integrated into this package, here is an overview of the computational resources required:</p>
+<ol class="loweralpha simple">
+<li><p><strong>Relativistic Mean Field (RMF) Model</strong></p>
+<ul class="simple">
+<li><p><strong>Optimization:</strong> Please use the Numba-accelerated version of EOS computation.</p></li>
+<li><p><strong>Resources:</strong> With one NICER observation constraint and utilizing <strong>256 CPU cores</strong>, the computation can be completed within approximately <strong>1 hour</strong>.</p></li>
+<li><p><strong>Scalability:</strong> The computation time will increase as you include more observations.</p></li>
+</ul>
+</li>
+<li><p><strong>Speed of Sound Model and Polytropic Model</strong></p>
+<ul class="simple">
+<li><p><strong>Nature:</strong> These are meta-models with explicit mathematical formulas, allowing for analytical computations.</p></li>
+<li><p><strong>Resources:</strong> Using <strong>24 CPU cores</strong>, the inference can be completed within <strong>6 hours</strong>.</p></li>
+<li><p><strong>Scalability:</strong> The computation time scales with the number of observations included.</p></li>
+</ul>
+</li>
+<li><p><strong>Strangeon Model and MIT Bag Model</strong></p>
+<ul class="simple">
+<li><p><strong>Nature:</strong> Although these are physics-based models, the computations are relatively straightforward and fast.</p></li>
+<li><p><strong>Resources:</strong> On a laptop with <strong>24 cores</strong>, the computation can be completed within <strong>5-6 hours</strong>.</p></li>
+<li><p><strong>Scalability:</strong> The computation time increases with the addition of more observations.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>2. Using Custom EOS Models</strong></p>
+<p>If you are defining your own EOS and wish to perform inference using this package:</p>
+<ul class="simple">
+<li><p><strong>Performance Requirement:</strong> Ensure that the computation time for your EOS is <strong>less than 1 second</strong> per evaluation. Otherwise, the overall computation will become prohibitively expensive due to the large number of samples required for Bayesian inference.</p></li>
+</ul>
+</section>
+<section id="parallelization">
+<h2>Parallelization<a class="headerlink" href="#parallelization" title="Link to this heading"></a></h2>
+<p>Given the computational intensity of Bayesian inference, parallelization strategies are essential to optimize performance. Below are the steps to parallelize computations using <strong>UltraNest</strong> without modifying the package’s code.</p>
+<p><strong>Requirements</strong></p>
+<ul class="simple">
+<li><p><strong>OpenMPI:</strong> Ensure that OpenMPI is installed and available on your system.</p></li>
+<li><p><strong>Python Packages:</strong> Install <cite>h5py</cite> and <cite>mpi4py</cite>.</p></li>
+</ul>
+<p><strong>Steps to Parallelize</strong></p>
+<ol class="arabic">
+<li><p><strong>Set the Number of Threads</strong></p>
+<p>Control the number of threads per process by setting the <cite>OMP_NUM_THREADS</cite> environment variable. For example, to set it to 1:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Run the Inference Script with MPI</strong></p>
+<p>Use <cite>mpiexec</cite> to execute your inference script across multiple cores. Replace <cite>inference.py</cite> with the name of your inference script.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mpiexec<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>python<span class="w"> </span>inference.py
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Explanation:</strong> This command runs the inference using <strong>4 CPU cores</strong>. Adjust the <cite>-np</cite> value according to the number of available cores you wish to utilize.</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Recommendations</strong></p>
+<ul class="simple">
+<li><p><strong>Virtual Environment:</strong> Regardless of where you are running the code, it is highly recommended to use a virtual environment to manage your installations. This practice helps maintain dependencies and avoids conflicts with other projects.</p></li>
+</ul>
+<p><strong>Additional Resources</strong></p>
+<p>For more detailed information on performance and parallelization strategies with <strong>UltraNest</strong>, refer to the <a class="reference external" href="https://johannesbuchner.github.io/UltraNest/performance.html">UltraNest Performance Page</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="publications.html" class="btn btn-neutral float-left" title="Publications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Contributor.html" class="btn btn-neutral float-right" title="Call for Contributions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

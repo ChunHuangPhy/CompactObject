@@ -1,0 +1,519 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DDH model EOS inference pipeline &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Strangeon EOS inference pipeline" href="test_Bayesian_inference_Strangeon_EOS.html" />
+    <link rel="prev" title="RMF EOS inference pipeline" href="test_Inference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DDH model EOS inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Advantages-of-the-DDH-Approach">Advantages of the DDH Approach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Literature-Overview">Literature Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Set-up-prior-ranges-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">Set up prior ranges (DDH model ([Malik, 2023] https://doi.org/10.3847/1538-4357/ac5d3c ))</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Setup-Likelihood-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">Setup Likelihood (DDH model ([Malik, 2023] https://doi.org/10.3847/1538-4357/ac5d3c ))</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#likelihood_transform-Function"><code class="docutils literal notranslate"><span class="pre">likelihood_transform</span></code> Function</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Returns">Returns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Function-Details">Function Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#1.-Define-Meson-Masses">1. Define Meson Masses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2.-Density-Dependent-Coupling-for-\sigma,-\omega,-and-\rho">2. Density-Dependent Coupling for <span class="math notranslate nohighlight">\(\sigma\)</span>, <span class="math notranslate nohighlight">\(\omega\)</span>, and <span class="math notranslate nohighlight">\(\rho\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3.-Nuclear-Matter-Properties-(NMP)-Log-Likelihood">3. Nuclear Matter Properties (NMP) Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#4.-Neutron-Star-Maximum-Mass-Log-Likelihood">4. Neutron Star Maximum Mass Log-Likelihood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#5.-chiEFT-Constraints">5. chiEFT Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#6.-pQCD-Constraints">6. pQCD Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#7.-Total-Log-Likelihood-Calculation">7. Total Log-Likelihood Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Example-Usage">Example Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Test-log_likelihood-function">Test log_likelihood function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Inference">Inference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DDH model EOS inference pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test_Bayesian_inference_DDH.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="DDH-model-EOS-inference-pipeline">
+<h1>DDH model EOS inference pipeline<a class="headerlink" href="#DDH-model-EOS-inference-pipeline" title="Link to this heading"></a></h1>
+<p>This section outlines the implementation of the density-dependent Hartree (DDH) model within an inference framework. It discusses how to incorporate various likelihood calculations such as perturbative Quantum Chromodynamics (pQCD), Chiral Effective Field Theory (chiEFT), constraints from the maximum mass of neutron stars, and nuclear saturation properties.</p>
+<section id="Advantages-of-the-DDH-Approach">
+<h2>Advantages of the DDH Approach<a class="headerlink" href="#Advantages-of-the-DDH-Approach" title="Link to this heading"></a></h2>
+<p>The DDH model provides a significant advantage over models with constant couplings by accounting for quantal fluctuations of the baryon fields even in the ground state, providing a more realistic depiction of nuclear matter under extreme conditions (refer to <a class="reference external" href="https://doi.org/10.1016/0370-2693(94)01664-X">Furnstahl et al., 1994</a>).</p>
+</section>
+<section id="Literature-Overview">
+<h2>Literature Overview<a class="headerlink" href="#Literature-Overview" title="Link to this heading"></a></h2>
+<p>Over the years, various authors have proposed different functional forms of density-dependent coupling schemes for the $ <span class="math">\sigma `$, $ :nbsphinx-math:</span>omega <cite>$, and $ :nbsphinx-math:</cite>rho <a href="#id1"><span class="problematic" id="id2">`</span></a>$ mesons:</p>
+<ol class="arabic simple">
+<li><p><strong>Typel 1999 Model</strong> (<a class="reference external" href="https://doi.org/10.1016/S0375-9474(99)00310-3">Typel &amp; Wolter, 1999</a>):</p>
+<ul class="simple">
+<li><p>The coupling constants $ <span class="math">\Gamma</span>_i(<span class="math">\rho</span>) $ for $ i = <span class="math">\sigma</span>, <span class="math">\omega `$ are parametrized as: :nbsphinx-math:</span>begin{equation}
+Gamma_i(rho) = Gamma_i(rho_{text{sat}}) cdot f_i(x)
+end{equation}`</p></li>
+<li><p>Where $ f_i(x) $ is defined by: <span class="math">\begin{equation}
+f_i(x) = a_i \frac{1 + b_i (x + d_i)^2}{1 + c_i (x + d_i)^2}
+\end{equation}</span></p></li>
+<li><p>And for the $ <span class="math">\rho `$-meson: :nbsphinx-math:</span>begin{equation}
+Gamma_rho(rho) = Gamma_rho(rho_{text{sat}}) cdot exp left[-<a href="#id3"><span class="problematic" id="id4">a_</span></a>rho (x - 1)right]
+end{equation}`</p></li>
+</ul>
+</li>
+<li><p><strong>Malik 2023 Model</strong> (<a class="reference external" href="https://doi.org/10.3847/1538-4357/ac5d3c">Malik, 2023</a>):</p>
+<ul class="simple">
+<li><p>This model extends the coupling parametrization to: <span class="math">\begin{equation}
+\Gamma_M(\rho) = \Gamma_{M,0} \cdot h_M(x), \quad x = \rho / \rho_0
+\end{equation}</span></p></li>
+<li><p>The functions are defined as:</p>
+<ul>
+<li><p>For isoscalar ($ <span class="math">\sigma `$ and $ :nbsphinx-math:</span>omega <cite>$): :nbsphinx-math:</cite>begin{equation}
+h_M(x) = exp[-(x^{a_M} - 1)]
+end{equation}`</p></li>
+<li><p>For isovector ($ <span class="math">\rho `$): :nbsphinx-math:</span>begin{equation}
+<a href="#id5"><span class="problematic" id="id6">h_</span></a>rho(x) = exp[-<a href="#id7"><span class="problematic" id="id8">a_</span></a>rho (x - 1)]
+end{equation}`</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Gogelein 2008 Model</strong> (<a class="reference external" href="https://doi.org/10.1103/PhysRevC.77.025802">Gogelein, 2008</a>; Utilized by Char 2023):</p>
+<ul class="simple">
+<li><p>The density dependence for meson couplings is expressed as: <span class="math">\begin{equation}
+\Gamma_i(n_B) = a_i + (b_i + d_i x^3) \cdot e^{-c_i x}, \quad x = n_B / n_0
+\end{equation}</span></p></li>
+<li><p>This model allows flexible control across different density regimes, ideal for Bayesian inference applications.</p></li>
+</ul>
+</li>
+</ol>
+<p>These models are crucial in the study of dense nuclear matter, providing the groundwork for robust statistical analyses and theoretical predictions within the framework of nuclear astrophysics.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.BayesianSampler</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sampler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.Likelihood</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">likelihood</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">InferenceWorkflow.DDH_Likelihood</span><span class="w"> </span><span class="kn">import</span> <span class="n">Likelihood</span> <span class="k">as</span> <span class="n">ddh_likelihood</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.prior</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prior</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.main</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tov</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.RMF_DDH</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">DDH</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">dyn_cm_2</span><span class="p">,</span> <span class="n">km</span><span class="p">,</span> <span class="n">Msun</span><span class="p">,</span> <span class="n">MeV</span><span class="p">,</span> <span class="n">fm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.maxium_central_density</span><span class="w"> </span><span class="kn">import</span> <span class="n">maxium_central_density</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">oneoverfm_MeV</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">c</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">CubicSpline</span><span class="p">,</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">,</span> <span class="n">interp1d</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Set-up-prior-ranges-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">
+<h2>Set up prior ranges (DDH model ([Malik, 2023] <a class="reference external" href="https://doi.org/10.3847/1538-4357/ac5d3c">https://doi.org/10.3847/1538-4357/ac5d3c</a> ))<a class="headerlink" href="#Set-up-prior-ranges-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;as_&quot;</span><span class="p">,</span> <span class="s2">&quot;av&quot;</span><span class="p">,</span> <span class="s2">&quot;ar&quot;</span><span class="p">,</span> <span class="s2">&quot;gs0&quot;</span><span class="p">,</span> <span class="s2">&quot;gv0&quot;</span><span class="p">,</span> <span class="s2">&quot;grho0&quot;</span><span class="p">,</span> <span class="s2">&quot;rho0&quot;</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_transform</span><span class="p">(</span><span class="n">cube</span><span class="p">):</span>
+    <span class="n">params</span>    <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.3</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.3</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.3</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">6.5</span><span class="p">,</span><span class="mf">13.5</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">7.5</span><span class="p">,</span><span class="mf">14.5</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">16</span> <span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">normal_Prior</span><span class="p">(</span><span class="mf">0.153</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">params</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Setup-Likelihood-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))">
+<h2>Setup Likelihood (DDH model ([Malik, 2023] <a class="reference external" href="https://doi.org/10.3847/1538-4357/ac5d3c">https://doi.org/10.3847/1538-4357/ac5d3c</a> ))<a class="headerlink" href="#Setup-Likelihood-(DDH-model-([Malik,-2023]-https://doi.org/10.3847/1538-4357/ac5d3c-))" title="Link to this heading"></a></h2>
+</section>
+<section id="likelihood_transform-Function">
+<h2><code class="docutils literal notranslate"><span class="pre">likelihood_transform</span></code> Function<a class="headerlink" href="#likelihood_transform-Function" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">likelihood_transform</span></code> function computes the total log-likelihood for a given set of parameters that define neutron star and nuclear matter properties. It uses a combination of nuclear saturation properties, maximum mass constraints, chiEFT constraints, and pQCD constraints.</p>
+<section id="Parameters">
+<h3>Parameters<a class="headerlink" href="#Parameters" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">para</span></code> (<code class="docutils literal notranslate"><span class="pre">array</span></code>): An array of parameters that define the coupling constants and other relevant physical properties for the model.</p></li>
+</ul>
+</section>
+<section id="Returns">
+<h3>Returns<a class="headerlink" href="#Returns" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">float</span></code>: The total log-likelihood of the parameter set, which combines contributions from nuclear saturation properties, neutron star mass constraints, chiEFT constraints, and pQCD constraints. If the resulting log-likelihood is <code class="docutils literal notranslate"><span class="pre">-inf</span></code>, it is converted to <code class="docutils literal notranslate"><span class="pre">-1e20</span></code> for computational stability.</p></li>
+</ul>
+</section>
+<section id="Function-Details">
+<h3>Function Details<a class="headerlink" href="#Function-Details" title="Link to this heading"></a></h3>
+</section>
+<section id="1.-Define-Meson-Masses">
+<h3>1. Define Meson Masses<a class="headerlink" href="#1.-Define-Meson-Masses" title="Link to this heading"></a></h3>
+<p>The function begins by defining the meson masses in femtometer (fm) units:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">m_sig</span></code>: Sigma meson mass (550 MeV)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m_w</span></code>: Omega meson mass (783 MeV)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m_rho</span></code>: Rho meson mass (763 MeV)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rho0</span></code>: Saturation density, taken as the last element in the <code class="docutils literal notranslate"><span class="pre">para</span></code> array.</p></li>
+</ul>
+</section>
+<section id="2.-Density-Dependent-Coupling-for-\sigma,-\omega,-and-\rho">
+<h3>2. Density-Dependent Coupling for <span class="math notranslate nohighlight">\(\sigma\)</span>, <span class="math notranslate nohighlight">\(\omega\)</span>, and <span class="math notranslate nohighlight">\(\rho\)</span><a class="headerlink" href="#2.-Density-Dependent-Coupling-for-\sigma,-\omega,-and-\rho" title="Link to this heading"></a></h3>
+<p>The density-dependent couplings are calculated using the <code class="docutils literal notranslate"><span class="pre">DDH.Function</span></code> method, which applies the Malik22 model type for density-dependent coupling in this example. To use a different model type, you would need to modify the <code class="docutils literal notranslate"><span class="pre">'prior_transform'</span></code> function and specify the desired model type within <code class="docutils literal notranslate"><span class="pre">'likelihood_transform'</span></code>, as each model type may require a different number of parameters. The calculated coupling values from <code class="docutils literal notranslate"><span class="pre">para</span></code> are then assembled into a single array, <code class="docutils literal notranslate"><span class="pre">theta</span></code>, which is
+used for subsequent calculations.</p>
+</section>
+<section id="3.-Nuclear-Matter-Properties-(NMP)-Log-Likelihood">
+<h3>3. Nuclear Matter Properties (NMP) Log-Likelihood<a class="headerlink" href="#3.-Nuclear-Matter-Properties-(NMP)-Log-Likelihood" title="Link to this heading"></a></h3>
+<p>The nuclear matter properties (NMP) log-likelihood is computed by initializing a <code class="docutils literal notranslate"><span class="pre">DDH_Log_Likelihood</span></code> object, <code class="docutils literal notranslate"><span class="pre">DDH_like</span></code>, using <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<ul class="simple">
+<li><p>The log-likelihood for NMP is computed using <code class="docutils literal notranslate"><span class="pre">DDH_like.compute_NMP()</span></code>.</p></li>
+</ul>
+</section>
+<section id="4.-Neutron-Star-Maximum-Mass-Log-Likelihood">
+<h3>4. Neutron Star Maximum Mass Log-Likelihood<a class="headerlink" href="#4.-Neutron-Star-Maximum-Mass-Log-Likelihood" title="Link to this heading"></a></h3>
+<p>The log-likelihood contribution based on neutron star maximum mass is calculated using <code class="docutils literal notranslate"><span class="pre">DDH_like.compute_MR()</span></code>. This function returns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code> if the maximum mass (<code class="docutils literal notranslate"><span class="pre">M_max</span></code>) is above 2 solar masses.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-inf</span></code> if <code class="docutils literal notranslate"><span class="pre">M_max</span></code> is below 2 solar masses.</p></li>
+</ul>
+<p>The step function used for this calculation is smooth, similar to a Fermi-Dirac distribution, allowing for a gradual transition.</p>
+</section>
+<section id="5.-chiEFT-Constraints">
+<h3>5. chiEFT Constraints<a class="headerlink" href="#5.-chiEFT-Constraints" title="Link to this heading"></a></h3>
+<p>The function then applies chiEFT constraints on pure neutron matter (PNM) using:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">theta1</span></code>, which is <code class="docutils literal notranslate"><span class="pre">theta</span></code> with an additional element <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for pure neutron matter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DDH.compute_eos_alpha(theta1)</span></code>, which generates the equation of state (EOS) for PNM.</p></li>
+</ul>
+<p>The chiEFT likelihood is computed for PNM EOS using <code class="docutils literal notranslate"><span class="pre">log_EFT</span> <span class="pre">=</span> <span class="pre">likelihood.chiEFT_PNM(...)</span></code>. Units PNM EOS needs to be converted to MeV.fm^-3.</p>
+</section>
+<section id="6.-pQCD-Constraints">
+<h3>6. pQCD Constraints<a class="headerlink" href="#6.-pQCD-Constraints" title="Link to this heading"></a></h3>
+<p>Finally, the pQCD constraints are applied on the beta equilibrium EOS using <code class="docutils literal notranslate"><span class="pre">DDH.compute_eos(...)</span></code>:</p>
+<ul class="simple">
+<li><p>EOS units needs to be converted to GeV.fm^-3 as required by the pQCD likelihood.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log_pQCD</span></code> is computed using <code class="docutils literal notranslate"><span class="pre">likelihood.ln_pQCD(...)</span></code>, applied at a density of <code class="docutils literal notranslate"><span class="pre">8</span> <span class="pre">*</span> <span class="pre">0.16</span> <span class="pre">fm^-3</span></code> to ensure the neutron star maximum mass stays below this density.</p></li>
+</ul>
+</section>
+<section id="7.-Total-Log-Likelihood-Calculation">
+<h3>7. Total Log-Likelihood Calculation<a class="headerlink" href="#7.-Total-Log-Likelihood-Calculation" title="Link to this heading"></a></h3>
+<p>The total log-likelihood <code class="docutils literal notranslate"><span class="pre">log_tot</span></code> is calculated by summing:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">log_NMP</span></code>, <code class="docutils literal notranslate"><span class="pre">log_MR</span></code>, <code class="docutils literal notranslate"><span class="pre">log_EFT</span></code>, and <code class="docutils literal notranslate"><span class="pre">log_pQCD</span></code>.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">log_tot</span></code> is <code class="docutils literal notranslate"><span class="pre">-inf</span></code>, it is set to <code class="docutils literal notranslate"><span class="pre">-1e20</span></code> to avoid numerical issues.</p>
+</section>
+<section id="Example-Usage">
+<h3>Example Usage<a class="headerlink" href="#Example-Usage" title="Link to this heading"></a></h3>
+<p>```python para = [0.086372, 0.054065, 0.509147, 9.180364, 10.981329, 7.652728, 0.150] log_likelihood = likelihood_transform(para) print(log_likelihood)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">likelihood_transform</span><span class="p">(</span><span class="n">para</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the log-likelihood of a given parameter set for neutron star and nuclear matter properties.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    para (array): Array of parameters defining the couplings and other physical properties.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    float: The total log-likelihood of the parameter set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Define the meson masses in fm scale</span>
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">550</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="mi">783</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="mi">763</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">rho0</span> <span class="o">=</span> <span class="n">para</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Calculate the density-dependent coupling factors</span>
+    <span class="n">gsf</span><span class="p">,</span> <span class="n">gwf</span><span class="p">,</span> <span class="n">grf</span><span class="p">,</span> <span class="n">dgsf</span><span class="p">,</span> <span class="n">dgwf</span><span class="p">,</span> <span class="n">dgrf</span> <span class="o">=</span> <span class="n">DDH</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Malik22&#39;</span><span class="p">,</span> <span class="n">couplings</span><span class="o">=</span><span class="n">para</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">gsf</span><span class="p">,</span> <span class="n">gwf</span><span class="p">,</span> <span class="n">grf</span><span class="p">,</span> <span class="n">dgsf</span><span class="p">,</span> <span class="n">dgwf</span><span class="p">,</span> <span class="n">dgrf</span><span class="p">,</span> <span class="n">rho0</span><span class="p">])</span>
+
+
+    <span class="c1"># Define log-likelihood for Nuclear Matter Properties (NMP) at nuclear saturation properties</span>
+    <span class="c1"># Default Gaussian constraints: self.NMP_Base = {&quot;e0&quot;:[-16, 0.2, &#39;g&#39;], &quot;k0&quot;:[230, 40, &#39;g&#39;], &quot;jsym0&quot;:[32.5, 1.8, &#39;g&#39;]}</span>
+    <span class="c1"># You may update these values using the update_base and update_quantities methods in the DDH_Log_Likelihood class.</span>
+    <span class="n">DDH_like</span> <span class="o">=</span> <span class="n">ddh_likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1">#1. This block for compute log-likelihood for Nuclear Matter Properties (NMP)</span>
+    <span class="n">log_NMP</span> <span class="o">=</span> <span class="n">DDH_like</span><span class="o">.</span><span class="n">compute_NMP</span><span class="p">()</span>
+
+    <span class="c1">#2. Compute log-likelihood for NS maximum mass, returning 0 if M_max ≥ 2 and -∞ if M_max &lt; 2</span>
+    <span class="c1"># The step function is smooth, like a Fermi-Dirac distribution, providing a smooth transition</span>
+    <span class="n">log_MR</span> <span class="o">=</span> <span class="n">DDH_like</span><span class="o">.</span><span class="n">compute_MR</span><span class="p">()</span>
+
+    <span class="c1">#3. Apply chiEFT constraints to pure neutron matter EOS</span>
+    <span class="n">theta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">theta</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">])))</span>  <span class="c1"># Alpha = 0 for pure neutron matter</span>
+    <span class="n">EOS_pnm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">DDH</span><span class="o">.</span><span class="n">compute_eos_alpha</span><span class="p">(</span><span class="n">theta1</span><span class="p">))</span>
+
+    <span class="c1">#4. chiEFT likelihood input requires MeV.fm^-3 units for both energy (e) and pressure (p)</span>
+    <span class="n">EOS_pnm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">oneoverfm_MeV</span>
+    <span class="n">EOS_pnm</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">oneoverfm_MeV</span>
+
+    <span class="n">log_EFT</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">chiEFT_PNM</span><span class="p">(</span><span class="n">EOS_pnm</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;Super Gaussian&quot;</span><span class="p">,</span> <span class="n">contraint_quantity</span><span class="o">=</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">enlargement</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># 100% enlargement for energy in PNM</span>
+
+    <span class="c1">#5. Apply pQCD constraints on beta equilibrium EOS</span>
+    <span class="n">EOS_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">DDH</span><span class="o">.</span><span class="n">compute_eos</span><span class="p">([</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">],</span><span class="n">theta</span><span class="p">))</span>
+    <span class="n">EOS_beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="mi">1000</span>  <span class="c1"># pQCD likelihood input requires GeV.fm^-3 units for both e and p</span>
+    <span class="n">EOS_beta</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="n">oneoverfm_MeV</span> <span class="o">/</span> <span class="mi">1000</span>
+
+    <span class="n">log_pQCD</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">ln_pQCD</span><span class="p">(</span><span class="n">EOS_beta</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span> <span class="o">*</span> <span class="mf">0.16</span><span class="p">])</span>  <span class="c1"># pQCD applied at 7 * 0.16 fm^-3, ensuring NS max mass is below this density</span>
+
+
+    <span class="c1"># Total log-likelihood</span>
+    <span class="n">log_tot</span> <span class="o">=</span> <span class="n">log_NMP</span> <span class="o">+</span> <span class="n">log_MR</span> <span class="o">+</span> <span class="n">log_EFT</span> <span class="o">+</span> <span class="n">log_pQCD</span>
+
+    <span class="k">if</span> <span class="n">log_tot</span> <span class="o">==</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+        <span class="n">log_tot</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e301</span>
+
+    <span class="k">return</span> <span class="n">log_tot</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Test-log_likelihood-function">
+<h2>Test log_likelihood function<a class="headerlink" href="#Test-log_likelihood-function" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%timeit</span>
+<span class="n">para</span> <span class="o">=</span><span class="p">[</span><span class="mf">0.086372</span><span class="p">,</span> <span class="mf">0.054065</span><span class="p">,</span> <span class="mf">0.509147</span><span class="p">,</span> <span class="mf">9.180364</span><span class="p">,</span> <span class="mf">10.981329</span><span class="p">,</span> <span class="mf">3.826364</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.150</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">likelihood_transform</span><span class="p">(</span><span class="n">para</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+-5.739301623110369
+614 ms ± 2.09 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+</section>
+<section id="Inference">
+<h2>Inference<a class="headerlink" href="#Inference" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">step</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+<span class="n">live_point</span> <span class="o">=</span> <span class="mi">2000</span>
+
+<span class="n">max_calls</span> <span class="o">=</span> <span class="mi">500000</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">UltranestSampler</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span><span class="n">likelihood_transform</span><span class="p">,</span><span class="n">prior_transform</span><span class="p">,</span><span class="n">step</span><span class="p">,</span><span class="n">live_point</span><span class="p">,</span><span class="n">max_calls</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">corner</span>
+
+<span class="n">figure</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span> <span class="sa">r</span><span class="s2">&quot;$a_{\sigma}$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$a_{\omega}$&quot;</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;$a_{\rho}$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\Gamma_{\sigma}$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\Gamma_{\omega}$&quot;</span><span class="p">,</span><span class="sa">r</span><span class="s2">&quot;$\Gamma_{\rho}$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\rho_0$&quot;</span><span class="p">],</span>
+                    <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                    <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">),</span>
+                    <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">),</span>
+                    <span class="n">quantiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">],</span>
+                    <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                    <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">show_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">max_n_ticks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">title_fmt</span><span class="o">=</span> <span class="s1">&#39;.2f&#39;</span><span class="p">)</span>
+                       <span class="c1">#,range=[(10,80),(0.56,0.64),(0.10, 0.2),(150,600),(40,80),(50,75)])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/test_Bayesian_inference_DDH_11_0.png" src="_images/test_Bayesian_inference_DDH_11_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test_Inference.html" class="btn btn-neutral float-left" title="RMF EOS inference pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test_Bayesian_inference_Strangeon_EOS.html" class="btn btn-neutral float-right" title="Strangeon EOS inference pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

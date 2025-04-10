@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RMF EOS solver &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DDH RMF EOS solver" href="RMF_DDH.html" />
+    <link rel="prev" title="Crust Equation of state interpolation" href="crust_EOS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RMF EOS solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.Energy_density_Pressure"><code class="docutils literal notranslate"><span class="pre">Energy_density_Pressure()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.compute_EOS"><code class="docutils literal notranslate"><span class="pre">compute_EOS()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.fields_alpha"><code class="docutils literal notranslate"><span class="pre">fields_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.functie"><code class="docutils literal notranslate"><span class="pre">functie()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.get_energy_pressure_alpha"><code class="docutils literal notranslate"><span class="pre">get_energy_pressure_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.get_eos_alpha"><code class="docutils literal notranslate"><span class="pre">get_eos_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.initial_guess_alpha"><code class="docutils literal notranslate"><span class="pre">initial_guess_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#EOSgenerators.RMF_EOS.initial_values"><code class="docutils literal notranslate"><span class="pre">initial_values()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">RMF EOS solver</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RMF_EOS.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rmf-eos-solver">
+<span id="rmf-eos"></span><h1>RMF EOS solver<a class="headerlink" href="#rmf-eos-solver" title="Link to this heading"></a></h1>
+<p>Functions to compute RMF Equation of state from given parameters.</p>
+<dl class="py function" id="module-EOSgenerators.RMF_EOS">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.Energy_density_Pressure">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">Energy_density_Pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#Energy_density_Pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.Energy_density_Pressure" title="Link to this definition"></a></dt>
+<dd><p>Compute the pressure and energy density for the equation of state (EOS)
+based on the Relativistic Mean Field (RMF) model parameters,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – An array containing the initial values for sigma, omega, rho,
+and chemical potential, obtained from the <cite>initial_values</cite> function.</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – The central density at which the EOS computation begins.</p></li>
+<li><p><strong>theta</strong> (<em>array</em>) – An array of 10 parameters that define the RMF model in the
+Lagrangian.</p></li>
+<li><p><strong>return_tag</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default), returns only the energy
+density and pressure. If True, returns additional
+EOS components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl>
+<dt>If <cite>return_tag</cite> is False:</dt><dd><dl class="simple">
+<dt>energy_density (float): The energy density in natural units</dt><dd><p>(to convert to MeV.fm-3, divide by MeV.fm-3).</p>
+</dd>
+</dl>
+<p>pressure (float): The pressure in natural units.</p>
+</dd>
+<dt>If <cite>return_tag</cite> is True:</dt><dd><dl class="simple">
+<dt>numpy array: A 1D array representing EOS components:</dt><dd><ul class="simple">
+<li><p>EoS[0]: Number density in fm-3.</p></li>
+<li><p>EoS[1]: Energy density in natural units.</p></li>
+<li><p>EoS[2]: Pressure in natural units.</p></li>
+<li><p>EoS[3]: Proton chemical potential in natural units.</p></li>
+<li><p>EoS[4]: Neutron chemical potential in natural units.</p></li>
+<li><p>EoS[5]: Electron chemical potential in natural units.</p></li>
+<li><p>EoS[6]: Muon chemical potential in natural units.</p></li>
+<li><p>EoS[7]: Proton fraction (dimensionless).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.compute_EOS">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">compute_EOS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eps_crust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pres_crust</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#compute_EOS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.compute_EOS" title="Link to this definition"></a></dt>
+<dd><p>Generate core part equation of state, main function, from RMF model,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps_crust</strong> (<em>array</em>) – the energy density of crust EoS in g.cm-3.</p></li>
+<li><p><strong>pres_crust</strong> (<em>array</em>) – the pressure from crust EoS model in dyn.cm-2.</p></li>
+<li><p><strong>theta</strong> (<em>array</em>) – An array representing the parameters used to determine a RMF model in the</p></li>
+<li><p><strong>case</strong> (<em>Lagrangian. In this</em>)</p></li>
+<li><p><strong>parameters.</strong> (<em>the RMF model is defined by 10</em>)</p></li>
+<li><p><strong>return_tag</strong> (<em>bool</em><em>, </em><em>optional</em>) – If False (default), returns only the energy
+density and pressure. If True, returns additional
+EOS components.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><blockquote>
+<div><dl class="simple">
+<dt>energy_density (float): The energy density in natural units</dt><dd><p>(to convert to MeV.fm-3, divide by MeV.fm-3).</p>
+</dd>
+</dl>
+<p>pressure (float): The pressure in natural units.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>If <cite>return_tag</cite> is True:</dt><dd><dl class="simple">
+<dt>numpy array: A 1D array representing EOS components:</dt><dd><ul class="simple">
+<li><p>EoS[0]: Number density in fm-3.</p></li>
+<li><p>EoS[1]: Energy density in natural units.</p></li>
+<li><p>EoS[2]: Pressure in natural units.</p></li>
+<li><p>EoS[3]: Proton chemical potential in natural units.</p></li>
+<li><p>EoS[4]: Neutron chemical potential in natural units.</p></li>
+<li><p>EoS[5]: Electron chemical potential in natural units.</p></li>
+<li><p>EoS[6]: Muon chemical potential in natural units.</p></li>
+<li><p>EoS[7]: Proton fraction (dimensionless).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If <cite>return_tag</cite> is False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.fields_alpha">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">fields_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#fields_alpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.fields_alpha" title="Link to this definition"></a></dt>
+<dd><p>Iterate the sigma, omega, and rho fields for a given proton fraction and density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – initial sqrt(sigma) sqrt(omega) and rho from initial_values function.</p></li>
+<li><p><strong>args</strong> (<em>array</em>) – parameters to determine a RMF model in Lagrangian; here, we have 12 parameters,</p></li>
+<li><p><strong>fraction</strong> (<em>where the last parameters are the proton</em>)</p></li>
+<li><p><strong>matter</strong> (<em>For pure neutron</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>field equations which are then solved using the scipy root finding function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>f (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.functie">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">functie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#functie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.functie" title="Link to this definition"></a></dt>
+<dd><p>Iterates the the sigma, omega, rho term and chemical potential of electron and neutron at
+any given density,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – initial sigma omega rho and chemical potential from initial_values function</p></li>
+<li><p><strong>args</strong> (<em>array</em>) – parameters of a specific RMF model Lagrangian; here, we have 10 parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sigma term in the Lagrangian.
+omega (float): omega term in the Lagrangian.
+rho_03 (float): rho term in the Lagrangian.
+mu_n (float): chemical potential of neutron matter.
+mu_e (float): chemical potential of electron portion.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sigma (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.get_energy_pressure_alpha">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">get_energy_pressure_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#get_energy_pressure_alpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.get_energy_pressure_alpha" title="Link to this definition"></a></dt>
+<dd><p>Generate pressure and energy density at a given number density and proton fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – An array that consists of the initial values of sqrt(sigma), sqrt(omega), and rho</p></li>
+<li><p><strong>function.</strong> (<em>obtained from the initial_values</em>)</p></li>
+<li><p><strong>rho</strong> (<em>float</em>) – The central density from which the computation of the equation of state begins.</p></li>
+<li><p><strong>theta</strong> (<em>array</em>) – An array representing the parameters used to determine a RMF model in the</p></li>
+<li><p><strong>case</strong> (<em>Lagrangian. In this</em>)</p></li>
+<li><p><strong>parameters</strong> (<em>where the last</em>)</p></li>
+<li><p><strong>parameters</strong></p></li>
+<li><p><strong>fraction</strong> (<em>is the proton</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>EOS ingredient, energy density in natural units.
+pressure (float): EOS ingredient, pressure in natural units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>energy_density (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.get_eos_alpha">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">get_eos_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_point</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#get_eos_alpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.get_eos_alpha" title="Link to this definition"></a></dt>
+<dd><p>Generate EOS for a given alpha</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta</strong> (<em>array</em>) – An array representing the parameters used to determine a RMF model in the</p></li>
+<li><p><strong>case</strong> (<em>Lagrangian. In this</em>)</p></li>
+<li><p><strong>parameters</strong> (<em>the RMF model is defined by 11</em>)</p></li>
+<li><p><strong>last</strong> (<em>where the</em>)</p></li>
+<li><p><strong>fraction</strong> (<em>defined the proton</em>)</p></li>
+<li><p><strong>single_point</strong> (<em>boolean</em>) – Allows for the return of a single point of the EoS.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>EOS ingredient, density in fm-3.
+energy_density (array): EOS ingredient, energy density in natural units.
+pressure (array): EOS ingredient, pressure in natural units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>rho (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.initial_guess_alpha">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">initial_guess_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#initial_guess_alpha"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.initial_guess_alpha" title="Link to this definition"></a></dt>
+<dd><p>Outputs the sigma, omega, rho field value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rho</strong> (<em>float</em>) – given nuclear density</p></li>
+<li><p><strong>theta</strong> (<em>array</em>) – parameters to determine an RMF model in Lagrangian, here there are 11 parameters,</p></li>
+<li><p><strong>fraction</strong> (<em>where the last parameters are the proton</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>square root of the sigma term in the Lagrangian.
+math.sqrt(omega) (float): square root of the omega term in the Lagrangian.
+rho_03 (float): rho term in the Lagrangian.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>math.sqrt(sigma) (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="EOSgenerators.RMF_EOS.initial_values">
+<span class="sig-prename descclassname"><span class="pre">EOSgenerators.RMF_EOS.</span></span><span class="sig-name descname"><span class="pre">initial_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/EOSgenerators/RMF_EOS.html#initial_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#EOSgenerators.RMF_EOS.initial_values" title="Link to this definition"></a></dt>
+<dd><p>Outputs the the sigma, omega, rho term and chemical potential of electron and neutron at
+given initial density.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rho</strong> (<em>float</em>) – given nuclear density</p></li>
+<li><p><strong>theta</strong> (<em>array</em>) – parameters of determine a RMF model in Lagrangian; here, we have 10 parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>sigma term in Lagrangian.
+omega (float): omega term in Lagrangian.
+rho_03 (float): rho term in Lagrangian.
+mu_n (float): chemical potential of neutron matter.
+mu_e (float): chemical potential of electron portion.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>sigma (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="crust_EOS.html" class="btn btn-neutral float-left" title="Crust Equation of state interpolation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RMF_DDH.html" class="btn btn-neutral float-right" title="DDH RMF EOS solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solve TOV Equation &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Calculate Speed of Sound" href="speed_of_sound.html" />
+    <link rel="prev" title="Main functions" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Solve TOV Equation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#TOVsolver.solver_code.TOV_def"><code class="docutils literal notranslate"><span class="pre">TOV_def()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TOVsolver.solver_code.m1_from_mc_m2"><code class="docutils literal notranslate"><span class="pre">m1_from_mc_m2()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TOVsolver.solver_code.solveTOV"><code class="docutils literal notranslate"><span class="pre">solveTOV()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TOVsolver.solver_code.solveTOV_tidal"><code class="docutils literal notranslate"><span class="pre">solveTOV_tidal()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#TOVsolver.solver_code.tidal_deformability"><code class="docutils literal notranslate"><span class="pre">tidal_deformability()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Solve TOV Equation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TOV_solver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solve-tov-equation">
+<span id="tov-solving"></span><h1>Solve TOV Equation<a class="headerlink" href="#solve-tov-equation" title="Link to this heading"></a></h1>
+<p>Function to solve the TOV equation from EOS equation of state given by user.</p>
+<dl class="py function" id="module-TOVsolver.solver_code">
+<dt class="sig sig-object py" id="TOVsolver.solver_code.TOV_def">
+<span class="sig-prename descclassname"><span class="pre">TOVsolver.solver_code.</span></span><span class="sig-name descname"><span class="pre">TOV_def</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inveos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TOVsolver/solver_code.html#TOV_def"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TOVsolver.solver_code.TOV_def" title="Link to this definition"></a></dt>
+<dd><p>a function that packing the whole TOV equations set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – raius as integrate varible</p></li>
+<li><p><strong>y</strong> (<em>psudo-varible</em>) – containing pressure, mass, h and b as intergarte varibles</p></li>
+<li><p><strong>equation</strong> (<em>to solve out the TOV</em>)</p></li>
+<li><p><strong>inveos</strong> – the invert of the eos, pressure and energy density relation to integrate</p></li>
+<li><p><strong>interpolate.</strong> (<em>and</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array that contains all the Stars’ masses, in M_sun as a
+Units.
+Radius (array): The array that contains all the Stars’s radius, in km.
+Tidal Deformability (array): The array that contains correpsonding Tidal property,
+These are dimension-less.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mass (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TOVsolver.solver_code.m1_from_mc_m2">
+<span class="sig-prename descclassname"><span class="pre">TOVsolver.solver_code.</span></span><span class="sig-name descname"><span class="pre">m1_from_mc_m2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TOVsolver/solver_code.html#m1_from_mc_m2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TOVsolver.solver_code.m1_from_mc_m2" title="Link to this definition"></a></dt>
+<dd><p>a function that feed back the companion star mass from GW event measurement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mc</strong> (<em>float</em>) – chrip mass of a GW event, unit in solar mass.</p></li>
+<li><p><strong>m2</strong> (<em>float</em><em> or </em><em>numpy array</em>) – the determined mass for one of the star, this</p></li>
+<li><p><strong>EoS.</strong> (<em>is computed from sampling of</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the companion star mass in solar mass.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>m1 (float or numpy array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TOVsolver.solver_code.solveTOV">
+<span class="sig-prename descclassname"><span class="pre">TOVsolver.solver_code.</span></span><span class="sig-name descname"><span class="pre">solveTOV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center_rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Pmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inveos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TOVsolver/solver_code.html#solveTOV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TOVsolver.solver_code.solveTOV" title="Link to this definition"></a></dt>
+<dd><p>Solve TOV equation from given Equation of state in the neutron star
+core density range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center_rho</strong> (<em>array</em>) – This is the energy density here is fixed in main</p></li>
+<li><p><strong>[</strong><strong>10**14.3</strong> (<em>that is range</em>)</p></li>
+<li><p><strong>unit.g_cm_3</strong> (<em>10**15.6</em><em>] </em><em>*</em>)</p></li>
+<li><p><strong>Pmin</strong> (<em>float</em>) – In unit.G / unit.c**4</p></li>
+<li><p><strong>eos</strong> (<em>function</em>) – pressure vs. energy density, energy density in unit.G / unit.c**2, pressure in unit.G / unit.c**4</p></li>
+<li><p><strong>inveos</strong> (<em>function</em>) – energy density vs. pressure</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Stars’ masses
+Radius (float): The Stars’s radius</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mass (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TOVsolver.solver_code.solveTOV_tidal">
+<span class="sig-prename descclassname"><span class="pre">TOVsolver.solver_code.</span></span><span class="sig-name descname"><span class="pre">solveTOV_tidal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center_rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_density</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TOVsolver/solver_code.html#solveTOV_tidal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TOVsolver.solver_code.solveTOV_tidal" title="Link to this definition"></a></dt>
+<dd><p>Solve TOV equation from given Equation of state in the neutron star
+core density range</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center_rho</strong> (<em>array</em>) – This is the energy density here is fixed in main</p></li>
+<li><p><strong>np.logspace</strong> (<em>that is</em>)</p></li>
+<li><p><strong>energy_density</strong> (<em>array</em>) – Desity array of the neutron star EoS, in MeV/fm^{-3}</p></li>
+<li><p><strong>simiplicity</strong> (<em>Notice here for</em>)</p></li>
+<li><p><strong>magnitude</strong> (<em>we omitted G/c**4</em>)</p></li>
+<li><p><strong>so</strong></p></li>
+<li><p><strong>MeV/fm^{-3}</strong><strong>)</strong><strong>*G/c**4</strong> (<em>(</em><em>value in</em>)</p></li>
+<li><p><strong>are</strong> (<em>could convert to the energy density we</em>)</p></li>
+<li><p><strong>using</strong></p></li>
+<li><p><strong>magnitude.</strong> (<em>please check the Test_EOS.csv to double check the order of</em>)</p></li>
+<li><p><strong>pressure</strong> (<em>array</em>) – Pressure array of neutron star EoS, also in nautral unit</p></li>
+<li><p><strong>MeV/fm^{-3}</strong> (<em>with</em>)</p></li>
+<li><p><strong>Test_EOS.csv</strong> (<em>still please check the</em>)</p></li>
+<li><p><strong>is</strong> (<em>the conversion</em>)</p></li>
+<li><p><strong>dyn/cm3</strong><strong>)</strong><strong>*G/c**4.</strong> (<em>(</em><em>value in</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The array that contains all the Stars’ masses, in M_sun as a
+Units.
+Radius (array): The array that contains all the Stars’s radius, in km.
+Tidal Deformability (array): The array that contains correpsonding Tidal property,
+These are dimension-less.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mass (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="TOVsolver.solver_code.tidal_deformability">
+<span class="sig-prename descclassname"><span class="pre">TOVsolver.solver_code.</span></span><span class="sig-name descname"><span class="pre">tidal_deformability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Mns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Rns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TOVsolver/solver_code.html#tidal_deformability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#TOVsolver.solver_code.tidal_deformability" title="Link to this definition"></a></dt>
+<dd><p>Compute Tidal deformability from y2, neutron star mass and raius</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y2</strong> (<em>array</em>) – midiate varrible that computing tidal</p></li>
+<li><p><strong>Mns</strong> (<em>array</em>) – neutron star mass in g/cm3</p></li>
+<li><p><strong>Rns</strong> (<em>array</em>) – neutron star radius in cm.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>neutron star tidal deformability with unit-less.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tidal_def (array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="Main functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="speed_of_sound.html" class="btn btn-neutral float-right" title="Calculate Speed of Sound" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
