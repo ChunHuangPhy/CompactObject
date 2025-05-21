@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call for Contributions &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="EOSGenerators module guide" href="test_EOSgenerators.html" />
+    <link rel="prev" title="Computation Guide" href="cluster.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Call for Contributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-an-equation-of-state-eos">Contributing an Equation of State (EOS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-inference-components">Contributing Inference Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#guidelines-for-key-functions-and-permissions">Guidelines for Key Functions and Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact">Contact</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Call for Contributions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Contributor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="call-for-contributions">
+<h1>Call for Contributions<a class="headerlink" href="#call-for-contributions" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>If you are interested in contributing to the <strong>CompactObject</strong> project, please send an email to <a class="reference external" href="mailto:chun&#46;h&#37;&#52;&#48;wustl&#46;edu">chun<span>&#46;</span>h<span>&#64;</span>wustl<span>&#46;</span>edu</a> to request collaboration. You can also open an issue on our GitHub repository at <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/issues">Issue page</a> so that the community can track the status of collaborations.</p>
+<p>We are always eager to expand our scope to include the most equation of state (EOS) computations currently available in the community, as well as the most relevant constraints. If you have your own EOS and wish to contribute, please follow the steps outlined below.</p>
+</section>
+<section id="contributing-an-equation-of-state-eos">
+<h2>Contributing an Equation of State (EOS)<a class="headerlink" href="#contributing-an-equation-of-state-eos" title="Link to this heading"></a></h2>
+<ol class="arabic">
+<li><p><strong>Open an Issue</strong>
+Visit our GitHub issues page at <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/issues">Issue page</a> and open a new issue to suggest the EOS you would like to contribute.</p></li>
+<li><p><strong>Request Collaboration</strong>
+Send an email to <cite>chun.h&#64;wustl.edu</cite> to request collaborator access to the repository.</p></li>
+<li><p><strong>Commit the EOS Script</strong>
+- Create a <cite>.py</cite> script that computes the EOS. The script should:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Input the EOS parameter values.</p></li>
+<li><p>Output the pressure and density in CGS units.</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>For unit conventions, please refer to the <a class="reference external" href="https://chunhuangphy.github.io/CompactObject/UnitConventionForDeveloper.html">UnitConventionForDeveloper</a>.</p></li>
+<li><p>Name the main compute function as <cite>compute_EOS</cite>.</p></li>
+<li><p>Name the file as <cite>(YourEOSName)_EOS.py</cite>.</p></li>
+</ul>
+</li>
+<li><p><strong>Create a Demonstration Notebook</strong>
+Develop a Jupyter notebook that demonstrates:
+- How to compute the EOS.
+- Defining your EOS parameters.
+- Integrating your EOS with our default TOV solver (<cite>main.outputMR</cite>).
+- Ensuring the TOV solver correctly solves the EOS and outputs a mass-radius curve plot.</p></li>
+</ol>
+</section>
+<section id="contributing-inference-components">
+<h2>Contributing Inference Components<a class="headerlink" href="#contributing-inference-components" title="Link to this heading"></a></h2>
+<p>If you have developed your own likelihood, prior, sampler, or any component related to inference that is suitable for addition to our functionalities, we highly recommend contacting us. Follow these steps to contribute:</p>
+<ol class="arabic simple">
+<li><p><strong>Open an Issue</strong>
+Visit our GitHub issues page at <a class="reference external" href="https://github.com/ChunHuangPhy/CompactObject/issues">Issue page</a> and open a new issue to suggest changes to the inference components.</p></li>
+<li><p><strong>Request Collaboration</strong>
+Send an email to <cite>chun.h&#64;wustl.edu</cite> to request collaborator access to the repository.</p></li>
+<li><p><strong>Commit the Inference Script</strong>
+- Create a <cite>.py</cite> script within the <cite>InferenceWorkflow</cite> directory.
+- Name the script after the function you are contributing.</p></li>
+<li><p><strong>Create a Demonstration Notebook</strong>
+Develop a Jupyter notebook that demonstrates:
+- How to use your prior, likelihood, or sampler.
+- Include sampling outputs to ensure compatibility with the current structure of the package.</p></li>
+</ol>
+</section>
+<section id="guidelines-for-key-functions-and-permissions">
+<h2>Guidelines for Key Functions and Permissions<a class="headerlink" href="#guidelines-for-key-functions-and-permissions" title="Link to this heading"></a></h2>
+<p>The <strong>TOVsolver</strong> module is fundamental to all inference and computation within <strong>CompactObject</strong>. Modifying this module requires careful consideration, as changes may necessitate significant code restructuring.</p>
+<ul class="simple">
+<li><p><strong>Permissions:</strong>
+Only original contributors have permission to modify the <strong>TOVsolver</strong> code. All commits related to the <strong>TOVsolver</strong> module require detailed reviews by the original members of the package.</p></li>
+<li><p><strong>Local Changes:</strong>
+If you clone the repository locally and need to make changes to the <strong>TOVsolver</strong>, proceed with caution to avoid extensive code rebuilding.</p></li>
+</ul>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading"></a></h2>
+<p>We welcome feedback and contributions to expand the functionalities of <strong>CompactObject</strong>. Your support helps enhance the tool for the entire research community.</p>
+</section>
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading"></a></h2>
+<p>For inquiries, contributions, or to be featured in our publications list, please contact us at <a class="reference external" href="mailto:chun&#46;h&#37;&#52;&#48;wustl&#46;edu">chun<span>&#46;</span>h<span>&#64;</span>wustl<span>&#46;</span>edu</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cluster.html" class="btn btn-neutral float-left" title="Computation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test_EOSgenerators.html" class="btn btn-neutral float-right" title="EOSGenerators module guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
