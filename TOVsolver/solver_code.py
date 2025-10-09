@@ -7,18 +7,14 @@ import TOVsolver.unit as unit
 
 
 def m1_from_mc_m2(mc, m2):
-    """Calculate companion star mass from chirp mass and one component mass
-    
-    Given the chirp mass from a gravitational wave event and one component mass,
-    calculate the other component mass.
+    """a function that feed back the companion star mass from GW event measurement.
 
     Args:
-        mc (float): Chirp mass of a GW event, in solar mass units
-        m2 (float or numpy.ndarray): Mass of one component, in solar mass units
+        mc (float): chrip mass of a GW event, unit in solar mass.
+        m2 (float or numpy array): the determined mass for one of the star, this is computed from sampling of EoS.
 
     Returns:
-        numpy.ndarray: Mass of the companion star (m1), in solar mass units.
-            Will have the same shape as the input m2 if m2 is an array.
+        m1 (array): the companion star mass in solar mass.
     """
     
     m2 = np.array(m2)
@@ -88,17 +84,17 @@ def TOV(r, y, inveos):
 
 
 def TOV_def(r, y, inveos, ad_index):
-    """Packs the complete set of TOV equations for neutron stars with tidal deformability
+    """Right-hand side of the TOV + tidal ODE system.
 
     Args:
-        r (float): Radius as integration variable
-        y (array): Array of integration variables containing [pressure, mass, h, b]
-            where h and b are variables used for tidal deformability calculation
-        inveos (function): Inverse equation of state function that maps pressure to energy density
-        ad_index (float): Adiabatic index used in the tidal deformability equations
+        r (float): raius as integrate varible
+        y (psudo-varible): containing pressure, mass, h and b as intergarte varibles
+        to solve out the TOV equation
+        inveos: the invert of the eos, pressure and energy density relation to integrate
+        and interpolate.
 
     Returns:
-        array: Array containing derivatives [dpdr, dmdr, dhdr, dfdr] for the integration
+        numpy.ndarray: Derivatives [dP/dr, dm/dr, dh/dr, df/dr].
     """
     
     pres, m, h, b = y
@@ -155,25 +151,16 @@ def tidal_deformability(y2, Mns, Rns):
 
 
 def solveTOV_tidal(center_rho, energy_density, pressure, max_radius=30e5*unit.cm):
-    """Solve TOV equation with tidal deformability for neutron stars using a given Equation of State
+    """Solve TOV equation from given Equation of state in the neutron star core density range
 
     Args:
-        center_rho (float): Central density of the neutron star in g/cm³. This is the physical input
-            density value that determines the neutron star's properties.
-        energy_density (array): Energy density array of the neutron star EoS in dimensionless units
-            (already divided by c²). In the code, this is converted to proper geometrized units
-            by multiplying with G/c².
-        pressure (array): Pressure array of the neutron star EoS in dimensionless units (already divided 
-            by c⁴). In the code, this is converted to proper geometrized units by multiplying with G/c⁴.
-        max_radius (float): Maximum allowed radius to prevent runaway integration during numerical
-            solving, given in cm units (default: 30e5*unit.cm).
+        center_rho(array): This is the energy density here is fixed in main that is np.logspace(14.3, 15.6, 50)
+        energy_density (array): Desity array of the neutron star EoS, in MeV/fm^{-3}. Notice here for simiplicity, we omitted G/c**4 magnitude, so (value in MeV/fm^{-3})*G/c**4, could convert to the energy density we are using, please check the Test_EOS.csv to double check the order of magnitude.
+        pressure (array): Pressure array of neutron star EoS, also in nautral unit with MeV/fm^{-3}, still please check the Test_EOS.csv, the conversion is (value in dyn/cm3)*G/c**4.
 
     Returns:
-        Mass (float): The neutron star's gravitational mass in units of grams (can be converted to
-            solar masses by dividing by unit.Msun).
-        Radius (float): The neutron star's radius in units of cm (can be converted to km by
-            dividing by unit.km).
-        Tidal_Deformability (float): The neutron star's dimensionless tidal deformability parameter Λ.
+        tuple[float, float, float]: (mass_Msun, radius_km, tidal_deformability)
+            Tidal deformability is dimensionless.
     """
     # Unit conversions
     c = 3e10
@@ -290,8 +277,8 @@ def solveTOV(center_rho, Pmin, eos, inveos, max_radius=30e5*unit.cm):
                                      the star's surface is not properly detected. Defaults to 30e5*unit.cm
     
     Returns:
-        Mass (float): The neutron star's gravitational mass in appropriate units (M_sol)
-        Radius (float): The neutron star's radius in appropriate units (km)
+        tuple[float, float]: (mass_Msun, radius_km)
+            Mass is in solar masses; radius is in kilometers.
     
     Notes:
         - Integration begins at a small non-zero radius (r = 1e-18 * unit.cm) to avoid
