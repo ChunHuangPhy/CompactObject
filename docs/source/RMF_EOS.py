@@ -33,12 +33,9 @@ def initial_values(rho, theta):
         theta (array): paramters of determine a RMF model in lagrangian, here we have 10 parameters.
 
     Returns:
-        sigma (float): sigma term in lagrangian
-        omega (float): omega term in lagrangian
-        rho_03 (float): rho term in lagrangian
-        mu_n (float): chemical potential of neutron matter
-        mu_e (float): chemical potential of electron portion
-        
+        tuple[float, float, float, float, float]: (sigma, omega, rho_03, mu_n, mu_e)
+            ``sigma``, ``omega``, and ``rho_03`` are mean fields in the RMF Lagrangian (code units).
+            ``mu_n`` and ``mu_e`` are the neutron and electron chemical potentials (MeV).
     """
     m_sig, m_w, m_rho, g_sigma, g_omega, g_rho, kappa, lambda_0, zeta, Lambda_w = theta
 
@@ -69,12 +66,7 @@ def functie(x, args):
         args (array): paramters of determine a RMF model in lagrangian, here we have 10 parameters.
 
     Returns:
-        sigma (float): sigma term in lagrangian
-        omega (float): omega term in lagrangian
-        rho_03 (float): rho term in lagrangian
-        mu_n (float): chemical potential of neutron matter
-        mu_e (float): chemical potential of electron portion
-        
+        numpy.ndarray: Residual vector ``f`` with five components to be driven to zero.
     """
     m_sig = args[0]
     m_w = args[1]
@@ -185,11 +177,9 @@ def Energy_density_Pressure(x, rho, theta):
         theta (array): An array representing the parameters used to determine a RMF model in the 
         Lagrangian. In this case, the RMF model is defined by 10 parameters.
 
-
     Returns:
-        energy_density (float): EOS ingredient, energy density in g/cm3
-        pressure (float): EOS ingredient, pressure in dyn/cm3
-        
+        tuple[float, float]: (energy_density_cgs, pressure_cgs)
+            Energy density in g cm^-3 and pressure in dyn cm^-2.
     """
     sigma, omega, rho_03, mu_n, mu_e = x
     
@@ -273,9 +263,9 @@ def compute_EOS(eps_crust, pres_crust, theta):
         Lagrangian. In this case, the RMF model is defined by 10 parameters.
 
     Returns:
-        energy_density (float): EOS ingredient, energy density in g/cm3
-        pressure (float): EOS ingredient, pressure in dyn/cm3
-        
+        tuple[numpy.ndarray, numpy.ndarray]: (energy_density_core, pressure_core)
+            Energy density in g cm^-3 × (G/c^2) and pressure in dyn cm^-2 × (G/c^4),
+            evaluated on the core segment beyond the crust matching point.
     """
     dt = 0.05
     rho_0 = 0.1505
