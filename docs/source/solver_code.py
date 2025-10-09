@@ -81,23 +81,26 @@ def TOV(r, y, inveos):
 
     return np.array([dpdr, dmdr])
 
-
 def TOV_def(r, y, inveos, ad_index):
-    """a function that packing the whole TOV equations set
+    """Right-hand side of the TOV + tidal ODE system.
 
     Args:
         r (float): raius as integrate varible
-        y (psudo-varible): containing pressure, mass, h and b as intergarte varibles to solve out the TOV equation
-        inveos: the invert of the eos, pressure and energy density relation to integrate and interpolate.
+        y (psudo-varible): containing pressure, mass, h and b as intergarte varibles
+        to solve out the TOV equation
+        inveos: the invert of the eos, pressure and energy density relation to integrate
+        and interpolate.
 
     Returns:
-        Mass (array): The array that contains all the Stars' masses, in M_sun as a Units.
+        Mass (array): The array that contains all the Stars' masses, in M_sun as a 
+        Units.
         Radius (array): The array that contains all the Stars's radius, in km.
-        Tidal Deformability (array): The array that contains correpsonding Tidal property, These are dimension-less.
+        Tidal Deformability (array): The array that contains correpsonding Tidal property, 
+        These are dimension-less.
     """
-    pres, m, h, b = y
-
-    # energy_density = 10**inveos(np.log10(pres))
+    pres, m,h,b = y
+    
+    #energy_density = 10**inveos(np.log10(pres))
     eps = inveos(pres)
     dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
     dpdr = dpdr / (r * (r - 2.0 * m))
@@ -158,9 +161,11 @@ def solveTOV_tidal(center_rho, energy_density, pressure):
         pressure (array): Pressure array of neutron star EoS, also in nautral unit with MeV/fm^{-3}, still please check the Test_EOS.csv, the conversion is (value in dyn/cm3)*G/c**4.
 
     Returns:
-        Mass (array): The array that contains all the Stars' masses, in M_sun as a Units.
+        Mass (array): The array that contains all the Stars' masses, in M_sun as a 
+        Units.
         Radius (array): The array that contains all the Stars's radius, in km.
-        Tidal Deformability (array): The array that contains correpsonding Tidal property, These are dimension-less.
+        Tidal Deformability (array): The array that contains correpsonding Tidal property, 
+        These are dimension-less.
     """
     # eos = UnivariateSpline(np.log10(eps), np.log10(pres), k=1, s=0)
     # inveos = UnivariateSpline(np.log10(pressure), np.log10(energy_density), k=1, s=0)
@@ -236,12 +241,26 @@ def solveTOV(center_rho, Pmin, eos, inveos):
         inveos (function): energy density vs. pressure
 
     Returns:
-        Mass (float): The Stars' mass
-        Radius (float): The Stars's radius
+        Mass (array): The array that contains all the Stars' masses, in M_sun as a 
+        Units.
+        Radius (array): The array that contains all the Stars's radius, in km.
     """
-    r = 4.441e-16 * unit.cm
-    dr = 10.0 * unit.cm
 
+    #eos = UnivariateSpline(np.log10(energy_density), np.log10(pres), k=1, s=0)
+    #inveos = UnivariateSpline(np.log10(pres), np.log10(energy_density), k=1, s=0)
+    #We could change this to Double Log Interpolation。
+    c = 3e10
+    G = 6.67428e-8
+    Msun = 1.989e33
+
+    eos = UnivariateSpline(energy_density, pressure, k=3, s=0)
+    inveos = UnivariateSpline(pressure, energy_density, k=3, s=0)
+    Pmin = pressure[20]
+    r = 4.441e-16
+    dr = 10.
+    center_rho = center_rho * G/c**2.
+    
+    #pcent = 10**eos(np.log10(rhocent))
     pcent = eos(center_rho)
     P0 = (
         pcent
