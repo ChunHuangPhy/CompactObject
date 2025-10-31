@@ -37,7 +37,7 @@ jobs:
         pip install matplotlib
         pip install ultranest
         pip install NumbaMinpack
-        pip install CompactObject-TOV==1.9.9
+        pip install -e .
     - name : install docs dependencies
       run: |
         pip install decorator h5py 
