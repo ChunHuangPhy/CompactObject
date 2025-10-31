@@ -13,9 +13,14 @@
 import os
 import sys
 
-print('In source directory: ', os.getcwd())
+# --- Make Sphinx import the local repo code first ---
+HERE = os.path.dirname(__file__)                         # docs/source
+REPO_ROOT = os.path.abspath(os.path.join(HERE, "..", ".."))  # repo root
+sys.path.insert(0, REPO_ROOT)
 
-sys.path.insert(0, os.path.abspath('source/'))
+print("Sphinx autodoc will import from REPO_ROOT:", REPO_ROOT)
+
+#sys.path.insert(0, os.path.abspath('source/'))
 sys.path.insert(0, os.path.abspath('../'))
 
 
