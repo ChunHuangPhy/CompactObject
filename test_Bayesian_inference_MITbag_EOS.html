@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIT bag EOS Inference pipline &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Speed of Sound EOS Inference pipeline" href="test_Bayesian_inference_SpeedOfSound_EOS.html" />
+    <link rel="prev" title="Strangeon EOS inference pipeline" href="test_Bayesian_inference_Strangeon_EOS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MIT bag EOS Inference pipline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#(a)-Import-packages">(a) Import packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#(b)-Set-up-priors">(b) Set up priors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#(c)-Set-up-likehood">(c) Set up likehood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#(d)-Set-up-sampler">(d) Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MIT bag EOS Inference pipline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test_Bayesian_inference_MITbag_EOS.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="MIT-bag-EOS-Inference-pipline">
+<h1>MIT bag EOS Inference pipline<a class="headerlink" href="#MIT-bag-EOS-Inference-pipline" title="Link to this heading"></a></h1>
+<p>The MIT bag model, which has commonly been applied to strange quark stars, relates pressure to energy density with the simple equation of state <span class="math notranslate nohighlight">\(p=\frac{\epsilon}{3}-\frac{4B}{3}\)</span>. There is only one parameter, the “bag constant” <span class="math notranslate nohighlight">\(B\)</span>. This represents the vacuum energy density, which creates a “bag” in which quarks are confined. See <a class="reference external" href="https://doi.org/10.1103/PhysRevD.9.3471">Chodos et al. (1974)</a>.</p>
+<p>In this notebook, we use our Bayesian inference code to constrain the value of <span class="math notranslate nohighlight">\(B\)</span> using observations.</p>
+<section id="(a)-Import-packages">
+<h2>(a) Import packages<a class="headerlink" href="#(a)-Import-packages" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.BayesianSampler</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sampler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.Likelihood</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">likelihood</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.prior</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prior</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.MITbag_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">MITbag</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeV</span><span class="p">,</span> <span class="n">fm</span><span class="p">,</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">dyn_cm_2</span><span class="p">,</span> <span class="n">km</span><span class="p">,</span> <span class="n">Msun</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.main</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">main</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="(b)-Set-up-priors">
+<h2>(b) Set up priors<a class="headerlink" href="#(b)-Set-up-priors" title="Link to this heading"></a></h2>
+<p>Next, we need to set up the priors. We first use a parameters array to specify the variable name. This process should be consistent with what you need to call them.</p>
+<p>Define a prior transform function to define prior. Cube is a set of random numbers from 0 to 1. This prior setting is the standard set-up of UltraNest package, since we are using UltraNest to do nest-sampling.</p>
+<p>We provided two options call from prior:”normal_Prior” and “flat_prior”.</p>
+<p>We note that since we are doing Equation of state inference from mass-radius data of neutron star measurement. The central density of the star should be also sampled. Otherwise, this will be a partially-defined prior that did not span all of the parameter space, and proved to be different from full-scope inference.</p>
+<p>This request will randomly generate a density from a EoS range, however, this process is not that trivial, since we need to determine the upper limit of the central density of the compact star — different equations of state will predict different upper bounds, so here we need to use the prior-setting EoS parameters computing the mass-radius curve for this equation of state, then find out the last stable point of this equation of state (first mass points that give the direvative to be
+negative). We can find that index with the len() function, then reset this max_d to be upper limit of this density range.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;d1&#39;</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_transform</span><span class="p">(</span><span class="n">cube</span><span class="p">):</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="n">cube</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">B</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">epsilon</span><span class="p">,</span><span class="n">p</span> <span class="o">=</span> <span class="n">MITbag</span><span class="o">.</span><span class="n">MITbag_compute_EOS</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+    <span class="n">RFSU2R</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">MFSU2R</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">epsilon</span><span class="p">[:],</span> <span class="n">epsilon</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="o">&lt;</span><span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">p</span><span class="p">[:],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+        <span class="n">MR</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">epsilon</span><span class="p">,</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">MR</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#this line for showing how to add one more observation</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+            <span class="n">RFSU2R</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">MFSU2R</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MFSU2R</span><span class="p">)</span><span class="o">==</span><span class="kc">False</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1">#params[3] = 0</span>
+        <span class="c1">#this line for showing how to add one more observation</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">MFSU2R</span><span class="p">)</span>
+        <span class="n">max_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">density</span><span class="p">[</span><span class="n">max_index</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">14.3</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_d</span> <span class="o">-</span> <span class="mf">14.3</span><span class="p">)</span> <span class="o">*</span> <span class="n">cube</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1">#params[3] = 14.3 + (max_d - 14.3) * cube[3]</span>
+        <span class="c1">#this line for showing how to add one more observation</span>
+    <span class="k">return</span> <span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<p>In the upper part, we define a flat (uniform) prior for the parameters in the strangeon matter equation of state, due to the lack of constraints from terrestrial experiments.</p>
+<p>Note that the above code is an example of Bayesian analysis for a given mass and radius observation measurement. For example, if you use the NICER data for the measurements of J0030, then you should define another parameter, except the strangeon EOS parameters, e.g. “d1” for the centre density of this measurement, in the meantime add “params[2]” to this code.</p>
+<p>If you further consider the adjoint analysis with J0030+J0740, then you should define the other two parameters, e.g. “d1” and “d2” for the centre density of these two measurements, in the meantime add “params[3]” to the above code.</p>
+</section>
+<section id="(c)-Set-up-likehood">
+<h2>(c) Set up likehood<a class="headerlink" href="#(c)-Set-up-likehood" title="Link to this heading"></a></h2>
+<p>We need to set up a likelihood, Using standard definition way of UltraNest, that is below.</p>
+<p>Here the likelihood is generated from a simulated mass radius measurement, which is 𝑀=1.4𝑀⊙ and 𝑅=13 km, With a 5% Mass radius measurement uncertainty,</p>
+<p>so here</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>likelihood.MRlikihood_Gaussian
+</pre></div>
+</div>
+<p>function will be use for our likelihood, please check <a class="reference external" href="https://github.com/ChunHuangPhy/CompactOject/blob/main/InferenceWorkflow/Likelihood.py">likelihood.MRlikihood_Gaussian</a> to see the original code, and more choice of likelihood. eg:</p>
+<p>1.If we have some real mass-radius measurements, say PSR J0030 or PSR J0740, come from NICER, a KDE kernel could be trained to feed into</p>
+<p>likelihood.MRlikihood_kernel(eps_total,pres_total,x,d1)</p>
+<p>set the KDE kernel as a input for this function</p>
+<p>2.If we gain measurement from radio-timing, say only measure the neutron star mass, then</p>
+<p>likelihood.Masslikihood_Gaussian(eps_total,pres_total,x,d1)</p>
+<p>Which will give the likelihood from single mass measurement, x is the parameters of that measurement, you should specify where this measurement mass is located and what is the sigma width of this mass measurement.</p>
+<p>3.If we have nuclear measurements, and want to constrain this RMF model by nuclear properties like K(The Incompressibility of nuclear matter),J ( the symmetry energy at saturation density) and L( the slope of symmetry energy at saturation density). You can choose:</p>
+<p>likelihood.Kliklihood(theta,K_low,K_up) likelihood.Jliklihood(theta,K_low,K_up) likelihood.Lliklihood(theta,K_low,K_up)</p>
+<p>We are defaulting a hard-cut flat constrain, so if you don’t like this default hard cut, also could define the likelihood by youself with similiar style.</p>
+<p>4.If we have a Tidal measurements from Gravitational wave detector, we can use it to do constraint:</p>
+<p>likelihood.TidalLikihood_kernel(eps_total,pres_total,x,d1)</p>
+<p>Where x is sampled distribution from real measurements, the standard is</p>
+<p>kernel, chrip = x,</p>
+<p>where the kernel is a whole set sampling from GW event, that is [chrip mass, M2/M1, tidal of M1, tidal of M2] four quantities. Chrip is the single smapling that comes only the chrip mass sampling.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">likelihood_transform</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="c1"># This is a demonstration code for only introduce one constraint from one mass-radius observation.</span>
+    <span class="c1"># Could be very easy to implement more constraint from nuclear quantity, since that do not need to</span>
+    <span class="c1"># sample more central density of real neutron star. If user want to expand to two mass radius measurement</span>
+    <span class="c1"># the code could be:</span>
+
+    <span class="n">B</span><span class="p">,</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">theta</span>
+
+    <span class="c1">####################################################################################################################</span>
+    <span class="c1">############ This is the block to compute out all the EoS you need based on your parameters#########################</span>
+
+    <span class="n">epsilon</span><span class="p">,</span><span class="n">p</span> <span class="o">=</span> <span class="n">MITbag</span><span class="o">.</span><span class="n">MITbag_compute_EOS</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+    <span class="c1">####################################################################################################################</span>
+
+    <span class="n">probMRgaussian</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">MRlikihood_Gaussian</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span><span class="n">p</span><span class="p">,(</span><span class="mf">1.4</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mf">0.07</span><span class="p">,</span><span class="mf">0.65</span><span class="p">),</span><span class="n">d1</span><span class="p">)</span>
+
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">probMRgaussian</span>
+
+    <span class="k">return</span> <span class="n">prob</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="(d)-Set-up-sampler">
+<h2>(d) Set up sampler<a class="headerlink" href="#(d)-Set-up-sampler" title="Link to this heading"></a></h2>
+<p>Here next, we define sampler, there is two different sampler we provided for.</p>
+<p>Considering where you need resume file:</p>
+<p>sampler.UltranestSampler and sampler.UltranestSamplerResume</p>
+<p>Here since it is our first run, so we only use first one. Some of the sampler parameters is requested, first is step number, our choice for UltraNest sampler is slicesampler, which could easily be sliced up your total computation load, and parallelize, speed up sampling. So step as suggested by documentation of UltraNest, we use 2*len(parameters).</p>
+<p>live_point we set 2000, it will influence the sampling precision, We suggest for 7 dimension space, maybe 5000 is a better choice, however, since my computer only have limited resources, we set 2000.</p>
+<p>max_calls set 10000, it is how many iteration after it will stop, we suggest to set this number significantly higher, otherwise maybe will broken before the inference converging to a definite value. That result will be un-phyiscal.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">step</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+<span class="n">live_point</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="n">max_calls</span> <span class="o">=</span> <span class="mi">60000</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">UltranestSampler</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span><span class="n">likelihood_transform</span><span class="p">,</span><span class="n">prior_transform</span><span class="p">,</span><span class="n">step</span><span class="p">,</span><span class="n">live_point</span><span class="p">,</span><span class="n">max_calls</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test_Bayesian_inference_Strangeon_EOS.html" class="btn btn-neutral float-left" title="Strangeon EOS inference pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test_Bayesian_inference_SpeedOfSound_EOS.html" class="btn btn-neutral float-right" title="Speed of Sound EOS Inference pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
