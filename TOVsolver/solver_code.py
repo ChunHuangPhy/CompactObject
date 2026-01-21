@@ -218,12 +218,14 @@ def solveTOV_tidal(center_rho, energy_density, pressure, max_radius=30e5*unit.cm
     while (sy.successful() and 
            stateTOV[0] > Pmin and 
            sy.t < max_radius and
-           rho_current > 0.01 * rhocent):  # Stop if density drops too much
+           rho_current > 1e-13 * rhocent):  # Stop if density drops too much
         
         stateTOV = sy.integrate(sy.t + dr)
         
+        # TODO: This judgment related to rho_current seems unnecessary in most cases. 
+        # Perhaps we can simplify it further.
         # 4. Calculate current density
-        rho_current = inveos(stateTOV[0])
+        # rho_current = inveos(stateTOV[0])
         
         # 5. Sanity check for mass (it should never decrease)
         if stateTOV[1] < prev_mass:
@@ -330,12 +332,14 @@ def solveTOV(center_rho, Pmin, eos, inveos, max_radius=30e5*unit.cm):
     while (sy.successful() and 
            stateTOV[0] > Pmin and 
            sy.t < max_radius and
-           rho_current > 0.01 * center_rho):  # Stop if density drops too much
+           rho_current > 1e-13 * center_rho):  # Stop if density drops too much
         
         stateTOV = sy.integrate(sy.t + dr)
         
+        # TODO: This judgment related to rho_current seems unnecessary in most cases. 
+        # Perhaps we can simplify it further.
         # 4. Calculate current density
-        rho_current = inveos(stateTOV[0])
+        # rho_current = inveos(stateTOV[0])
         
        
         # 5. Sanity check for mass (it should never decrease)

@@ -45,15 +45,19 @@ Package paper:
 
 1. **Huang, C., Malik, T., Cartaxo, J., et al.** (2024). *CompactObject: An open-source Python package for full-scope neutron star equation of state inference* [arXiv:2411.14615](https://arxiv.org/abs/2411.14615)
 
+2. **Cartaxo, J., Huang, C., Malik, T., Sourav, S. , Yuan, W., Zhou, T., Liu, X., Providência, C.**, "A Complete Survey from the CompactObject Perspective on Equation of State Cross-Comparison Using Observational and Nuclear Experimental Constraints", [arXiv: 2506.03112](https://arxiv.org/abs/2506.03112), (2025), Submitted to ApJS.
+
 
 Other papers:
 
 1. **Huang, C., Raaijmakers, G., Watts, A. L., Tolos, L., & Providência, C.** (2024). *Constraining fundamental nuclear physics parameters using neutron star mass-radius measurements I: Nucleonic models*. *Monthly Notices of the Royal Astronomical Society*, 529. [DOI:10.1093/mnras/stae844](https://academic.oup.com/mnras/article/529/4/4650/7634362)
 
-2. **Huang, C., Tolos, L., Providência, C., & Watts, A.** (2024). *Constraining a relativistic mean field model using neutron star mass-radius measurements II: Hyperonic models*. *arXiv preprint arXiv:2410.14572*. [https://arxiv.org/abs/2410.14572](https://arxiv.org/abs/2410.14572)
+3. **Huang, C., & Zheng, X.-P.** (2024). *Bayesian Insights into post-Glitch Dynamics: Model comparison and parameter constraint from decades-long observation data of the Crab pulsar*, *Monthly Notices of the Royal Astronomical Society*, Volume 542, Issue 4, October 2025, Pages 3198–3205, [https://doi.org/10.1093/mnras/staf1415](https://doi.org/10.1093/mnras/staf1415).
 
-3. **Huang, C., & Zheng, X.-P.** (2024). *Bayesian Insights into post-Glitch Dynamics: Model comparison and parameter constraint from decades-long observation data of the Crab pulsar*. *arXiv preprint arXiv:2409.18432*. [https://arxiv.org/abs/2409.18432](https://arxiv.org/abs/2409.18432)
-
+5. **Huang, C., Sourav, S.**, *Constraining first-order phase transition inside neutron stars with application of Bayesian techniques on PSR J0437-4715 NICER data*, (2025), *The Astrophysical Journal*, Volume 983, Number 1, [https://iopscience.iop.org/article/10.3847/1538-4357/adbca6](https://iopscience.iop.org/article/10.3847/1538-4357/adbb67/meta) 
+   
+7.  **Huang, C.**, *Equation of State Independent Determination on the Radius of a 1.4 $M_{\odot}$ Neutron Star Using Mass-Radius Measurements* (2025), *The Astrophysical Journal Letters*, Volume 978, Number 1, [https://iopscience.iop.org/article/10.3847/2041-8213/ad9f3c](https://iopscience.iop.org/article/10.3847/2041-8213/ad9f3c).
+   
 
 ## Sample Citation
 
