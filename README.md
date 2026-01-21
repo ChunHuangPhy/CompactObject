@@ -45,7 +45,7 @@ Package paper:
 
 1. **Huang, C., Malik, T., Cartaxo, J., et al.** (2024). *CompactObject: An open-source Python package for full-scope neutron star equation of state inference* [arXiv:2411.14615](https://arxiv.org/abs/2411.14615)
 
-2. **Cartaxo, J., Huang, C., Malik, T., Sourav, S. , Yuan, W., Zhou, T., Liu, X., Providência, C.**, "A Complete Survey from the CompactObject Perspective on Equation of State Cross-Comparison Using Observational and Nuclear Experimental Constraints", [arXiv: 2506.03112](https://arxiv.org/abs/2506.03112), (2025), Submitted to ApJS.
+2. **Cartaxo, J., Huang, C., Malik, T., Sourav, S. , Yuan, W., Zhou, T., Liu, X., Providência, C.**, “Covariant Energy Density Functionals for Neutron Star Matter Equation of State Modeling: Cross-Comparison Analysis Using \texttt{CompactObject}”, *The Astrophysical Journal Supplement Series*, Volume 282, Number 2, [https://iopscience.iop.org/article/10.3847/1538-4365/ae2310](https://iopscience.iop.org/article/10.3847/1538-4365/ae2310)
 
 
 Other papers:
