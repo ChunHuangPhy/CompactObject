@@ -1,0 +1,534 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Polytrope EOS emcee workflow &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Crust Equation of state interpolation" href="crust_EOS.html" />
+    <link rel="prev" title="MIT bag EOS emcee workflow" href="EMCEE_MIT_bag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Polytrope EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Import-the-libraries">Import the libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Define-the-Constants">Define the Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Defining-the-Maximum-Central-Density">Defining the Maximum Central Density</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Load-the-data">Load the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Define-the-Prior">Define the Prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Define-the-Log-likelihood-and-the-log-posterior">Define the Log likelihood and the log posterior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Define-the-parameters-to-the-Mass-and-Radius-points">Define the parameters to the Mass and Radius points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Run-the-EMCEE-for-MCMC-Analysis">Run the EMCEE for MCMC Analysis</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Polytrope EOS emcee workflow</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/EMCEE_polytrope.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Polytrope-EOS-emcee-workflow">
+<h1>Polytrope EOS emcee workflow<a class="headerlink" href="#Polytrope-EOS-emcee-workflow" title="Link to this heading"></a></h1>
+<section id="Import-the-libraries">
+<h2>Import the libraries<a class="headerlink" href="#Import-the-libraries" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">corner</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="c1"># Import your existing modules</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.prior</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prior</span>
+<span class="c1"># import ultranest  # Not used anymore</span>
+<span class="c1"># import TOVsolver.unit as unit</span>
+<span class="c1"># from TOVsolver.unit import g_cm_3, dyn_cm_2, km, Msun, e0</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.maximum_central_density</span><span class="w">  </span><span class="k">as</span><span class="w"> </span><span class="nn">maximum_central_density</span>
+<span class="c1"># from TOVsolver.maxium_central_density import maxium_central_density</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.solver_code</span><span class="w"> </span><span class="kn">import</span> <span class="n">solveTOV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">Polytrope_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Polytrope</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Define-the-Constants">
+<h2>Define the Constants<a class="headerlink" href="#Define-the-Constants" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">hbarc</span> <span class="o">=</span> <span class="mf">0.197327053</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># speed of light</span>
+<span class="n">hbar</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># reduced Planck constant</span>
+
+<span class="n">GeV</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">hbarc</span>  <span class="c1"># Giga-electronvolt</span>
+<span class="n">MeV</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">GeV</span>  <span class="c1"># Mega-electronvolt</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="mf">5.625e26</span> <span class="o">*</span> <span class="n">MeV</span>  <span class="c1"># gram</span>
+<span class="n">kg</span> <span class="o">=</span> <span class="mf">1e3</span> <span class="o">*</span> <span class="n">g</span>  <span class="c1"># kilogram</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="mf">1e13</span> <span class="o">*</span> <span class="n">fm</span>  <span class="c1"># centimeter</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">cm</span>  <span class="c1"># meter</span>
+<span class="n">km</span> <span class="o">=</span> <span class="mf">1e5</span> <span class="o">*</span> <span class="n">cm</span>  <span class="c1"># kilometer</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mf">3e10</span> <span class="o">*</span> <span class="n">cm</span>  <span class="c1"># second</span>
+
+<span class="n">dyn</span> <span class="o">=</span> <span class="n">g</span> <span class="o">*</span> <span class="n">cm</span> <span class="o">/</span> <span class="n">s</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># dyne</span>
+<span class="n">dyn_cm_2</span> <span class="o">=</span> <span class="n">dyn</span> <span class="o">/</span> <span class="n">cm</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># dyne / cm^2</span>
+<span class="n">g_cm_3</span> <span class="o">=</span> <span class="n">g</span> <span class="o">/</span> <span class="n">cm</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># gram / cm^3</span>
+<span class="n">erg</span> <span class="o">=</span> <span class="n">dyn</span> <span class="o">*</span> <span class="n">cm</span>  <span class="c1"># ἐργον energy unit</span>
+
+<span class="n">m_n</span> <span class="o">=</span> <span class="mf">939.565</span> <span class="o">*</span> <span class="n">MeV</span>  <span class="c1"># mass of neutron</span>
+<span class="n">n0</span> <span class="o">=</span> <span class="mf">0.16</span> <span class="o">/</span> <span class="n">fm</span><span class="o">**</span><span class="mi">3</span>  <span class="c1"># saturation density</span>
+
+<span class="n">e0</span> <span class="o">=</span> <span class="n">m_n</span> <span class="o">*</span> <span class="n">n0</span>  <span class="c1"># saturation energy density</span>
+<span class="n">G</span> <span class="o">=</span> <span class="mf">6.6743e-8</span> <span class="o">*</span> <span class="n">dyn</span> <span class="o">*</span> <span class="n">cm</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># gravitational constant</span>
+<span class="n">Msun</span> <span class="o">=</span> <span class="mf">1.989e33</span> <span class="o">*</span> <span class="n">g</span>  <span class="c1"># mass of sun</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">unit</span>
+<span class="c1"># from TOVsolver.unit import unit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">OutputMR</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Defining-the-Maximum-Central-Density">
+<h2>Defining the Maximum Central Density<a class="headerlink" href="#Defining-the-Maximum-Central-Density" title="Link to this heading"></a></h2>
+<p>Outputs the maxium central density of a stable EoS Args: energy_density (numpy 1Darray): Density of EoS pressure (numpy 1Darray): Pressure of EoS central_densitys (numpy 1Darray): The range of central density num2 (int): The number of segments in the density interval of second search. At least 5 points Returns: density (float): The maxium central density, in unit.g_cm_3</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">maxium_central_density</span><span class="p">(</span><span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">central_densitys</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">unit</span><span class="o">.</span><span class="n">g_cm_3</span><span class="p">,</span> <span class="n">num2</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+    <span class="c1">############## Below is the main part of two searches for peaks</span>
+    <span class="c1">######## First search</span>
+    <span class="n">Ms</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># Meaningless initialization, only to ensure that the following &#39;if (i&gt;0) and (Ms [-1]&lt;=Ms [-2])&#39; statements can run properly</span>
+    <span class="n">store_d_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">central_densitys</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">central_densitys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="c1"># When the following loop does not output a result, initialization here will have its meaning</span>
+    <span class="c1"># Find the extremum point within the predetermined range of central density and return the central density near the extremum point</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rho</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">central_densitys</span><span class="p">):</span>
+        <span class="n">M</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">OutputMR</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="p">[</span><span class="n">rho</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Ms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="n">store_d_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">central_densitys</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">central_densitys</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="k">break</span>
+    <span class="n">Ms_larg</span> <span class="o">=</span> <span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Used to store the mass corresponding to the maximum density during the first peak search</span>
+
+    <span class="c1">######## Second search</span>
+    <span class="n">Ms</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># Reinitialize</span>
+    <span class="c1"># Update and refine the central density range, and ultimately return the central density of the extremum points</span>
+    <span class="n">store_d_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">store_d_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">store_d_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num2</span><span class="p">)</span> <span class="c1"># At least 5 points</span>
+    <span class="c1"># Note that the first and last points have already been calculated, so there is no need to traverse them</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rho</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">store_d_range</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">M</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">OutputMR</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">energy_density</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="p">[</span><span class="n">rho</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Ms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]:</span>    <span class="c1"># Note that due to the second peak search refining the interval, the result is generally not obtained at the first point.</span>
+                                <span class="c1"># Therefore, initializing Ms=[-1, -2] is acceptable</span>
+            <span class="k">return</span> <span class="n">store_d_range</span><span class="p">[</span><span class="mi">1</span><span class="p">:][</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># When the above peak search fails, continue comparing the last point</span>
+    <span class="k">if</span> <span class="n">Ms_larg</span> <span class="o">&lt;</span> <span class="n">Ms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">store_d_range</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">store_d_range</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Load-the-data">
+<h2>Load the data<a class="headerlink" href="#Load-the-data" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load crust data</span>
+<span class="n">Tolos_crust_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">eps_crust</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+<span class="n">pres_crust</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">dyn_cm_2</span>
+
+<span class="n">rho_crust_end</span> <span class="o">=</span> <span class="n">eps_crust</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">P_crust_end</span> <span class="o">=</span> <span class="n">pres_crust</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">eps_core</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">11.7</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+<span class="n">cent_densitys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;rho1&#39;</span><span class="p">,</span> <span class="s1">&#39;rho2&#39;</span><span class="p">,</span> <span class="s1">&#39;rho3&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma1&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma2&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma3&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma4&#39;</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="s1">&#39;d3&#39;</span><span class="p">]</span>
+<span class="n">derived_param_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;d_max&#39;</span><span class="p">]</span>
+
+<span class="n">gamma_lo_ranges</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="n">gamma_up_ranges</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Define-the-Prior">
+<h2>Define the Prior<a class="headerlink" href="#Define-the-Prior" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define log_prior as shown above</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_prior</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">para</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Assign rho parameters</span>
+        <span class="n">para</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">0.04</span><span class="o">/</span><span class="mf">0.16</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="mf">0.065</span><span class="o">/</span><span class="mf">0.16</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">para</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="mf">8.3</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">para</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">para</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">8.3</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">rho_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">para</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">para</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">para</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">eps_core</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">gamma_s</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">gamma_max</span> <span class="o">=</span> <span class="n">Polytrope</span><span class="o">.</span><span class="n">fun_gamma_max</span><span class="p">(</span><span class="n">rho_s</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rho_crust_end</span><span class="p">,</span> <span class="n">P_crust_end</span><span class="p">)</span>
+                <span class="n">upper</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">gamma_up_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma_max</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">upper</span> <span class="o">&lt;</span> <span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+                <span class="n">para</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">upper</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gamma_max</span> <span class="o">=</span> <span class="n">Polytrope</span><span class="o">.</span><span class="n">fun_gamma_max</span><span class="p">(</span><span class="n">rho_s</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">rho_s</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pt</span><span class="p">)</span>
+                <span class="n">upper</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">gamma_up_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">gamma_max</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">upper</span> <span class="o">&lt;</span> <span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+                <span class="n">para</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">upper</span><span class="p">,</span> <span class="n">theta</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="n">gamma_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">para</span><span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">P_crust_end</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho_s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="n">gamma_s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">pt</span> <span class="o">/</span> <span class="p">(</span><span class="n">rho_s</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="n">gamma_s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">pt</span> <span class="o">=</span> <span class="n">k</span> <span class="o">*</span> <span class="n">rho_s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="n">gamma_s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Check derived parameters</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="n">Polytrope</span><span class="o">.</span><span class="n">compute_EOS</span><span class="p">(</span><span class="n">eps_core</span><span class="p">,</span> <span class="n">para</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">eps_core</span><span class="p">))</span>
+        <span class="n">pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">pres_crust</span><span class="p">,</span> <span class="n">pres</span><span class="p">))</span>
+
+        <span class="n">d_max</span> <span class="o">=</span> <span class="n">maxium_central_density</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">cent_densitys</span><span class="p">)</span>
+        <span class="n">log_d_max</span> <span class="o">=</span> <span class="mf">14.3</span> <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">d_max</span> <span class="o">/</span> <span class="n">g_cm_3</span><span class="p">)</span> <span class="o">-</span> <span class="mf">14.3</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">((</span><span class="mf">14.3</span> <span class="o">&lt;=</span> <span class="n">log_d_max</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">log_d_max</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">cent_densitys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">g_cm_3</span><span class="p">))):</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+
+        <span class="k">return</span> <span class="mf">0.0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Define-the-Log-likelihood-and-the-log-posterior">
+<h2>Define the Log likelihood and the log posterior<a class="headerlink" href="#Define-the-Log-likelihood-and-the-log-posterior" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define log_likelihood as shown above</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">gammas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">6</span><span class="p">]])</span>
+    <span class="n">rho_ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">theta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">theta</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+    <span class="n">d_s</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">theta</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+
+    <span class="n">theta_full</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gammas</span><span class="p">,</span> <span class="n">rho_ts</span><span class="p">)</span>
+    <span class="n">Ms</span><span class="p">,</span> <span class="n">Rs</span> <span class="o">=</span> <span class="n">from_para_to_MR_points</span><span class="p">(</span><span class="n">theta_full</span><span class="p">,</span> <span class="n">d_s</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># Gaussian likelihood for M and R</span>
+    <span class="n">fm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Ms</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Msun</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">Ms</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Msun</span><span class="p">)</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">Ms</span> <span class="o">-</span> <span class="n">Mvalue</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">M_sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Rs</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">km</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">Rs</span> <span class="o">-</span> <span class="mi">16</span> <span class="o">*</span> <span class="n">km</span><span class="p">)</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="n">Rs</span> <span class="o">-</span> <span class="n">Rvalue</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">R_sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="n">f2</span> <span class="o">=</span> <span class="p">(</span><span class="n">fm</span> <span class="o">+</span> <span class="n">fr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">likelihood</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span>
+    <span class="k">return</span> <span class="n">likelihood</span>
+
+<span class="c1"># Define log_posterior</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_posterior</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">lp</span> <span class="o">=</span> <span class="n">log_prior</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">lp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">ll</span> <span class="o">=</span> <span class="n">log_likelihood</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lp</span> <span class="o">+</span> <span class="n">ll</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Define-the-parameters-to-the-Mass-and-Radius-points">
+<h2>Define the parameters to the Mass and Radius points<a class="headerlink" href="#Define-the-parameters-to-the-Mass-and-Radius-points" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="c1"># # Prepare data</span>
+<span class="c1"># datas = [</span>
+<span class="c1">#     [10, 1.97, 0.5, 0.0985],</span>
+<span class="c1">#     [13, 1.44, 0.65, 0.072],</span>
+<span class="c1">#     [12, 2.07, 0.6, 0.1035]</span>
+<span class="c1"># ]</span>
+<span class="c1"># datas = pd.DataFrame(datas, index=[1,2,3], columns=[&#39;R&#39;, &#39;M&#39;, &#39;Rsigma&#39;, &#39;Msigma&#39;])</span>
+
+<span class="c1"># Rvalue = datas[&#39;R&#39;].values * km</span>
+<span class="c1"># Mvalue = datas[&#39;M&#39;].values * Msun</span>
+
+<span class="c1"># R_sigma = datas[&#39;Rsigma&#39;].values * km</span>
+<span class="c1"># M_sigma = datas[&#39;Msigma&#39;].values * Msun</span>
+
+<span class="c1"># f1 = np.log(1/(R_sigma*M_sigma*(np.sqrt(2*np.pi))**2)).sum()</span>
+
+<span class="c1"># Define from_para_to_MR_points as in your original code</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">MR_likelihood_Gaussian</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the likelihood from MR measurement with Gaussian likelihood.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        theta: Parameter set for the equation of state (EoS).</span>
+<span class="sd">        x: [Mvalue, Rvalue, Mwidth, Rwidth] - parameters of the Gaussian distribution.</span>
+<span class="sd">        d1: Sampled logarithmic density (log10 scale) for the measurement.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        likelihood (float): Log-likelihood value for the given parameter setup.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Mvalue</span><span class="p">,</span> <span class="n">Rvalue</span><span class="p">,</span> <span class="n">Mwidth</span><span class="p">,</span> <span class="n">Rwidth</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">sigma_M</span> <span class="o">=</span> <span class="n">Mwidth</span>
+    <span class="n">sigma_R</span> <span class="o">=</span> <span class="n">Rwidth</span>
+
+    <span class="c1"># Compute pressure and energy density from the EoS using theta</span>
+    <span class="n">pres_core</span> <span class="o">=</span> <span class="n">Polytrope</span><span class="o">.</span><span class="n">compute_EOS</span><span class="p">(</span><span class="n">eps_core</span><span class="p">,</span> <span class="n">theta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">eps_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">eps_core</span><span class="p">))</span>
+    <span class="n">pres_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">pres_crust</span><span class="p">,</span> <span class="n">pres_core</span><span class="p">))</span>
+
+    <span class="c1"># Ensure unique pressure values for interpolation</span>
+    <span class="n">unique_pressure_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pres_total</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">unique_pressure</span> <span class="o">=</span> <span class="n">pres_total</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_pressure_indices</span><span class="p">)]</span>
+
+    <span class="c1"># Create interpolating functions for EoS and its inverse</span>
+    <span class="n">eos</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span> <span class="n">pres_total</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+    <span class="n">inveos</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">unique_pressure</span><span class="p">,</span> <span class="n">eps_total</span><span class="p">[</span><span class="n">unique_pressure_indices</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s1">&#39;extrapolate&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">d1</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>  <span class="c1"># Return a large negative value if density is zero</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">density</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">d1</span>  <span class="c1"># Convert log density to linear scale</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Solve the TOV equations to get mass and radius for the given density</span>
+            <span class="n">MR</span> <span class="o">=</span> <span class="n">solveTOV2</span><span class="p">(</span><span class="n">density</span><span class="p">,</span> <span class="n">pres_total</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">eos</span><span class="p">,</span> <span class="n">inveos</span><span class="p">)</span>  <span class="c1"># Returns [mass, radius]</span>
+
+            <span class="k">if</span> <span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>  <span class="c1"># Return a large negative value if mass or radius is zero</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Compute the Gaussian likelihood</span>
+                <span class="n">fx</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma_M</span> <span class="o">*</span> <span class="n">sigma_R</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                    <span class="o">-</span><span class="p">((</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">km</span> <span class="o">-</span> <span class="n">Rvalue</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_R</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="o">-</span> <span class="p">((</span><span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">Msun</span> <span class="o">-</span> <span class="n">Mvalue</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_M</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">likelihood</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">fx</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OverflowError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mf">1e101</span>  <span class="c1"># Return a large negative value if an overflow occurs</span>
+
+    <span class="k">return</span> <span class="n">likelihood</span> <span class="k">if</span> <span class="n">likelihood</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1e101</span> <span class="k">else</span> <span class="o">-</span><span class="mf">1e101</span>
+<br/><br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Run-the-EMCEE-for-MCMC-Analysis">
+<h2>Run the EMCEE for MCMC Analysis<a class="headerlink" href="#Run-the-EMCEE-for-MCMC-Analysis" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize emcee</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>  <span class="c1"># 10</span>
+<span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ndim</span>     <span class="c1"># 20</span>
+<span class="n">nsteps</span> <span class="o">=</span> <span class="mi">25000</span>          <span class="c1"># Adjust based on convergence</span>
+
+<span class="c1"># Initialize walkers</span>
+<span class="n">initial_positions</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">):</span>
+    <span class="n">initial_position</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">0.04</span><span class="o">/</span><span class="mf">0.16</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="mf">0.065</span><span class="o">/</span><span class="mf">0.16</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="mf">8.3</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">1.5</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="mf">8.3</span><span class="o">*</span><span class="n">e0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">gamma_up_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">gamma_up_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">gamma_up_ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="n">gamma_lo_ranges</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">gamma_up_ranges</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">initial_positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">initial_position</span><span class="p">)</span>
+
+<span class="n">initial_positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">initial_positions</span><span class="p">)</span>
+
+<span class="c1"># Create the sampler</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">log_posterior</span><span class="p">)</span>
+
+<span class="c1"># Run the sampler</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running MCMC...&quot;</span><span class="p">)</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run_mcmc</span><span class="p">(</span><span class="n">initial_positions</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MCMC completed.&quot;</span><span class="p">)</span>
+
+<span class="c1"># Flatten the chain</span>
+<span class="n">flat_samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">get_chain</span><span class="p">(</span><span class="n">discard</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">thin</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Save the samples</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;emcee_samples.txt&quot;</span><span class="p">,</span> <span class="n">flat_samples</span><span class="p">)</span>
+
+<span class="c1"># Plot corner plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">flat_samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span> <span class="n">show_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title_fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="EMCEE_MIT_bag.html" class="btn btn-neutral float-left" title="MIT bag EOS emcee workflow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crust_EOS.html" class="btn btn-neutral float-right" title="Crust Equation of state interpolation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
