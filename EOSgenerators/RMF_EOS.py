@@ -549,13 +549,20 @@ def get_energy_pressure_alpha(x, rho, theta):
 
     sigma_terms =  0.5*((sigma*m_sig)**2) + (kappa*((g_sigma*sigma)**3))/6.\
                     + (lambda_0*((g_sigma*sigma)**4))/24.
-        
-    omega_terms = 0.5*((omega*m_w)**2) +(zeta*((g_omega*omega)**4))/8.
-        
-    rho_terms = 0.5*((rho_03*m_rho)**2)+ 3.*Lambda_w*((g_rho*rho_03*g_omega*omega)**2)
-    
-    energy_density = energy_b   + sigma_terms + omega_terms + rho_terms
-    Pressure       = Pressure_p + Pressure_n  - sigma_terms + omega_terms + rho_terms
+
+    # ε uses post-MF-substitution coefficients (ζ/8, 3·Λ_w); they absorb the matter-
+    # meson coupling g_ω·ω·ρ_B via the ω-field equation of motion.
+    omega_eps_terms = 0.5*((omega*m_w)**2) + (zeta*((g_omega*omega)**4))/8.
+    rho_eps_terms   = 0.5*((rho_03*m_rho)**2) + 3.*Lambda_w*((g_rho*rho_03*g_omega*omega)**2)
+
+    # P uses the raw Lagrangian coefficients (ζ/24, 1·Λ_w); P = T^{ii} carries no
+    # matter-meson coupling to substitute.  The old code reused the ε coefficients,
+    # which overstated P by (ζ/12)(g_ω ω)⁴ + 2·Λ_w (g_ρ ρ_03 g_ω ω)².
+    omega_P_terms   = 0.5*((omega*m_w)**2) + (zeta*((g_omega*omega)**4))/24.
+    rho_P_terms     = 0.5*((rho_03*m_rho)**2) + Lambda_w*((g_rho*rho_03*g_omega*omega)**2)
+
+    energy_density = energy_b   + sigma_terms + omega_eps_terms + rho_eps_terms
+    Pressure       = Pressure_p + Pressure_n  - sigma_terms + omega_P_terms   + rho_P_terms
 
     return energy_density, Pressure
 
