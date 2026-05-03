@@ -1,0 +1,530 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RMF EOS emcee workflow &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Strangeon EOS emcee workflow" href="EMCEE_strangeon.html" />
+    <link rel="prev" title="Unit Convention for Developer" href="UnitConventionForDeveloper.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RMF EOS emcee workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#What-EMCEE-does-?">What EMCEE does ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Import-necessary-libraries">Import necessary libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Loading-Crust-Model-Data">Loading Crust Model Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Prior">Prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Log-Likelihood-in-EMCEE">Log Likelihood in EMCEE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Likelihood-for-our-NS-model">Likelihood for our NS model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Random-Walker-and-log-Probability-Function">Random Walker and log Probability Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Setting-up-the-sampler">Setting up the sampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Initialize-and-Run">Initialize and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#For-our-NS-Model">For our NS Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">RMF EOS emcee workflow</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/EMCEE_RMF.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="RMF-EOS-emcee-workflow">
+<h1>RMF EOS emcee workflow<a class="headerlink" href="#RMF-EOS-emcee-workflow" title="Link to this heading"></a></h1>
+<p>First you need to install emcee package, to do MCMC sampling</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">emcee</span>
+</pre></div>
+</div>
+</div>
+<section id="What-EMCEE-does-?">
+<h2>What EMCEE does ?<a class="headerlink" href="#What-EMCEE-does-?" title="Link to this heading"></a></h2>
+<p>emcee is an open-source Python library designed for MCMC sampling. Here’s how it operates:</p>
+<ol class="arabic simple">
+<li><p>Walkers: emcee uses multiple “walkers” that explore the parameter space. Each walker represents a point in the parameter space and moves around based on the probabilities defined by the log likelihood and log prior.</p></li>
+<li><p>Sampling Process: During each step, each walker proposes a new position based on its current position and a set of random perturbations. The new position is then accepted or rejected based on the Metropolis-Hastings criterion, which ensures that points with higher probabilities are more likely to be accepted.</p></li>
+<li><p>Convergence: Over many iterations, the walkers explore the parameter space, allowing for convergence to the posterior distribution of the parameters. After a sufficient number of steps, the samples from the walkers can be used to estimate the posterior distributions and uncertainties of the parameters.</p></li>
+</ol>
+</section>
+<section id="Import-necessary-libraries">
+<h2>Import necessary libraries<a class="headerlink" href="#Import-necessary-libraries" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">emcee</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.Likelihood</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">likelihood</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.prior</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prior</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.constant</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">const</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TOVsolver.main</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">main</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.crust_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">crust</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.RMF_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">RMF</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Loading-Crust-Model-Data">
+<h2>Loading Crust Model Data<a class="headerlink" href="#Loading-Crust-Model-Data" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load crust model data</span>
+<span class="n">Tolos_crust_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;/Users/DELL/CompactOject/Test_Case/Tolos_crust_out.txt&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">eps_crust_out</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">G</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">pres_crust_out</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">const</span><span class="o">.</span><span class="n">G</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">c</span><span class="o">**</span><span class="mi">4</span>
+<span class="n">eps_crust</span><span class="p">,</span> <span class="n">pres_crust</span> <span class="o">=</span> <span class="n">crust</span><span class="o">.</span><span class="n">PolyInterpolate</span><span class="p">(</span><span class="n">eps_crust_out</span><span class="p">,</span> <span class="n">pres_crust_out</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Prior">
+<h2>Prior<a class="headerlink" href="#Prior" title="Link to this heading"></a></h2>
+<p>This function defines the log prior probability for the parameters. The prior is flat within specified bounds. If the parameters fall outside these bounds, the function returns −∞, indicating that the parameters are not valid.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the prior functions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_prior</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="c1"># Unpack parameters</span>
+    <span class="n">central_density</span><span class="p">,</span> <span class="n">other_param</span> <span class="o">=</span> <span class="n">params</span>  <span class="c1"># Adjust based on your actual parameters</span>
+
+    <span class="c1"># Define prior ranges</span>
+    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">central_density</span> <span class="o">&lt;</span> <span class="mf">2.5</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">other_param</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># example ranges</span>
+        <span class="k">return</span> <span class="mf">0.0</span>  <span class="c1"># Flat prior</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>  <span class="c1"># Log of zero for out of bounds</span>
+
+<span class="c1"># Define the log likelihood function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_likelihood</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">central_density</span><span class="p">,</span> <span class="n">other_param</span> <span class="o">=</span> <span class="n">params</span>  <span class="c1"># Adjust based on your actual parameters</span>
+
+    <span class="c1"># Compute the equation of state</span>
+    <span class="n">RMF</span><span class="o">.</span><span class="n">compute_EOS</span><span class="p">(</span><span class="n">central_density</span><span class="p">,</span> <span class="n">other_param</span><span class="p">)</span>  <span class="c1"># Add your specific EOS calculations</span>
+    <span class="n">mass_radius</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">()</span>  <span class="c1"># Get the mass-radius output</span>
+
+    <span class="c1"># Calculate likelihood based on your data and model</span>
+    <span class="c1"># For example, if you have observed data `obs_data`:</span>
+    <span class="n">obs_data</span> <span class="o">=</span> <span class="o">...</span>  <span class="c1"># Define your observed data</span>
+    <span class="n">likelihood_value</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">mass_radius</span><span class="p">,</span> <span class="n">obs_data</span><span class="p">)</span>  <span class="c1"># Replace with actual calculation</span>
+
+    <span class="k">return</span> <span class="n">likelihood_value</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parameters for the model</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;g_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;g_omega&#39;</span><span class="p">,</span> <span class="s1">&#39;g_rho&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa&#39;</span><span class="p">,</span> <span class="s1">&#39;lambda_0&#39;</span><span class="p">,</span> <span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="s1">&#39;Lambda_w&#39;</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">]</span>
+<span class="c1"># For two or more MR measurements, define d2 or more depending on complexity</span>
+<span class="c1"># parameters = [&#39;g_sigma&#39;, &#39;g_omega&#39;, &#39;g_rho&#39;, &#39;kappa&#39;, &#39;lambda_0&#39;, &#39;zeta&#39;, &#39;Lambda_w&#39;, &#39;d1&#39;, &#39;d2&#39;]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_transform</span><span class="p">(</span><span class="n">cube</span><span class="p">):</span>
+    <span class="c1"># Transform cube values into physical parameters</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Normal and flat prior transformations</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prior</span><span class="o">.</span><span class="n">normal_Prior</span><span class="p">(</span><span class="mf">107.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>  <span class="c1"># g_sigma</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1"># g_omega</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>  <span class="c1"># g_rho</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">normal_Prior</span><span class="p">(</span><span class="mf">2.525</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span><span class="p">,</span> <span class="mf">1.525</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>  <span class="c1"># kappa</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">normal_Prior</span><span class="p">(</span><span class="mf">0.0045</span><span class="p">,</span> <span class="mf">0.0205</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>  <span class="c1"># lambda_0</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>  <span class="c1"># zeta</span>
+    <span class="n">params</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.045</span><span class="p">,</span> <span class="n">cube</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>  <span class="c1"># Lambda_w</span>
+
+    <span class="c1"># Constants</span>
+    <span class="n">g_sigma</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">g_omega</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">g_rho</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">lambda_0</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">zeta</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">Lambda_w</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">495</span> <span class="o">/</span> <span class="n">oneoverfm_MeV</span>
+
+    <span class="c1"># Parameter array for RMF</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">])</span>
+
+    <span class="c1"># Compute EOS</span>
+    <span class="n">ep</span><span class="p">,</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">RMF</span><span class="o">.</span><span class="n">compute_EOS</span><span class="p">(</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">pres_crust</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+
+    <span class="c1"># Stack energy density and pressure</span>
+    <span class="n">eps_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">ep</span><span class="p">))</span>
+    <span class="n">pres_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">pres_crust</span><span class="p">,</span> <span class="n">pr</span><span class="p">))</span>
+
+    <span class="c1"># Initialize lists for mass-radius</span>
+    <span class="n">RFSU2R</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">MFSU2R</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">15.6</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="c1"># Check monotonicity of total energy density and pressure</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eps_total</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">eps_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pres_total</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pres_total</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+        <span class="n">MR</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">OutputMR</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">eps_total</span><span class="p">,</span> <span class="n">pres_total</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">if</span> <span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># No valid MR</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+                <span class="n">RFSU2R</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">MFSU2R</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">MR</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+    <span class="c1"># Set d1 parameter based on maximum mass</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">MFSU2R</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># No valid MR</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">max_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">MFSU2R</span><span class="p">)</span>
+        <span class="n">max_d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">density</span><span class="p">[</span><span class="n">max_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">params</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="mf">14.3</span> <span class="o">+</span> <span class="p">(</span><span class="n">max_d</span> <span class="o">-</span> <span class="mf">14.3</span><span class="p">)</span> <span class="o">*</span> <span class="n">cube</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>  <span class="c1"># Transform d1 parameter</span>
+    <span class="k">return</span> <span class="n">params</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Log-Likelihood-in-EMCEE">
+<h2>Log Likelihood in EMCEE<a class="headerlink" href="#Log-Likelihood-in-EMCEE" title="Link to this heading"></a></h2>
+<p>This function computes the log likelihood of the model given the parameters. It calls the functions to compute the equation of state and retrieves the mass-radius relation. Then, it calculates the likelihood based on observed data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Define the log likelihood function</span>
+<span class="c1"># def log_likelihood(params):</span>
+<span class="c1">#     central_density, other_param = params  # Adjust based on your actual parameters</span>
+
+<span class="c1">#     # Compute the equation of state</span>
+<span class="c1">#     RMF.compute_EOS(central_density, other_param)  # Call the function to compute EOS</span>
+<span class="c1">#     mass_radius = main.OutputMR()  # Get the mass-radius output</span>
+
+<span class="c1">#     # Calculate likelihood based on your data and model</span>
+<span class="c1">#     obs_data = ...  # Define your observed data</span>
+<span class="c1">#     likelihood_value = likelihood.calculate(mass_radius, obs_data)  # Replace with actual calculation</span>
+
+<span class="c1">#     return likelihood_value</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Likelihood-for-our-NS-model">
+<h2>Likelihood for our NS model<a class="headerlink" href="#Likelihood-for-our-NS-model" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the likelihood transformation function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">likelihood_transform</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">eps_crust</span><span class="p">,</span> <span class="n">pres_crust</span> <span class="o">=</span> <span class="n">crust</span><span class="o">.</span><span class="n">PolyInterpolate</span><span class="p">(</span><span class="n">eps_crust_out</span><span class="p">,</span> <span class="n">pres_crust_out</span><span class="p">)</span>
+    <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">,</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">theta</span>
+
+    <span class="c1"># Compute EOS</span>
+    <span class="n">m_sig</span> <span class="o">=</span> <span class="mi">495</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">oneoverfm_MeV</span>
+    <span class="n">m_w</span> <span class="o">=</span> <span class="mf">3.96544</span>
+    <span class="n">m_rho</span> <span class="o">=</span> <span class="mf">3.86662</span>
+    <span class="n">theta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m_sig</span><span class="p">,</span> <span class="n">m_w</span><span class="p">,</span> <span class="n">m_rho</span><span class="p">,</span> <span class="n">g_sigma</span><span class="p">,</span> <span class="n">g_omega</span><span class="p">,</span> <span class="n">g_rho</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">lambda_0</span><span class="p">,</span> <span class="n">zeta</span><span class="p">,</span> <span class="n">Lambda_w</span><span class="p">])</span>
+    <span class="n">ep</span><span class="p">,</span> <span class="n">pr</span> <span class="o">=</span> <span class="n">RMF</span><span class="o">.</span><span class="n">compute_EOS</span><span class="p">(</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">pres_crust</span><span class="p">,</span> <span class="n">theta1</span><span class="p">)</span>
+
+    <span class="n">eps_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">eps_crust</span><span class="p">,</span> <span class="n">ep</span><span class="p">))</span>
+    <span class="n">pres_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">pres_crust</span><span class="p">,</span> <span class="n">pr</span><span class="p">))</span>
+
+    <span class="c1"># Compute MR likelihood from simulated MR measurement</span>
+    <span class="n">probMRgaussian</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">MRlikihood_Gaussian</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span> <span class="n">pres_total</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">),</span> <span class="n">d1</span><span class="p">)</span>
+
+    <span class="c1"># Gravitational wave event likelihood</span>
+    <span class="n">GW170817</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;GW170817_McQL1L2weights.npy&#39;</span><span class="p">)</span>
+    <span class="n">chrip170817</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">GW170817</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">GW170817</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">kernelGW</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">gaussian_kde</span><span class="p">(</span><span class="n">GW170817</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">weights</span><span class="o">=</span><span class="n">GW170817</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">probGW</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">TidalLikihood_kernel</span><span class="p">(</span><span class="n">eps_total</span><span class="p">,</span> <span class="n">pres_total</span><span class="p">,</span> <span class="p">(</span><span class="n">kernelGW</span><span class="p">,</span> <span class="n">chrip170817</span><span class="p">),</span> <span class="n">d1</span><span class="p">)</span>
+
+    <span class="c1"># Combine all likelihoods</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">probMRgaussian</span> <span class="o">+</span> <span class="n">probGW</span>
+    <span class="k">return</span> <span class="n">prob</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Random-Walker-and-log-Probability-Function">
+<h2>Random Walker and log Probability Function<a class="headerlink" href="#Random-Walker-and-log-Probability-Function" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the log probability function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_probability</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">lp</span> <span class="o">=</span> <span class="n">log_prior</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">lp</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">return</span> <span class="n">lp</span> <span class="o">+</span> <span class="n">log_likelihood</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Setting-up-the-sampler">
+<h2>Setting up the sampler<a class="headerlink" href="#Setting-up-the-sampler" title="Link to this heading"></a></h2>
+<p>This block initializes the MCMC sampler. It defines the number of walkers (simultaneous sampling processes) and the number of parameters being estimated. It generates random initial positions for each walker within specified bounds.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up the sampler</span>
+<span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Number of walkers</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># Number of dimensions (parameters)</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">ndim</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">)]</span>  <span class="c1"># Initial positions of walkers</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the log probability function for emcee</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_probability</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">lp</span> <span class="o">=</span> <span class="n">prior_transform</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="c1"># Get prior parameters</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">lp</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+    <span class="k">return</span> <span class="n">likelihood_transform</span><span class="p">(</span><span class="n">lp</span><span class="p">)</span>
+
+<span class="c1"># Set up the MCMC sampler</span>
+<span class="n">nwalkers</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Number of walkers</span>
+<span class="n">ndim</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Number of dimensions (parameters)</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="p">[</span><span class="n">prior_transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">ndim</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">)]</span>  <span class="c1"># Initial positions of walkers</span>
+
+<span class="c1"># Initialize the emcee sampler</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">log_probability</span><span class="p">)</span>
+
+<span class="c1"># Analyze the results</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">get_chain</span><span class="p">(</span><span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;mcmc_samples.npy&#39;</span><span class="p">,</span> <span class="n">samples</span><span class="p">)</span>  <span class="c1"># Save the samples for later analysis</span>
+
+<span class="c1"># Example: Compute and print parameter estimates</span>
+<span class="n">parameter_estimates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;g_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;g_omega&#39;</span><span class="p">,</span> <span class="s1">&#39;g_rho&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa&#39;</span><span class="p">,</span> <span class="s1">&#39;lambda_0&#39;</span><span class="p">,</span> <span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="s1">&#39;Lambda_w&#39;</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">parameter_estimates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialize-and-Run">
+<h2>Initialize and Run<a class="headerlink" href="#Initialize-and-Run" title="Link to this heading"></a></h2>
+<p>Here, the EnsembleSampler from emcee is created with the defined log probability function. The MCMC sampling is executed for a specified number of steps, allowing progress tracking.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the emcee sampler</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">emcee</span><span class="o">.</span><span class="n">EnsembleSampler</span><span class="p">(</span><span class="n">nwalkers</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">log_probability</span><span class="p">)</span>
+
+<span class="c1"># Run the MCMC sampling</span>
+<span class="n">nsteps</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># Number of steps</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">run_mcmc</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">nsteps</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="For-our-NS-Model">
+<h2>For our NS Model<a class="headerlink" href="#For-our-NS-Model" title="Link to this heading"></a></h2>
+</section>
+<section id="Results">
+<h2>Results<a class="headerlink" href="#Results" title="Link to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># # Analyze the results</span>
+<span class="c1"># samples = sampler.get_chain(flat=True)</span>
+<span class="c1"># np.save(&#39;mcmc_samples.npy&#39;, samples)  # Save the samples for later analysis</span>
+
+<span class="c1"># # Example: Compute and print parameter estimates</span>
+<span class="c1"># central_density_estimate = np.mean(samples[:, 0])</span>
+<span class="c1"># other_param_estimate = np.mean(samples[:, 1])</span>
+<span class="c1"># print(f&quot;Estimated Central Density: {central_density_estimate}&quot;)</span>
+<span class="c1"># print(f&quot;Estimated Other Parameter: {other_param_estimate}&quot;)</span>
+
+
+<span class="c1"># Analyze the results</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">get_chain</span><span class="p">(</span><span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;mcmc_samples.npy&#39;</span><span class="p">,</span> <span class="n">samples</span><span class="p">)</span>  <span class="c1"># Save the samples for later analysis</span>
+
+<span class="c1"># Example: Compute and print parameter estimates</span>
+<span class="n">parameter_estimates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;g_sigma&#39;</span><span class="p">,</span> <span class="s1">&#39;g_omega&#39;</span><span class="p">,</span> <span class="s1">&#39;g_rho&#39;</span><span class="p">,</span> <span class="s1">&#39;kappa&#39;</span><span class="p">,</span> <span class="s1">&#39;lambda_0&#39;</span><span class="p">,</span> <span class="s1">&#39;zeta&#39;</span><span class="p">,</span> <span class="s1">&#39;Lambda_w&#39;</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">parameter_estimates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">figure</span> <span class="o">=</span> <span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+                       <span class="n">smooth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+                       <span class="n">label_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">),</span>
+                       <span class="n">title_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">22</span><span class="p">),</span>
+                       <span class="n">quantiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.16</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">],</span>
+                       <span class="n">levels</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">)),</span>
+                       <span class="n">plot_density</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">plot_datapoints</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                       <span class="n">fill_contours</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">show_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">max_n_ticks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                       <span class="n">title_fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="UnitConventionForDeveloper.html" class="btn btn-neutral float-left" title="Unit Convention for Developer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="EMCEE_strangeon.html" class="btn btn-neutral float-right" title="Strangeon EOS emcee workflow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

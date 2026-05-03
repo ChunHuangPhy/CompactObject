@@ -1,0 +1,581 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage of download_compose Module &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unit Convention for Developer" href="UnitConventionForDeveloper.html" />
+    <link rel="prev" title="Polytrope EOS inference pipeline" href="test_Inference_polytrope.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_SpeedOfSound_EOS.html">Speed of Sound EOS Inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage of download_compose Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DownloadCompose.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Usage-of-download_compose-Module">
+<h1>Usage of download_compose Module<a class="headerlink" href="#Usage-of-download_compose-Module" title="Link to this heading"></a></h1>
+<p>Tianzhe Zhou 2024/11/9</p>
+<p><a class="reference external" href="https://compose.obspm.fr/table">CompOSE</a>(CompStar Online Supernovae Equations of State) is a database that provides data tables for different state of the art equations of state (EoS) ready for further usage in astrophysical applications, nuclear physics and beyond.</p>
+<p>In this notebook, we will demonstrate how to use the <code class="docutils literal notranslate"><span class="pre">download_compose</span></code> module to download the data from the CompOSE database.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, import the class that we need to use</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">EOSgenerators.download_compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">DownloadCompose</span>
+
+<span class="c1"># Then, create an instance of the class</span>
+<span class="c1"># This will automatically fetch the latest version of all available</span>
+<span class="c1"># EOS names and their corresponding download links</span>
+<span class="n">dc</span> <span class="o">=</span> <span class="n">DownloadCompose</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DownloadCompose: Fetching data from https://compose.obspm.fr/table
+...
+DownloadCompose: Find 308 EOS data on website https://compose.obspm.fr/table
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now, we can print the list of available EOS names.</span>
+<span class="c1"># Each EOS name is related to a specific identifier,</span>
+<span class="c1"># which we can use later to actually download the EOS data file.</span>
+<span class="n">dc</span><span class="o">.</span><span class="n">print_eos_list</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+id =   1, name = HS(DD2) neutron matter (no electrons)
+id =   2, name = HS(DD2) neutron matter (with electrons)
+id =   3, name = HS(FSG) neutron matter (no electrons)
+id =   4, name = HS(FSG) neutron matter (with electrons)
+id =   5, name = HS(IUF) neutron matter (no electrons)
+id =   6, name = HS(IUF) neutron matter (with electrons)
+id =   7, name = HS(NL3) neutron matter (no electrons)
+id =   8, name = HS(NL3) neutron matter (with electrons)
+id =   9, name = HS(TM1) neutron matter  (no electrons)
+id =  10, name = HS(TM1) neutron matter (with electrons)
+id =  11, name = HS(TMA) neutron matter (no electrons)
+id =  12, name = HS(TMA) neutron matter (with electrons)
+id =  13, name = SFH(SFHo) neutron matter (no electrons)
+id =  14, name = SFH(SFHo) neutron matter (with electrons)
+id =  15, name = SFH(SFHx) neutron matter (no electrons)
+id =  16, name = SFH(SFHx) neutron matter (with electrons)
+id =  17, name = HS(DD2) (no electrons)
+id =  18, name = HS(DD2) (with electrons)
+id =  19, name = HS(FSG) (no electrons)
+id =  20, name = HS(FSG) (with electrons)
+id =  21, name = HS(IUF) (no electrons)
+id =  22, name = HS(IUF) (with electrons)
+id =  23, name = HS(NL3) (no electrons)
+id =  24, name = HS(NL3) (with electrons)
+id =  25, name = HS(TM1) (no electrons)
+id =  26, name = HS(TM1) (with electrons)
+id =  27, name = HS(TMA) (no electrons)
+id =  28, name = HS(TMA) (with electrons)
+id =  29, name = GROM(LS220L) (with Lambdas, no low densities)
+id =  30, name = GROM(LS220L) (with Lambdas, with low densities)
+id =  31, name = LS(LS220) (no low densities)
+id =  32, name = LS(LS220) (with low densities)
+id =  33, name = SFH(SFHo) (no electrons)
+id =  34, name = SFH(SFHo) (with electrons)
+id =  35, name = SFH(SFHx) (no electrons)
+id =  36, name = SFH(SFHx) (with electrons)
+id =  37, name = SHO(FSU1) (no electrons)
+id =  38, name = SHO(FSU1) (with electrons)
+id =  39, name = SHO(FSU2) (with electrons)
+id =  40, name = SHO(FSU2) (no electrons)
+id =  41, name = SHT(NL3) (no electrons)
+id =  42, name = SHT(NL3) (with electrons)
+id =  43, name = BHB(DD2L) (no electrons)
+id =  44, name = BHB(DD2L) (with electrons)
+id =  45, name = BHB(DD2Lphi) (with electrons)
+id =  46, name = BHB(DD2Lphi) (no electrons)
+id =  47, name = SHO(FSU1) (no electrons)
+id =  48, name = SHO(FSU1) (with electrons)
+id =  49, name = SHO(FSU2) (no electrons)
+id =  50, name = SHO(FSU2) (with electrons)
+id =  51, name = SHT(NL3) (no electrons)
+id =  52, name = SHT(NL3) (with electrons)
+id =  53, name = GDTB(DDHdelta)
+id =  54, name = GM(GM1)
+id =  55, name = OPGR(GM1Y4) (with hyperons)
+id =  56, name = STOS(TM1) neutron matter (original version)
+id =  57, name = STOS(TM1) neutron matter (new version)
+id =  58, name = STOS(TM1L) neutron and Lambda matter
+id =  59, name = STOS(TM1) zero temperature (new version)
+id =  60, name = STOS(TM1) zero temperature (original version)
+id =  61, name = STOS(TM1) with Lambda zero temperature
+id =  62, name = STOS(TM1L) with Lambda hyperons
+id =  63, name = STOS(TM1) (new version)
+id =  64, name = STOS(TM1) (original version)
+id =  65, name = OPGR(GM1Y5) (with hyperons)
+id =  66, name = OPGR(GM1Y6) (with hyperons)
+id =  67, name = OPGR(DDHdeltaY4) (with hyperons)
+id =  68, name = APR(APR)
+id =  69, name = BBB(BHF-BBB2)
+id =  70, name = SFHPST(TM1B145), with electrons
+id =  71, name = STOS(TM1) (new version) with electrons
+id =  72, name = STOS(TM1L) with Lambda hyperons and electrons
+id =  73, name = SFHPST(TM1B139) with electrons
+id =  74, name = SFHPST(TM1B155) with electrons
+id =  75, name = SFHPST(TM1B165) with electrons (B165)
+id =  76, name = IOTSY(TM1Y30) Sigma potential 30 MeV
+id =  77, name = IOTSY(TM1Y30pi) with pions, Sigma potential 30 MeV
+id =  78, name = IOTSY(TM1Y90pi) with pions, Sigma potential 90 MeV
+id =  79, name = IOTSY(TM1Y0pi) with pions, Sigma potential 0 MeV
+id =  80, name = IOTSY(TM1Y-30pi) with pions, Sigma potential -30 MeV
+id =  81, name = IOTSY(TM1Y90) , Sigma potential 90 MeV)
+id =  82, name = IOTSY(TM1Y0), Sigma potential 0 MeV
+id =  83, name = IOTSY(TM1Y-30), Sigma potential -30 MeV
+id =  84, name = RG(SLY230a)
+id =  85, name = RG(SLY2)
+id =  86, name = RG(SLY9)
+id =  87, name = RG(SKI2)
+id =  88, name = RG(SkI3)
+id =  89, name = RG(SkI4)
+id =  90, name = RG(SkI5)
+id =  91, name = RG(SkI6)
+id =  92, name = RG(KDE0v1)
+id =  93, name = RG(KDE0v)
+id =  94, name = RG(SK255)
+id =  95, name = RG(SK272)
+id =  96, name = RG(SKa)
+id =  97, name = RG(SKb)
+id =  98, name = RG(SkMp)
+id =  99, name = RG(SkOp)
+id = 100, name = RG(Rs)
+id = 101, name = NL3
+id = 104, name = OMHN(DD2Y)
+id = 105, name = TNTYST(KOST2) variational EoS (with electrons)
+id = 106, name = TNTYST(KOST2) variational EoS (without electrons)
+id = 107, name = TNTYST(KOST2) variational EoS at zero temperature (with electrons)
+id = 108, name = TNTYST(KOST2) variational EoS at zero temperature (no electrons)
+id = 109, name = TNTYST(KOST2) neutron matter (zero temperature)
+id = 110, name = TNTYST(KOST2) neutron matter
+id = 111, name = FYSS(TM1) (no electrons)
+id = 112, name = FTNS(KOST2) variational EoS (no electrons)
+id = 113, name = FYSS(TM1) (with electrons)
+id = 114, name = FTNS(KOST2) variational EoS (with electrons)
+id = 115, name = DNS(CMF) Hadronic (with electrons)
+id = 116, name = DNS(CMF) Hadronic (cold neutron stars)
+id = 117, name = DNS(CMF) Hadronic (no electrons)
+id = 118, name = FOP(SFHoY) (with electrons)
+id = 119, name = FOP(SFHoY) (no electrons)
+id = 120, name = BL(chiral)
+id = 121, name = BL(chiral) with crust
+id = 123, name = RG(SLY4)
+id = 134, name = RG(SLY4)
+id = 136, name = PT(GRDF1_DD2)
+id = 137, name = PT(GRDF2_DD2) old version
+id = 138, name = DNS(CMF) hadronic  (cold neutron stars) with crust
+id = 139, name = BHK(QHC18)
+id = 140, name = BFH(QHC19-B)
+id = 141, name = SRO(SLy4) SNA version
+id = 142, name = OOS(DD2_FRG) (2+1 flavors)
+id = 143, name = OOS(DD2_FRG) (2 flavors)
+id = 144, name = SNSH(TM1e)
+id = 145, name = SNSH(TM1e) zero temperature
+id = 146, name = SNSH(TM1e) neutron matter
+id = 147, name = RG(SLy4) with neutrino opacities
+id = 148, name = RG(SLY4) with neutrino opacities, extended version
+id = 149, name = SRO(APR) SNA version
+id = 150, name = BFH(QHC19-A)
+id = 151, name = BFH(QHC19-C)
+id = 152, name = BFH(QHC19-D)
+id = 154, name = MBB(DD2K ) (no electrons)
+id = 155, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.1 without leptons
+id = 156, name = BBKF(DD2F-SF) quark-hadron model RDF 1.2 without leptons
+id = 157, name = BBKF(DD2F-SF) quark-hadron model RDF 1.3 without leptons
+id = 158, name = BBKF(DD2F-SF) quark-hadron model RDF 1.4 without leptons
+id = 159, name = BBKF(DD2F-SF) quark-hadron model RDF 1.5 without leptons
+id = 160, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.6 without leptons
+id = 161, name = BBKF(DD2F-SF) quark-hadron model RDF 1.7 without leptons
+id = 162, name = BBKF(DD2-SF) quark-hadron model  RDF 1.8 without leptons
+id = 163, name = BBKF(DD2-SF) quark-hadron model  RDF 1.9 without leptons
+id = 164, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.1
+id = 165, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.2
+id = 166, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.3
+id = 167, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.4
+id = 168, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.5
+id = 169, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.6
+id = 170, name = BBKF(DD2F-SF) quark-hadron model  RDF 1.7
+id = 171, name = BBKF(DD2-SF) quark-hadron model  RDF 1.8
+id = 172, name = BBKF(DD2-SF) quark-hadron model  RDF 1.9
+id = 173, name = SRO(NRAPR) NSE version
+id = 174, name = SRO(SkAPR) SNA version
+id = 175, name = SRO(KDE0v1) SNA version
+id = 176, name = SRO(LS220*) SNA version
+id = 177, name = SRO(LNS) SNA version
+id = 178, name = SRO(LS220) SNA version
+id = 180, name = DS(CMF)-1
+id = 181, name = DS(CMF)-2
+id = 182, name = DS(CMF)-3
+id = 183, name = DS(CMF)-4
+id = 184, name = DS(CMF)-5
+id = 185, name = DS(CMF)-6
+id = 186, name = DS(CMF)-7
+id = 187, name = DS(CMF)-8
+id = 188, name = DS(CMF)-1 with crust
+id = 189, name = DS(CMF)-2 with crust
+id = 190, name = DS(CMF)-3 with crust
+id = 191, name = DS(CMF)-4 with crust
+id = 192, name = DS(CMF)-5 with crust
+id = 193, name = DS(CMF)-6 with crust
+id = 194, name = DS(CMF)-7 with crust
+id = 195, name = DS(CMF)-8 with crust
+id = 196, name = OOS(DD2-FRG) with vector interactions(2 flavors)
+id = 197, name = OOS(DD2-FRG) with vector interactions(2+1 flavors)
+id = 198, name = JJ(VQCD(APR)), intermediate
+id = 199, name = JJ(VQCD(APR)), stiff
+id = 200, name = JJ(VQCD(APR)), soft
+id = 201, name = MBB(HSDD2K) with electrons
+id = 202, name = MBB(BHBLphiK) with electrons
+id = 203, name = GPPVA(FSU2R) NS crust
+id = 204, name = GPPVA(NL3wrL55) NS crust
+id = 205, name = SDGTT(QMC-A), no leptons
+id = 206, name = SDGTT(QMC-A) with leptons
+id = 207, name = GPPVA(TM1e) NS crust
+id = 208, name = GPPVA(FSU2H) NS crust
+id = 209, name = GPPVA(FSU2) NS crust
+id = 210, name = GPPVA(DD2) NS crust
+id = 211, name = GPPVA(DDME2) NS crust
+id = 212, name = GPPVA(TW) NS crust
+id = 213, name = GPPVA(FSU2H) NS unified inner crust-core
+id = 214, name = GPPVA(FSU2R) NS unified inner crust-core
+id = 215, name = GPPVA(FSU2) NS unified inner crust-core
+id = 216, name = GMSR(SLy5)
+id = 217, name = GPPVA(DD2) NS unified inner crust-core
+id = 218, name = GPPVA(DDME2) NS unified inner crust-core
+id = 219, name = GPPVA(TW) NS unified inner crust-core
+id = 220, name = GPPVA(NL3wrL55) NS unified inner crust-core
+id = 221, name = GPPVA(TM1e) NS unified inner crust-core
+id = 222, name = GMSR(LNS5)
+id = 223, name = GMSR(BSK16)
+id = 224, name = GMSR(BSK14)
+id = 225, name = GMSR(RATP)
+id = 227, name = GMSR(F0)
+id = 228, name = GMSR(H1)
+id = 229, name = GMSR(H2)
+id = 230, name = GMSR(H3)
+id = 231, name = GMSR(H4)
+id = 232, name = GMSR(H5)
+id = 233, name = GMSR(H7)
+id = 234, name = GMSR(DHSL59)
+id = 235, name = GMSR(DHSL69)
+id = 236, name = KBH(QHC21_AT)
+id = 237, name = KBH(QHC21_BT)
+id = 238, name = KBH(QHC21_CT)
+id = 239, name = KBH(QHC21_DT)
+id = 240, name = KBH(QHC21_A)
+id = 241, name = KBH(QHC21_B)
+id = 242, name = KBH(QHC21_C)
+id = 243, name = KBH(QHC21_D)
+id = 244, name = R(DD2YDelta) 1.1-1.1 (no electrons)
+id = 245, name = R(DD2YDelta) 1.1-1.1 (with electrons)
+id = 246, name = R(DD2YDelta) 1.2-1.1 (with electrons)
+id = 247, name = R(DD2YDelta) 1.2-1.1 (no electrons)
+id = 248, name = R(DD2YDelta) 1.2-1.3 (with electrons)
+id = 249, name = R(DD2YDelta) 1.2-1.3 (no electrons)
+id = 250, name = R(DD2YDelta) 1.1-1.1 (cold NS)
+id = 251, name = R(DD2YDelta) 1.2-1.3 (cold NS)
+id = 252, name = R(DD2YDelta) 1.2-1.1 (cold NS)
+id = 253, name = PCP(BSK24)
+id = 254, name = VGBCMR(D1MStar)
+id = 255, name = VGBCMR(D1M)
+id = 256, name = PCP(BSK22)
+id = 257, name = PCP(BSK25)
+id = 258, name = PCP(BSK26)
+id = 259, name = DS(CMF)-1 Hybrid
+id = 260, name = DS(CMF)-2 Hybrid
+id = 261, name = DS(CMF)-3 Hybrid
+id = 262, name = DS(CMF)-4 Hybrid
+id = 263, name = DS(CMF)-5 Hybrid
+id = 264, name = DS(CMF)-6 Hybrid
+id = 265, name = DS(CMF)-7 Hybrid
+id = 266, name = DS(CMF)-8 Hybrid
+id = 267, name = DS(CMF)-1 Hybrid with crust
+id = 268, name = DS(CMF)-2 Hybrid with crust
+id = 269, name = DS (CMF)-3 Hybrid with crust
+id = 270, name = DS (CMF)-4 Hybrid with crust
+id = 271, name = DS (CMF)-5 Hybrid with crust
+id = 272, name = DS (CMF)-6 Hybrid with crust
+id = 273, name = DS (CMF)-7 Hybrid with crust
+id = 274, name = DS(CMF)-8 Hybrid with crust
+id = 275, name = ABHT(QMC-RMF1)
+id = 276, name = ABHT(QMC-RMF2)
+id = 277, name = ABHT(QMC-RMF3)
+id = 278, name = ABHT(QMC-RMF4)
+id = 279, name = XMLSLZ(DDME2)
+id = 280, name = XMLSLZ(DD-LZ1)
+id = 281, name = XMLSLZ(DDME-X)
+id = 282, name = XMLSLZ(GM1)
+id = 283, name = XMLSLZ(MTVTC)
+id = 284, name = XMLSLZ(NL3)
+id = 285, name = XMLSLZ(PK1)
+id = 286, name = XMLSLZ(PKDD)
+id = 287, name = XMLSLZ(TM1)
+id = 288, name = XMLSLZ(TW99)
+id = 289, name = DEJ(DD2-VQCD) intermediate
+id = 290, name = DEJ(DD2-VQCD) soft
+id = 291, name = DEJ(DD2-VQCD) stiff
+id = 292, name = PCGS(PCSB0)
+id = 293, name = LPB(chiral) with electrons
+id = 294, name = LPB(chiral)
+id = 295, name = PCGS(PCSB1)
+id = 296, name = PCGS(PCSB2)
+id = 297, name = ABHT(QMC-RMF1)
+id = 298, name = ABHT(QMC-RMF2)
+id = 299, name = ABHT(QMC-RMF3)
+id = 300, name = ABHT(QMC-RMF4)
+id = 301, name = PT(GRDF2-DD2) new version
+id = 302, name = PT(GRDF2-DD2) cold NS
+id = 303, name = HJJSTV(VQCD)-intermediate
+id = 304, name = HJJSTV(VQCD) soft
+id = 305, name = HJJSTV(VQCD) stiff
+id = 306, name = BL(chiral) with unified crust
+id = 307, name = CMGO(GDFM-I)
+id = 308, name = CMGO (GDFM-II)
+id = 309, name = KRT(FSU2H*)
+id = 310, name = SPG(M1) unified NS EoS
+id = 311, name = SPG(M1) Crust NS EoS
+id = 312, name = SPG(M2) unified NS EoS
+id = 313, name = SPG(M3) unified NS EoS
+id = 314, name = SPG(M4) unified NS EoS
+id = 315, name = SPG(M5) unified NS EoS
+id = 316, name = SPG(M2) Crust NS EoS
+id = 317, name = SPG(M3) Crust NS EoS
+id = 318, name = SPG(M4) Crust NS EoS
+id = 319, name = SPG(M5) Crust NS EoS
+id = 320, name = TSO(DDLS(30)-Y)
+id = 321, name = TSO(DDLS(70)-Y)
+id = 322, name = TSO(DDLS(70)-N)
+id = 323, name = TSO(DDLS(50)-Y)
+id = 324, name = TSO(DDLS(50)-N)
+id = 325, name = TSO(DDLS(30)-N)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we pick the EOS with identifier 316 and download it.</span>
+<span class="nb">id</span> <span class="o">=</span> <span class="mi">316</span>
+<span class="n">eosdir</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">download_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+downloads\compose\316\eos.t already exists, skip download https://compose.obspm.fr/download/1D/Crust/M2/eos.t
+downloads\compose\316\eos.nb already exists, skip download https://compose.obspm.fr/download/1D/Crust/M2/eos.nb
+downloads\compose\316\eos.thermo already exists, skip download https://compose.obspm.fr/download/1D/Crust/M2/eos.thermo
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We use Compose_eos function to extract the EOS data from the downloaded file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">EOSgenerators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Compose_eos</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">eosdir</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">eos_download_dir</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">as_posix</span><span class="p">()</span>
+<span class="n">eps</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Compose_eos</span><span class="o">.</span><span class="n">read_compose</span><span class="p">(</span><span class="n">eosdir</span><span class="o">=</span><span class="n">eosdir</span><span class="p">,</span> <span class="n">eosname</span><span class="o">=</span><span class="n">dc</span><span class="o">.</span><span class="n">eos_name</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+
+<span class="c1"># Finally, we can plot the EOS data using matplotlib,</span>
+<span class="c1"># to ensure that all the previous steps were successful.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Energy density [$g/cm^3$]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Pressure [$dyn/cm^2$]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+         Nucleon masses used within the CompOSE tables :         m_n = 938.90000 MeV and m_p = 938.90000 MeV
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/DownloadCompose_5_1.png" src="_images/DownloadCompose_5_1.png" />
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test_Inference_polytrope.html" class="btn btn-neutral float-left" title="Polytrope EOS inference pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="UnitConventionForDeveloper.html" class="btn btn-neutral float-right" title="Unit Convention for Developer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

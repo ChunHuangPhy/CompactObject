@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Speed of Sound EOS Inference pipeline &mdash; CompactObject 1.9.9 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=4320943d"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Polytrope EOS inference pipeline" href="test_Inference_polytrope.html" />
+    <link rel="prev" title="MIT bag EOS Inference pipline" href="test_Bayesian_inference_MITbag_EOS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CompactObject
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="starthere.html">Start Here!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cluster.html">Computation Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Contributor.html">Call for Contributions</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="test_EOSgenerators.html">EOSGenerators module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_TOVsolver.html">TOVsolver module guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference.html">RMF EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_DDH.html">DDH model EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_Strangeon_EOS.html">Strangeon EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_Bayesian_inference_MITbag_EOS.html">MIT bag EOS Inference pipline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Speed of Sound EOS Inference pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Set-up-prior">Set up prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Set-up-likehood">Set up likehood</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Set-up-sampler">Set up sampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_Inference_polytrope.html">Polytrope EOS inference pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DownloadCompose.html">Usage of download_compose Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnitConventionForDeveloper.html">Unit Convention for Developer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">MCMC inference workflow</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_RMF.html">RMF EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_strangeon.html">Strangeon EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_MIT_bag.html">MIT bag EOS emcee workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EMCEE_polytrope.html">Polytrope EOS emcee workflow</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">EOS generators module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="crust_EOS.html">Crust Equation of state interpolation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_EOS.html">RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RMF_DDH.html">DDH RMF EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Strangeon_EOS.html">Strangeon EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MITbag_EOS.html">MIT bag EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Polytrope_EOS.html">polytrope EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpeedofSound_EOS.html">Speed of Sound EOS solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compose_eos.html">Omplement CompOSE dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fastRMF_EoS.html">RMF EOS solver (numba speed up version)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TOV solver module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="EoS_import.html">Import Equation of State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TOV_solver.html">Solve TOV Equation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="speed_of_sound.html">Calculate Speed of Sound</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Bayesian Inference module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BayesianSampler.html">Bayesian Inference smapler setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prior.html">Prior Definition Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Likelihood.html">Likelihood function definition module</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Postprocessing module</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Cornerplot.html">Postprocessing module: Cornerplot</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CompactObject</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Speed of Sound EOS Inference pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/test_Bayesian_inference_SpeedOfSound_EOS.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Speed-of-Sound-EOS-Inference-pipeline">
+<h1>Speed of Sound EOS Inference pipeline<a class="headerlink" href="#Speed-of-Sound-EOS-Inference-pipeline" title="Link to this heading"></a></h1>
+<p>This is an example notebook about how to use our tools to analysis a observation constraint on speed of sound star equation of state.</p>
+<p>Here in this notebook, we are using a speed of sound EOS.</p>
+<p>The following is the package that we need.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.BayesianSampler</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sampler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.Likelihood</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">likelihood</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">InferenceWorkflow.prior</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">prior</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">EOSgenerators.SpeedofSound_EOS</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_EOS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TOVsolver.unit</span><span class="w"> </span><span class="kn">import</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">dyn_cm_2</span><span class="p">,</span> <span class="n">km</span><span class="p">,</span> <span class="n">Msun</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">EOSgenerators.crust_EOS</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">crust</span>
+<br/></pre></div>
+</div>
+</div>
+<section id="Set-up-prior">
+<h2>Set up prior<a class="headerlink" href="#Set-up-prior" title="Link to this heading"></a></h2>
+<p>Next step, we need to set up the prior, first use parameters array to specify the variable name, this process should consistent with what you need to call them.</p>
+<p>Define a prior transform function to define prior. Cube are set of random number from 0 to 1. This prior setting is standard set-up of UltraNest package, since we are using UltraNest to do nest-sampling.</p>
+<p>We provided two options call from prior:”normal_Prior” and “flat_prior”.</p>
+<p>Then the Parameters prior should all set.</p>
+<p>We note that since we are doing Equation of state Inference from mass-radius data of neutron star measurement. The center density of the star should be also sampled. Otherwise will be a partially-defined prior, did not span all parameters space, and proved to be different with full-scope inference.</p>
+<p>This request as randomly generate a density from a EoS range, however, this process is not that trivial, since we need to determine the upper limit of the central density of compact star — different equation of state will predict different upper bound, so here we need to use the prior-setting EoS parameters computing the EOS by</p>
+<p>EOSgenerators.SpeedofSound_EOS.compute_EOS Compute out EOS, put into</p>
+<p>main.OutputMR</p>
+<p>find out Mass Radius of this equation of state, then find out the last stable point of this equation of state.(first mass points that give the direvative to be negative)</p>
+<p>and find out that index by len() function, then reset this max_d to be upper limit of this density range.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;a1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;d1&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prior_transform</span><span class="p">(</span><span class="n">cube6</span><span class="p">):</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">0.05</span> <span class="o">*</span> <span class="n">a2</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a2</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">a4</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">a5</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">prior</span><span class="o">.</span><span class="n">flat_prior</span><span class="p">(</span><span class="mf">14.7</span><span class="p">,</span> <span class="mf">15.9</span><span class="p">,</span> <span class="n">cube6</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="n">a5</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In the upper part, we define a flat (uniform) prior for the parameters in the CS equation of state, due to the lack of constraints from terrestrial experiments.</p>
+<p>Note that the above code is an example of Bayesian analysis for a given mass and radius observation measurement. For example, if you use the NICER data for the measurements of J0030, then you should define another parameter, except the CS EOS parameters, e.g. “d1” for the centre density of this measurement, in the meantime add “params[2]” to this code.</p>
+<p>If you further consider the adjoint analysis with J0030+J0740, then you should define the other two parameters, e.g. “d1” and “d2” for the centre density of these two measurements, in the meantime add “params[3]” to the above code.</p>
+</section>
+<section id="Set-up-likehood">
+<h2>Set up likehood<a class="headerlink" href="#Set-up-likehood" title="Link to this heading"></a></h2>
+<p>We need to set up a likelihood, Using standard definition way of UltraNest, that is below.</p>
+<p>Here the likelihood is generated from a simulated mass radius measurement, which is 𝑀=1.4𝑀⊙ and 𝑅=13 km, With a 5% Mass radius measurement uncertainty,</p>
+<p>so here</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>likelihood.MRlikihood_Gaussian
+</pre></div>
+</div>
+<p>function will be use for our likelihood, please check <a class="reference external" href="https://github.com/ChunHuangPhy/CompactOject/blob/main/InferenceWorkflow/Likelihood.py">likelihood.MRlikihood_Gaussian</a> to see the original code, and more choice of likelihood. eg:</p>
+<p>1.If we have some real mass-radius measurements, say PSR J0030 or PSR J0740, come from NICER, a KDE kernel could be trained to feed into</p>
+<p>likelihood.MRlikihood_kernel(eps_total,pres_total,x,d1)</p>
+<p>set the KDE kernel as a input for this function</p>
+<p>2.If we gain measurement from radio-timing, say only measure the neutron star mass, then</p>
+<p>likelihood.Masslikihood_Gaussian(eps_total,pres_total,x,d1)</p>
+<p>Which will give the likelihood from single mass measurement, x is the parameters of that measurement, you should specify where this measurement mass is located and what is the sigma width of this mass measurement.</p>
+<p>3.If we have nuclear measurements, and want to constrain this RMF model by nuclear properties like K(The Incompressibility of nuclear matter),J ( the symmetry energy at saturation density) and L( the slope of symmetry energy at saturation density). You can choose:</p>
+<p>likelihood.Kliklihood(theta,K_low,K_up) likelihood.Jliklihood(theta,K_low,K_up) likelihood.Lliklihood(theta,K_low,K_up)</p>
+<p>We are defaulting a hard-cut flat constrain, so if you don’t like this default hard cut, also could define the likelihood by youself with similiar style.</p>
+<p>4.If we have a Tidal measurements from Gravitational wave detector, we can use it to do constraint:</p>
+<p>likelihood.TidalLikihood_kernel(eps_total,pres_total,x,d1)</p>
+<p>Where x is sampled distribution from real measurements, the standard is</p>
+<p>kernel, chrip = x,</p>
+<p>where the kernel is a whole set sampling from GW event, that is [chrip mass, M2/M1, tidal of M1, tidal of M2] four quantities. Chrip is the single smapling that comes only the chrip mass sampling.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tolos_crust_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;Test_Case/Tolos_crust_out.txt&quot;</span><span class="p">)</span>
+<span class="n">eps_crust_T_out</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+<span class="n">pres_crust_T_out</span> <span class="o">=</span> <span class="n">Tolos_crust_out</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">dyn_cm_2</span>
+<span class="n">eps_com</span><span class="p">,</span> <span class="n">pres_com</span> <span class="o">=</span> <span class="n">crust</span><span class="o">.</span><span class="n">PolyInterpolate</span><span class="p">(</span><span class="n">eps_crust_T_out</span><span class="p">,</span> <span class="n">pres_crust_T_out</span><span class="p">)</span>
+<span class="n">x_last</span> <span class="o">=</span> <span class="n">eps_com</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">y_last</span> <span class="o">=</span> <span class="n">pres_com</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">dydx_last</span> <span class="o">=</span> <span class="p">(</span><span class="n">pres_com</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pres_com</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">eps_com</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">eps_com</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">CS_EOS</span> <span class="o">=</span> <span class="n">compute_EOS</span><span class="p">(</span><span class="n">x_last</span><span class="p">,</span> <span class="n">y_last</span><span class="p">,</span> <span class="n">dydx_last</span><span class="p">)</span>
+<span class="n">core_e_min</span> <span class="o">=</span> <span class="n">x_last</span>
+<span class="n">core_e_max</span> <span class="o">=</span> <span class="mf">2e16</span> <span class="o">*</span> <span class="n">g_cm_3</span>
+<span class="n">n_core_e</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">core_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="n">core_e_min</span><span class="p">,</span> <span class="n">core_e_max</span><span class="p">,</span> <span class="n">n_core_e</span><span class="p">)</span>
+<span class="n">full_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">eps_com</span><span class="p">,</span> <span class="n">core_e</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># make sure we dont mess things up</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">cs_a</span> <span class="o">=</span> <span class="n">CS_EOS</span><span class="o">.</span><span class="n">gen_a</span><span class="p">((</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CS_EOS</span><span class="o">.</span><span class="n">check_a</span><span class="p">(</span><span class="n">cs_a</span><span class="p">))</span>
+<span class="n">core_p</span> <span class="o">=</span> <span class="n">CS_EOS</span><span class="o">.</span><span class="n">cal_core_p</span><span class="p">(</span><span class="n">core_e</span><span class="p">,</span> <span class="n">cs_a</span><span class="p">)</span>
+
+<span class="n">test_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">eps_com</span><span class="p">,</span> <span class="n">core_e</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">test_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">pres_com</span><span class="p">,</span> <span class="n">core_p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test_e</span> <span class="o">/</span> <span class="n">g_cm_3</span><span class="p">,</span> <span class="n">test_p</span> <span class="o">/</span> <span class="n">dyn_cm_2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\epsilon\quad [g/cm^3]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$P\quad [dyn/cm^2]$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/test_Bayesian_inference_SpeedOfSound_EOS_10_1.png" src="_images/test_Bayesian_inference_SpeedOfSound_EOS_10_1.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">likelihood_transform</span><span class="p">(</span><span class="n">paras</span><span class="p">):</span>
+    <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="n">a5</span><span class="p">,</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">paras</span>
+    <span class="n">a6</span> <span class="o">=</span> <span class="n">CS_EOS</span><span class="o">.</span><span class="n">cal_a6</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="n">a5</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">a3</span><span class="p">,</span> <span class="n">a4</span><span class="p">,</span> <span class="n">a5</span><span class="p">,</span> <span class="n">a6</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">CS_EOS</span><span class="o">.</span><span class="n">check_a</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mf">1e100</span>
+    <span class="n">core_p</span> <span class="o">=</span> <span class="n">CS_EOS</span><span class="o">.</span><span class="n">cal_core_p</span><span class="p">(</span><span class="n">core_e</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">full_p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">pres_com</span><span class="p">,</span> <span class="n">core_p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+    <span class="n">probMRgaussian</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">MRlikihood_Gaussian</span><span class="p">(</span>
+        <span class="n">full_e</span><span class="p">,</span> <span class="n">full_p</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.4</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">),</span> <span class="n">d1</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">probMRgaussian</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Set-up-sampler">
+<h2>Set up sampler<a class="headerlink" href="#Set-up-sampler" title="Link to this heading"></a></h2>
+<p>Here next, we define sampler, there is two different sampler we provided for.</p>
+<p>Considering where you need resume file:</p>
+<p>sampler.UltranestSampler and sampler.UltranestSamplerResume</p>
+<p>Here since it is our first run, so we only use first one. Some of the sampler parameters is requested, first is step number, our choice for UltraNest sampler is slicesampler, which could easily be sliced up your total computation load, and parallelize, speed up sampling. So step as suggested by documentation of UltraNest, we use 2*len(parameters).</p>
+<p>live_point we set 2000, it will influence the sampling precision, We suggest for 7 dimension space, maybe 5000 is a better choice, however, since my computer only have limited resources, we set 2000.</p>
+<p>max_calls set 10000, it is how many iteration after it will stop, we suggest to set this number significantly higher, otherwise maybe will broken before the inference converging to a definite value. That result will be un-phyiscal.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">step</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+<span class="n">live_point</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">max_calls</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">UltranestSampler</span><span class="p">(</span>
+    <span class="n">parameters</span><span class="p">,</span> <span class="n">likelihood_transform</span><span class="p">,</span> <span class="n">prior_transform</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">live_point</span><span class="p">,</span> <span class="n">max_calls</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Creating directory for new run output\run11
+[ultranest] Sampling 1000 live points from prior ...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+d:\mambaforge\lib\site-packages\scipy\integrate\_ode.py:431: UserWarning: dopri5: larger nsteps is needed
+  self._y, self.t = mth(self.f, self.jac or (lambda: None),
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:116: RuntimeWarning: divide by zero encountered in log
+  likelihood = np.log(fx)
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:79: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = dpdr / (r * (r - 2.0 * m))
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[ultranest] Widening roots to 1018 live points (have 1000 already) ...
+[ultranest] Sampling 18 live points from prior ...
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "9014ce033a1b4ab3bdf09bcc33be494e", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-1e+100(0.00%) | Like=-1e+100..1.2 [-1e+101..-162.1] | it/evals=418/1049 eff=3.2258% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:116: RuntimeWarning: divide by zero encountered in log
+  likelihood = np.log(fx)
+d:\mambaforge\lib\site-packages\scipy\integrate\_ode.py:431: UserWarning: dopri5: larger nsteps is needed
+  self._y, self.t = mth(self.f, self.jac or (lambda: None),
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-623.4(0.00%) | Like=-615.03..1.23 [-1e+101..-162.1] | it/evals=428/1261 eff=4.5267% N=601 85856815104.0(0.00%) | Like=-731.18..1.23 [-1e+101..-162.1] | it/evals=419/1069 eff=3.9216% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:79: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-233.6(0.00%) | Like=-219.28..1.23 [-1e+101..-162.1] | it/evals=477/2136 eff=5.3667% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: invalid value encountered in scalar divide
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:115: RuntimeWarning: overflow encountered in power
+  fx = 1/(sigma_x*sigma_y*(np.sqrt(2*np.pi))**2)*np.exp(-np.power(MR[1]/km-Rvalue, 2.)/(2*np.power(sigma_x,2.))-np.power(MR[0]/Msun-Mvalue, 2.)/(2*np.power(sigma_y,2.)))
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-158.6(0.00%) | Like=-152.26..1.23 [-161.8854..-57.6311] | it/evals=553/3469 eff=5.5488% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+d:\mambaforge\lib\site-packages\scipy\integrate\_ode.py:431: UserWarning: dopri5: larger nsteps is needed
+  self._y, self.t = mth(self.f, self.jac or (lambda: None),
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:116: RuntimeWarning: divide by zero encountered in log
+  likelihood = np.log(fx)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-144.8(0.00%) | Like=-138.87..1.23 [-161.8854..-57.6311] | it/evals=591/4079 eff=5.6844% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:79: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-142.6(0.00%) | Like=-136.39..1.23 [-161.8854..-57.6311] | it/evals=599/4198 eff=5.7233% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: invalid value encountered in scalar divide
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:115: RuntimeWarning: overflow encountered in power
+  fx = 1/(sigma_x*sigma_y*(np.sqrt(2*np.pi))**2)*np.exp(-np.power(MR[1]/km-Rvalue, 2.)/(2*np.power(sigma_x,2.))-np.power(MR[0]/Msun-Mvalue, 2.)/(2*np.power(sigma_y,2.)))
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-112.4(0.00%) | Like=-105.42..1.23 [-161.8854..-57.6311] | it/evals=689/5673 eff=5.8432% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+d:\mambaforge\lib\site-packages\scipy\integrate\_ode.py:431: UserWarning: dopri5: larger nsteps is needed
+  self._y, self.t = mth(self.f, self.jac or (lambda: None),
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-111.9(0.00%) | Like=-105.32..1.23 [-161.8854..-57.6311] | it/evals=690/5696 eff=5.8358% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:116: RuntimeWarning: divide by zero encountered in log
+  likelihood = np.log(fx)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-111.2(0.00%) | Like=-105.19..1.23 [-161.8854..-57.6311] | it/evals=692/5734 eff=5.8312% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:79: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: invalid value encountered in scalar divide
+  dpdr = dpdr / (r * (r - 2.0 * m))
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:115: RuntimeWarning: overflow encountered in power
+  fx = 1/(sigma_x*sigma_y*(np.sqrt(2*np.pi))**2)*np.exp(-np.power(MR[1]/km-Rvalue, 2.)/(2*np.power(sigma_x,2.))-np.power(MR[0]/Msun-Mvalue, 2.)/(2*np.power(sigma_y,2.)))
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-79.5(0.00%) | Like=-73.21..1.23 [-161.8854..-57.6311] | it/evals=823/8225 eff=5.6334% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+d:\mambaforge\lib\site-packages\scipy\integrate\_ode.py:431: UserWarning: dopri5: larger nsteps is needed
+  self._y, self.t = mth(self.f, self.jac or (lambda: None),
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-79.3(0.00%) | Like=-73.07..1.23 [-161.8854..-57.6311] | it/evals=824/8244 eff=5.6324% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\InferenceWorkflow\Likelihood.py:116: RuntimeWarning: divide by zero encountered in log
+  likelihood = np.log(fx)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-78.5(0.00%) | Like=-72.40..1.23 [-161.8854..-57.6311] | it/evals=828/8324 eff=5.6255% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:79: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = -(eps + pres) * (m + 4.0 * pi * r**3.0 * pres)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Z=-70.3(0.00%) | Like=-64.40..1.23 [-161.8854..-57.6311] | it/evals=882/9389 eff=5.5549% N=601
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+c:\Users\51970\Desktop\GitHub\CompactOject\TOVsolver\solver_code.py:80: RuntimeWarning: overflow encountered in scalar multiply
+  dpdr = dpdr / (r * (r - 2.0 * m))
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[ultranest] Explored until L=1  23 [-161.8854..-57.6311] | it/evals=915/10016 eff=5.5346% N=601
+[ultranest] Likelihood function evaluations: 10016
+[ultranest] Writing samples and results to disk ...
+[ultranest] Writing samples and results to disk ... done
+[ultranest] Reached maximum number of likelihood calls (10016 &gt; 10000)...
+[ultranest] done iterating.
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="test_Bayesian_inference_MITbag_EOS.html" class="btn btn-neutral float-left" title="MIT bag EOS Inference pipline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="test_Inference_polytrope.html" class="btn btn-neutral float-right" title="Polytrope EOS inference pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Chun Huang, João Cartaxo, Tuhin Malik, Wenli Yuan,Shashwat Sourav, Xuezhi Liu, Tianzhe Zhou, John Groger, Zhiheng Wang, Nicole Osborn, Nathan Whitsett.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
