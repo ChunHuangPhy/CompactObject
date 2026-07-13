@@ -25,13 +25,59 @@ dependencies = [
   "matplotlib",
   "numpy",
   "packaging",
+  "pandas",
+  "h5py",
+  "numba",
   "pillow",
   "pyparsing",
   "python-dateutil",
   "six",
   "scipy",
+  "sympy",
+  "ultranest",
+]
+
+[project.optional-dependencies]
+notebooks = [
+  "ipykernel",
+  "jupyter",
+  "nbconvert",
+]
+fast = [
+  "NumbaMinpack",
+]
+docs = [
+  "decorator",
+  "ipynb",
+  "nbsphinx",
+  "sphinx",
+  "sphinx-rtd-theme",
+  "sphinxcontrib-websupport",
 ]
 
 [project.urls]
 Homepage = "https://github.com/ChunHuangPhy/CompactOject"
 Issues = "https://github.com/ChunHuangPhy/CompactOject/issues"
+
+[tool.setuptools.packages.find]
+include = [
+  "EOSgenerators*",
+  "InferenceWorkflow*",
+  "postprocessing*",
+  "TOVsolver*",
+]
+exclude = [
+  "docs*",
+  "Emcee_Workflow*",
+  "JOSS*",
+  "Test_Case*",
+]
+
+[tool.setuptools.package-data]
+EOSgenerators = [
+  "filesCompose/*",
+  "filesLaL/*",
+]
+InferenceWorkflow = [
+  "data/*",
+]

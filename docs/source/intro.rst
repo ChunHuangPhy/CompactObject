@@ -1,5 +1,3 @@
-.. _readme:
-
 ***********************************
 CompactObject
 ***********************************
@@ -39,29 +37,32 @@ For installation instructions, please refer to the `Installation Page <https://c
 
 Package paper, please cite us if you are using it:
 
-.. [1] **Huang, C., Malik, T., Cartaxo, J., et al.** (2024). 
-   *CompactObject: An open-source Python package for full-scope neutron star equation of state inference*
-   `arXiv:2411.14615 <https://arxiv.org/abs/2411.14615>`_
+- **Huang, C., Malik, T., Cartaxo, J., et al.** (2024).
+  *CompactObject: An open-source Python package for full-scope neutron star equation of state inference*.
+  `arXiv:2411.14615 <https://arxiv.org/abs/2411.14615>`_
 
-.. [2] **Cartaxo, J., Huang, C., Malik, T., Sourav, S. , Yuan, W., Zhou, T., Liu, X., Providência, C.**, “Covariant Energy Density Functionals for Neutron Star Matter Equation of State Modeling: Cross-Comparison Analysis Using \texttt{CompactObject}”, *The Astrophysical Journal Supplement Series*, Volume 282, Number 2, [https://iopscience.iop.org/article/10.3847/1538-4365/ae2310](https://iopscience.iop.org/article/10.3847/1538-4365/ae2310)
+- **Cartaxo, J., Huang, C., Malik, T., Sourav, S. , Yuan, W., Zhou, T., Liu, X., Providência, C.**,
+  “Covariant Energy Density Functionals for Neutron Star Matter Equation of State Modeling:
+  Cross-Comparison Analysis Using \texttt{CompactObject}”, *The Astrophysical Journal Supplement Series*,
+  Volume 282, Number 2, `DOI:10.3847/1538-4365/ae2310 <https://iopscience.iop.org/article/10.3847/1538-4365/ae2310>`_
 
 
 Papers generated using this package include:
 
-.. [1] **Huang, C., Raaijmakers, G., Watts, A. L., Tolos, L., & Providência, C.** (2024).  
-   *Constraining fundamental nuclear physics parameters using neutron star mass-radius measurements I: Nucleonic models*.  
-   *Monthly Notices of the Royal Astronomical Society*, 529.  
-   `DOI:10.1093/mnras/stae844 <https://academic.oup.com/mnras/article/529/4/4650/7634362>`_
+- **Huang, C., Raaijmakers, G., Watts, A. L., Tolos, L., & Providência, C.** (2024).
+  *Constraining fundamental nuclear physics parameters using neutron star mass-radius measurements I: Nucleonic models*.
+  *Monthly Notices of the Royal Astronomical Society*, 529.
+  `DOI:10.1093/mnras/stae844 <https://academic.oup.com/mnras/article/529/4/4650/7634362>`_
 
-.. [2] **Huang, C., Tolos, L., Providência, C., & Watts, A.** (2024).  
-   *Constraining a relativistic mean field model using neutron star mass-radius measurements II: Hyperonic models*.  
-   *arXiv preprint arXiv:2410.14572*.  
-   `https://arxiv.org/abs/2410.14572 <https://arxiv.org/abs/2410.14572>`_
+- **Huang, C., Tolos, L., Providência, C., & Watts, A.** (2024).
+  *Constraining a relativistic mean field model using neutron star mass-radius measurements II: Hyperonic models*.
+  *arXiv preprint arXiv:2410.14572*.
+  `https://arxiv.org/abs/2410.14572 <https://arxiv.org/abs/2410.14572>`_
 
-.. [3] **Huang, C., & Zheng, X.-P.** (2024).  
-   *Bayesian Insights into post-Glitch Dynamics: Model comparison and parameter constraint from decades-long observation data of the Crab pulsar*.  
-   *arXiv preprint arXiv:2409.18432*.  
-   `https://arxiv.org/abs/2409.18432 <https://arxiv.org/abs/2409.18432>`_
+- **Huang, C., & Zheng, X.-P.** (2024).
+  *Bayesian Insights into post-Glitch Dynamics: Model comparison and parameter constraint from decades-long observation data of the Crab pulsar*.
+  *arXiv preprint arXiv:2409.18432*.
+  `https://arxiv.org/abs/2409.18432 <https://arxiv.org/abs/2409.18432>`_
 
 If you use our software, please consider citing us with the following standard citation:
 

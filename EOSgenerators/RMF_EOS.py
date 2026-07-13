@@ -29,6 +29,27 @@ Matrix_b = np.array(
 Matrix_l = np.array([[0.0, -1.0, 1 / 2.0], [0.0, -1.0, 1 / 2.0]])
 
 
+def _validate_rmf_theta(theta):
+    """Return RMF parameters as a numeric array with a clear error for DDH inputs."""
+    try:
+        theta_array = np.asarray(theta, dtype=np.float64)
+    except (TypeError, ValueError) as exc:
+        raise TypeError(
+            "RMF.compute_EOS expects a length-10 numeric RMF theta. "
+            "DDH theta values contain callable density-dependent couplings and "
+            "must be passed to EOSgenerators.RMF_DDH.compute_eos instead."
+        ) from exc
+
+    if theta_array.shape != (10,):
+        raise TypeError(
+            "RMF.compute_EOS expects a length-10 numeric RMF theta. "
+            "DDH theta values contain callable density-dependent couplings and "
+            "must be passed to EOSgenerators.RMF_DDH.compute_eos instead."
+        )
+
+    return theta_array
+
+
 def initial_values(rho, theta):
     """Outputs the the sigma, omega, rho term and chemical potential of electron and neutron at
     given initial density.
@@ -197,36 +218,26 @@ def functie(x, args):
 
 def Energy_density_Pressure(x, rho, theta, return_tag=False):
     """
-    Compute the pressure and energy density for the equation of state (EOS) 
-    based on the Relativistic Mean Field (RMF) model parameters,
+    Compute pressure, energy density, and optional composition data.
 
-    Args:
-        x (array): An array containing the initial values for sigma, omega, rho, 
-                   and chemical potential, obtained from the `initial_values` function.
-        rho (float): The central density at which the EOS computation begins.
-        theta (array): An array of 10 parameters that define the RMF model in the 
-                       Lagrangian.
-        return_tag (bool, optional): If False (default), returns only the energy 
-                                     density and pressure. If True, returns additional 
-                                     EOS components.
+    Parameters
+    ----------
+    x : array
+        Initial sigma, omega, rho, neutron chemical potential, and electron
+        chemical potential values.
+    rho : float
+        Nuclear density at which to evaluate the EOS.
+    theta : array
+        Length-10 numeric RMF parameter vector.
+    return_tag : bool, optional
+        If true, return composition quantities in addition to energy density
+        and pressure.
 
-    Returns:
-        tuple:
-            If `return_tag` is False:
-                energy_density (float): The energy density in natural units 
-                                        (to convert to MeV.fm-3, divide by MeV.fm-3).
-                pressure (float): The pressure in natural units.
-            
-            If `return_tag` is True:
-                numpy array: A 1D array representing EOS components:
-                    - EoS[0]: Number density in fm-3.
-                    - EoS[1]: Energy density in natural units.
-                    - EoS[2]: Pressure in natural units.
-                    - EoS[3]: Proton chemical potential in natural units.
-                    - EoS[4]: Neutron chemical potential in natural units.
-                    - EoS[5]: Electron chemical potential in natural units.
-                    - EoS[6]: Muon chemical potential in natural units.
-                    - EoS[7]: Proton fraction (dimensionless).
+    Returns
+    -------
+    tuple or list
+        Energy density and pressure, or a list containing density, energy
+        density, pressure, chemical potentials, and proton fraction.
     """
     sigma, omega, rho_03, mu_n, mu_e = x
 
@@ -325,34 +336,27 @@ def Energy_density_Pressure(x, rho, theta, return_tag=False):
 
 
 def compute_EOS(eps_crust, pres_crust, theta, return_tag=False):
-    """Generate core part equation of state, main function, from RMF model,
+    """Generate the core equation of state from an RMF parameter vector.
 
-    Args:
-        eps_crust (array): the energy density of crust EoS in g.cm-3.
-        pres_crust (array): the pressure from crust EoS model in dyn.cm-2.
-        theta (array): An array representing the parameters used to determine a RMF model in the
-        Lagrangian. In this case, the RMF model is defined by 10 parameters.
+    Parameters
+    ----------
+    eps_crust : array
+        Crust energy density in g cm^-3.
+    pres_crust : array
+        Crust pressure in dyn cm^-2.
+    theta : array
+        Length-10 numeric RMF parameter vector.
+    return_tag : bool, optional
+        If true, return composition quantities in addition to energy density
+        and pressure.
 
-        return_tag (bool, optional): If False (default), returns only the energy 
-                                     density and pressure. If True, returns additional 
-                                     EOS components.
-    Returns:
-        If `return_tag` is False:
-                energy_density (float): The energy density in natural units 
-                                        (to convert to MeV.fm-3, divide by MeV.fm-3).
-                pressure (float): The pressure in natural units.
-            
-        If `return_tag` is True:
-                numpy array: A 1D array representing EOS components:
-                    - EoS[0]: Number density in fm-3.
-                    - EoS[1]: Energy density in natural units.
-                    - EoS[2]: Pressure in natural units.
-                    - EoS[3]: Proton chemical potential in natural units.
-                    - EoS[4]: Neutron chemical potential in natural units.
-                    - EoS[5]: Electron chemical potential in natural units.
-                    - EoS[6]: Muon chemical potential in natural units.
-                    - EoS[7]: Proton fraction (dimensionless).
+    Returns
+    -------
+    tuple or numpy.ndarray
+        Energy density and pressure arrays, or the full EOS composition table
+        when `return_tag` is true.
     """
+    theta = _validate_rmf_theta(theta)
     dt = 0.05
     rho_0 = 0.1505
 

@@ -46,6 +46,7 @@
    :maxdepth: 2
    :caption: EOS generators module
 
+   EOS
    crust_EOS
    RMF_EOS
    RMF_DDH

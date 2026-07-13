@@ -1,4 +1,5 @@
 import numpy as np
+from pathlib import Path
 import EOSgenerators.RMF_DDH as DDH
 import TOVsolver.main as tov
 import EOSgenerators.crust_EOS as crust
@@ -6,6 +7,32 @@ from TOVsolver.unit import g_cm_3, dyn_cm_2, km, Msun, MeV, fm
 from TOVsolver.constant import oneoverfm_MeV,G,c
 from scipy.interpolate import CubicSpline, InterpolatedUnivariateSpline, interp1d
 import pandas as pd
+
+
+def _find_tolos_crust_file():
+    """Return the bundled or local Tolos crust table path."""
+    filename = "Tolos_crust_out.txt"
+    module_dir = Path(__file__).resolve().parent
+    repo_root = module_dir.parent
+    candidates = [
+        Path.cwd() / filename,
+        Path.cwd() / "Test_Case" / filename,
+        repo_root / "Test_Case" / filename,
+        module_dir / "data" / filename,
+    ]
+
+    checked = []
+    for candidate in candidates:
+        candidate = candidate.resolve()
+        if candidate in checked:
+            continue
+        checked.append(candidate)
+        if candidate.exists():
+            return candidate
+
+    paths = ", ".join(str(path) for path in checked)
+    raise FileNotFoundError(f"Could not find {filename}. Checked: {paths}")
+
 
 class Likelihood():
    
@@ -75,7 +102,7 @@ class Likelihood():
     @classmethod
     def initialize_crust_data(cls):
         """Load and interpolate crust data only once."""
-        Tolos_crust_out = np.loadtxt("Test_Case/Tolos_crust_out.txt")
+        Tolos_crust_out = np.loadtxt(_find_tolos_crust_file())
         eps_crust_T_out = Tolos_crust_out[:, 3] * g_cm_3
         pres_crust_T_out = Tolos_crust_out[:, 4] * dyn_cm_2
         cls.eps_com, cls.pres_com = crust.PolyInterpolate(eps_crust_T_out, pres_crust_T_out)
@@ -117,7 +144,7 @@ class Likelihood():
     
         log_fx = np.log(fx)
     
-        return np.clip(log_fx, -1e21, np.infty)
+        return np.clip(log_fx, -1e21, np.inf)
 
     def smooth_step(self, quantity, x):
         mu, sigma, key = self.NMP_Base[quantity]

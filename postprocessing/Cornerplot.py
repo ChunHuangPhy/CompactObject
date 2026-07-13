@@ -10,8 +10,8 @@ def overlapping_corner_three(array1, array2, array3, param_labels=None,sample_la
     the y-axis is kept on the first histogram, the x-axis is kept on the last histogram, and
     the last histogram has a label beneath the x-axis showing the parameter it represents.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     array1, array2, array3 : 2D arrays
         The input datasets. Each should be of shape (n_samples, n_params), where `n_samples`
         is the number of samples, and `n_params` is the number of parameters. Arrays can
@@ -24,8 +24,8 @@ def overlapping_corner_three(array1, array2, array3, param_labels=None,sample_la
     filename : str, optional
         The filename to save the plot if `save_plot=True`. Defaults to "corner_plot.pdf".
     
-    Returns:
-    --------
+    Returns
+    -------
     None
         Displays the corner plot.
     """
@@ -136,8 +136,8 @@ def overlapping_corner_two(array1, array2, param_labels=None, sample_labels=None
     the y-axis is kept on the first histogram, the x-axis is kept on the last histogram, and
     the last histogram has a label beneath the x-axis showing the parameter it represents.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     array1, array2 : 2D arrays
         The input datasets. Each should be of shape (n_samples, n_params), where `n_samples`
         is the number of samples, and `n_params` is the number of parameters. Arrays can
@@ -150,8 +150,8 @@ def overlapping_corner_two(array1, array2, param_labels=None, sample_labels=None
     filename : str, optional
         The filename to save the plot if `save_plot=True`. Defaults to "corner_plot.pdf".
     
-    Returns:
-    --------
+    Returns
+    -------
     None
         Displays the corner plot.
     """

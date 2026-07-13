@@ -319,8 +319,8 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
     constants to the energy per neutron ( E/N ) or the pressure ( p ), utilizing either a 
     Gaussian or Super-Gaussian likelihood model.
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     EoS_PNM : np.ndarray
         Array with PNM equation of state data, where:
         - EoS_PNM[0] is the density in fm^-3,
@@ -339,19 +339,19 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
         Enlargement factor (as a percentage in decimal form) for the Super-Gaussian distribution, e.g., 0.05 for 5%.
         Only applicable if type="Super Gaussian".
         
-    Returns:
-    --------
+    Returns
+    -------
     log_likelihood : float
     The sum of log-likelihoods over constraint on number density 0.08, 0.12 and 0.16 fm^-3.
     
-    Explanation:
-    ------------
+    Explanation
+    -----------
     - The likelihood calculation:
       - "Gaussian": Uses a standard Gaussian log-likelihood based on the discrepancy between EoS data and constraints.
       - "Super Gaussian": Employs an adjusted likelihood featuring a flattened peak of the Gaussian distribution.  
       
-    Data Sources:
-    -------------
+    Data Sources
+    ------------
     - Energy per neutron constraints are taken from: Huth et al., Nature, vol 606, pp 276–280 (2022).
     - Pressure constraints are taken from: K. Hebeler et al., ApJ 773, 11 (2013).
     """
@@ -359,8 +359,8 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
         """
         Compute the log of a Gaussian (Normal) probability density function (PDF).
         
-        Parameters:
-        -----------
+        Parameters
+        ----------
         x : float or np.ndarray
             The data point(s) at which to evaluate the Gaussian PDF.
         mu : float
@@ -368,13 +368,13 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
         sigma : float
             The standard deviation (spread) of the Gaussian distribution.
         
-        Returns:
-        --------
+        Returns
+        -------
         log_pdf : np.ndarray
             The log of the Gaussian PDF at each value of `x`.
         
-        Explanation:
-        ------------
+        Explanation
+        -----------
         - The Gaussian PDF is defined as:
           f(x) = (1 / sqrt(2 * pi * sigma^2)) * exp(-0.5 * ((x - mu) / sigma)^2)
         - We compute the log of this PDF for numerical stability:
@@ -394,8 +394,8 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
         """
         Compute the log of a Super-Gaussian probability density function (PDF).
         
-        Parameters:
-        -----------
+        Parameters
+        ----------
         x : float or np.ndarray
             The data point(s) at which to evaluate the Super-Gaussian PDF.
         mu : float
@@ -406,13 +406,13 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
             The percentage enlargement factor for `sigma` to increase the width of the distribution.
             For example, 0.05 for 5% enlargement, or 0.10 for 10% enlargement.
     
-        Returns:
-        --------
+        Returns
+        -------
         log_pdf : float or np.ndarray
             The log of the Super-Gaussian PDF at each value of `x`.
         
-        Explanation:
-        ------------
+        Explanation
+        -----------
         - The Super-Gaussian function extends the Gaussian by applying an enlargement factor to `sigma`,
           effectively "widening" the distribution.
         - Based on the reference: https://arxiv.org/pdf/2407.18452
@@ -436,7 +436,7 @@ def chiEFT_PNM( EoS_PNM, type="Gaussian", contraint_quantity="e", enlargement=0)
     
         log_fx = np.log(fx)
     
-        return np.clip(log_fx, -1e20, np.infty)
+        return np.clip(log_fx, -1e20, np.inf)
 
     
     EoS_PNM = (EoS_PNM.T[EoS_PNM.T[:, 0] < 0.2]).T
@@ -477,8 +477,8 @@ def ln_pQCD(EOS, rho_list=[0.92], points=1000):
     """
     Calculates the log-likelihood for the beta-equilibrium equation of state (EoS) using pQCD data. 
     
-    Parameters:
-    -----------
+    Parameters
+    ----------
     EoS : np.ndarray
         Array with beta-equilibrium equation of state data, where:
         - EoS[0] is the density in fm^-3,
@@ -491,45 +491,16 @@ def ln_pQCD(EOS, rho_list=[0.92], points=1000):
     points : int, optional
         Number of points used to compute the weight, a higher number allows for greater precisions.
         
-    Returns:
-    --------
+    Returns
+    -------
     log_mean : float
-    The averaged sum of log-likelihoods over constraint on number density specified by rho_list fm^-3.
-    
-      
-    Data Sources:
-    -------------
-    - @article{Komoltsev:2021jzg,
-        author = "Komoltsev, Oleg and Kurkela, Aleksi",
-        title = "{How perturbative QCD constrains the Equation of State at Neutron-Star densities}",
-        eprint = "2111.05350",
-        archivePrefix = "arXiv",
-        primaryClass = "nucl-th",
-        month = "11",
-        year = "2021"}
+        The averaged sum of log-likelihoods over the number densities specified
+        by `rho_list`.
 
-    -@article{Gorda:2022jvk,
-        author = "Gorda, Tyler and Komoltsev, Oleg and Kurkela, Aleksi",
-        title = "{Ab-initio QCD calculations impact the inference of the neutron-star-matter equation of state}",
-        eprint = "2204.11877",
-        archivePrefix = "arXiv",
-        primaryClass = "nucl-th",
-        month = "4",
-        year = "2022"}
-
-    -@article{PhysRevLett.127.162003,
-      title = {Soft Interactions in Cold Quark Matter},
-      author = {Gorda, Tyler and Kurkela, Aleksi and Paatelainen, Risto and S\"appi, Saga and Vuorinen, Aleksi},
-      journal = {Phys. Rev. Lett.},
-      volume = {127},
-      issue = {16},
-      pages = {162003},
-      numpages = {6},
-      year = {2021},
-      month = {Oct},
-      publisher = {American Physical Society},
-      doi = {10.1103/PhysRevLett.127.162003},
-      url = {https://link.aps.org/doi/10.1103/PhysRevLett.127.162003}}
+    References
+    ----------
+    Komoltsev and Kurkela (2021), Gorda et al. (2022), and Gorda et al.
+    Phys. Rev. Lett. 127, 162003 (2021).
     """
     
     log_mean = 0
@@ -549,9 +520,6 @@ def ln_pQCD(EOS, rho_list=[0.92], points=1000):
 
 
 ########################################################################################################################
-
-
-
 
 
 

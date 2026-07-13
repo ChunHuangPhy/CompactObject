@@ -18,19 +18,16 @@ Contributing an Equation of State (EOS)
    Send an email to `chun.h@wustl.edu` to request collaborator access to the repository.
 
 3. **Commit the EOS Script**  
-   - Create a `.py` script that computes the EOS. The script should:
-     - Input the EOS parameter values.
-     - Output the pressure and density in CGS units.
-   - For unit conventions, please refer to the `UnitConventionForDeveloper <https://chunhuangphy.github.io/CompactObject/UnitConventionForDeveloper.html>`_.
-   - Name the main compute function as `compute_EOS`.
-   - Name the file as `(YourEOSName)_EOS.py`.
+   Create a `.py` script that computes the EOS, accepts the EOS parameter
+   values, and outputs the pressure and density in CGS units. For unit
+   conventions, please refer to the `UnitConventionForDeveloper <https://chunhuangphy.github.io/CompactObject/UnitConventionForDeveloper.html>`_.
+   Name the main compute function as `compute_EOS` and name the file as
+   `(YourEOSName)_EOS.py`.
 
 4. **Create a Demonstration Notebook**  
-   Develop a Jupyter notebook that demonstrates:
-   - How to compute the EOS.
-   - Defining your EOS parameters.
-   - Integrating your EOS with our default TOV solver (`main.outputMR`).
-   - Ensuring the TOV solver correctly solves the EOS and outputs a mass-radius curve plot.
+   Develop a Jupyter notebook that demonstrates how to compute the EOS, define
+   the EOS parameters, integrate the EOS with the default TOV solver
+   (`main.outputMR`), and produce a mass-radius curve plot.
 
 Contributing Inference Components
 ---------------------------------
@@ -48,9 +45,9 @@ If you have developed your own likelihood, prior, sampler, or any component rela
    - Name the script after the function you are contributing.
 
 4. **Create a Demonstration Notebook**  
-   Develop a Jupyter notebook that demonstrates:
-   - How to use your prior, likelihood, or sampler.
-   - Include sampling outputs to ensure compatibility with the current structure of the package.
+   Develop a Jupyter notebook that demonstrates how to use your prior,
+   likelihood, or sampler, and include sampling outputs to ensure compatibility
+   with the current package structure.
 
 Guidelines for Key Functions and Permissions
 --------------------------------------------

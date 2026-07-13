@@ -1,64 +1,64 @@
 name: Docs
+
 on:
   push:
     branches:
       - main
   release:
   workflow_dispatch:
-permissions: write-all  
+
+permissions:
+  contents: write
+
 jobs:
+  notebook-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gfortran libgsl-dev pandoc
+      - name: Install package and notebook dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[notebooks,fast]"
+      - name: Execute EOS generator notebook
+        run: |
+          jupyter nbconvert \
+            --to notebook \
+            --execute Test_Case/test_EOSgenerators.ipynb \
+            --output /tmp/test_EOSgenerators.executed.ipynb \
+            --ExecutePreprocessor.timeout=900 \
+            --ExecutePreprocessor.kernel_name=python3
+
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-    strategy:
-      fail-fast: false
-      max-parallel: 5
-      
+    needs: notebook-smoke
     steps:
-    - name: Set up GCC
-      run: |
-         sudo apt-get install -y gcc
-    - name: install gsl
-      run: |
-        sudo apt-get install -y libgsl-dev
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v2
-    - name: Install dependencies
-      run: |
-        pip install sphinx
-        pip install ipynb
-        pip install ipykernel
-        pip install pandas
-        pip install numpy
-        pip install scipy
-        pip install jupyter
-        pip install matplotlib
-        pip install ultranest
-        pip install NumbaMinpack
-        pip install -e .
-    - name : install docs dependencies
-      run: |
-        pip install decorator h5py 
-        pip install nbsphinx nbconvert
-        pip install sphinxcontrib-websupport sphinx_rtd_theme
-        conda install pandoc
-    - name: Install pandoc
-      run: |
-        wget https://github.com/jgm/pandoc/releases/download/2.15/pandoc-2.15-linux-amd64.tar.gz
-        tar xvzf pandoc-2.15-linux-amd64.tar.gz
-        sudo mv pandoc-2.15/bin/pandoc /usr/local/bin
-        rm -rf pandoc-2.15 pandoc-2.15-linux-amd64.tar.gz
-    - name: Sphinx build
-      run: |
-        sphinx-build docs/source _build
-        cp -r docs/_static _static
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      with:
-        publish_branch: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: _build/
-        force_orphan: true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gfortran libgsl-dev pandoc
+      - name: Install package and docs dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[docs,notebooks,fast]"
+      - name: Sphinx build
+        run: |
+          sphinx-build -W docs/source _build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          force_orphan: true

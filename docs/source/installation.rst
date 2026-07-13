@@ -38,6 +38,10 @@ Once the environment is activated, you can install the package from PyPI, which 
    pip install CompactObject-TOV
 
 The dependencies should be automatically installed for you.
+This includes the packages used by the shipped examples, such as ``pandas``,
+``sympy``, ``ultranest``, ``h5py``, and ``numba``. The only accelerated
+dependency that is intentionally optional is ``NumbaMinpack``; see
+`Optional FastRMF dependency`_ below.
 
 Alternative Installation Method
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -67,6 +71,20 @@ If you encounter issues using ``pip install``, you can install the package manua
    .. code-block:: bash
 
       pip install -e .
+
+   To run the example notebooks from a source checkout, install the notebook
+   extras as well. The base package supplies the scientific runtime
+   dependencies; this extra supplies Jupyter and notebook execution tools:
+
+   .. code-block:: bash
+
+      pip install -e ".[notebooks]"
+
+   To include the optional FastRMF benchmark path used by some examples, use:
+
+   .. code-block:: bash
+
+      pip install -e ".[notebooks,fast]"
 
 To upgrade to the latest version on PyPI, run:
 
@@ -118,6 +136,10 @@ Once the environment is activated, you can install the package from PyPI:
    pip install CompactObject-TOV
 
 The dependencies should be automatically installed for you.
+This includes the packages used by the shipped examples, such as ``pandas``,
+``sympy``, ``ultranest``, ``h5py``, and ``numba``. The only accelerated
+dependency that is intentionally optional is ``NumbaMinpack``; see
+`Optional FastRMF dependency`_ below.
 
 Alternative Installation Method
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -147,6 +169,20 @@ If you encounter issues using ``pip install``, you can install the package manua
    .. code-block:: bash
 
       pip install -e .
+
+   To run the example notebooks from a source checkout, install the notebook
+   extras as well. The base package supplies the scientific runtime
+   dependencies; this extra supplies Jupyter and notebook execution tools:
+
+   .. code-block:: bash
+
+      pip install -e ".[notebooks]"
+
+   To include the optional FastRMF benchmark path used by some examples, use:
+
+   .. code-block:: bash
+
+      pip install -e ".[notebooks,fast]"
 
 To upgrade to the latest version on PyPI, run:
 
@@ -181,9 +217,40 @@ By following these instructions, you should have CompactObject installed and rea
 ..    - `sys`
 ..    - `ultranest`
 
-`CompactObject-TOV` optionally depends on `numbaminpack`. However, it may hard to install if don't have a fortran complier. Please
-refer to this page `NumbaMinpack documentation <https://pypi.org/project/NumbaMinpack/>`_, and you can skip
-this dependency if you are not using "fastRMF_EoS" and "pQCD"
+Optional FastRMF dependency
+---------------------------
+
+``CompactObject-TOV`` can use ``NumbaMinpack`` for the accelerated
+``EOSgenerators.fastRMF_EoS`` path. This dependency is optional; the standard
+RMF and DDH examples work without it.
+
+``NumbaMinpack`` requires a Fortran compiler before installation. On macOS,
+the upstream project documents the following setup:
+
+.. code-block:: bash
+
+   brew install gcc
+   python -m pip install NumbaMinpack
+
+On Debian/Ubuntu systems, install ``gfortran`` first:
+
+.. code-block:: bash
+
+   sudo apt-get install gfortran cmake
+   python -m pip install NumbaMinpack
+
+To install CompactObject with the optional FastRMF dependencies from a source
+checkout, run:
+
+.. code-block:: bash
+
+   pip install -e ".[fast]"
+
+To install everything needed for documentation and notebook execution:
+
+.. code-block:: bash
+
+   pip install -e ".[docs,notebooks,fast]"
 
 .. Summary
 .. -------

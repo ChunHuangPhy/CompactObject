@@ -1,7 +1,7 @@
 .. _C_s:
 
 Calculate Speed of Sound
-=====================
+========================
 
 Calculates and returns speed of sound from an equaiton of state inputed by the user.
 

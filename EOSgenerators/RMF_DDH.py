@@ -43,28 +43,20 @@ def Function(type='Typel99', couplings="Default"):
     and their derivatives at any given density rho. Coupling types and default values are 
     based on literature references, with options for user-defined functions.
 
-    Parameters:
-        type (str): Specifies the model for density dependence. Options include:
-            - "Typel99" (default): Uses the DD-MEX model from Typel99 (2008.04491).
-            - "Malik22": Uses the model from Malik22 (2201.12552).
-            - "Char23": Uses the model from Char23 (2307.12364).
-            - "UserDefined": Allows users to specify a custom LaTeX expression for each function.
-        
-        couplings (str or list): Sets the model-specific coupling constants.
-            - If "Default", the default parameters are used:
-                - "Typel99": DD-MEX model parameters.
-                - "Malik22": DDBm model parameters.
-                - "Char23": Model I parameters.
-            - If not "Default", expect a 1D array with specific coupling values.
+    Parameters
+    ----------
+    type : str, optional
+        Density-dependence model. Supported values are "Typel99", "Malik22",
+        "Char23", and "UserDefined".
+    couplings : str or list, optional
+        Model-specific coupling constants. Use "Default" for the preset values
+        of the selected model, or pass explicit coupling values.
 
-    Returns:
-        tuple: Contains six symbolic expressions to be evaluated at density rho:
-            - gs (Sympy Expression): Sigma meson coupling.
-            - gw (Sympy Expression): Omega meson coupling.
-            - gr (Sympy Expression): Rho meson coupling.
-            - dgs (Sympy Expression): Derivative of sigma coupling with respect to rho.
-            - dgw (Sympy Expression): Derivative of omega coupling with respect to rho.
-            - dgr (Sympy Expression): Derivative of rho coupling with respect to rho.
+    Returns
+    -------
+    tuple
+        Six callable expressions: sigma, omega, and rho meson couplings,
+        followed by their density derivatives.
     """
 
     if type == 'Typel99':

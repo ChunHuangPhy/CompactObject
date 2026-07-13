@@ -31,6 +31,27 @@ Matrix_b = np.array(
 Matrix_l = np.array([[0.0, -1.0, 1 / 2.0], [0.0, -1.0, 1 / 2.0]])
 
 
+def _validate_rmf_theta(theta):
+    """Return RMF parameters as a numeric array with a clear error for DDH inputs."""
+    try:
+        theta_array = np.asarray(theta, dtype=np.float64)
+    except (TypeError, ValueError) as exc:
+        raise TypeError(
+            "FastRMF.compute_EOS expects a length-10 numeric RMF theta. "
+            "DDH theta values contain callable density-dependent couplings and "
+            "must be passed to EOSgenerators.RMF_DDH.compute_eos instead."
+        ) from exc
+
+    if theta_array.shape != (10,):
+        raise TypeError(
+            "FastRMF.compute_EOS expects a length-10 numeric RMF theta. "
+            "DDH theta values contain callable density-dependent couplings and "
+            "must be passed to EOSgenerators.RMF_DDH.compute_eos instead."
+        )
+
+    return theta_array
+
+
 @jit
 def initial_values(rho, theta):
     """Outputs the the sigma, omega, rho term and chemical potential of electron and neutron at
@@ -374,6 +395,7 @@ def compute_EOS(eps_crust, pres_crust, theta, return_tag=False):
                     - EoS[6]: Muon chemical potential in natural units.
                     - EoS[7]: Proton fraction (dimensionless).
     """
+    theta = _validate_rmf_theta(theta)
     dt    = 0.05
     rho_0 = 0.1505
     

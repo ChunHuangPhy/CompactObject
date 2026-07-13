@@ -51,11 +51,10 @@ extensions = ['sphinx.ext.autodoc',
                 'nbsphinx'
 ]
 
-intersphinx_mapping = {'sphinx': ('http://www.sphinx-doc.org/en/master', None),
-           'numpy': ('https://docs.scipy.org/doc/numpy', None),
-           'UltraNest': ('https://johannesbuchner.github.io/UltraNest/index.html', None),
-           'scipy': ('https://docs.scipy.org/doc/', None),
-           'CodeAstro': ('https://semaphorep.github.io/codeastro/', None)
+intersphinx_mapping = {'sphinx': ('https://www.sphinx-doc.org/en/master', None),
+           'numpy': ('https://numpy.org/doc/stable', None),
+           'UltraNest': ('https://johannesbuchner.github.io/UltraNest/', None),
+           'scipy': ('https://docs.scipy.org/doc/scipy/', None),
            }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -68,6 +67,7 @@ source_suffix = ['.rst','.md']
 master_doc = 'index'
 language = 'en'
 pygments_style = 'sphinx'
+suppress_warnings = ['autodoc', 'docutils']
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -79,7 +79,7 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['../_static']
 
 html_sidebars = {
     '**': [
@@ -126,5 +126,3 @@ texinfo_documents = [
      author, 'CompactObject', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-

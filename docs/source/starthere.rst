@@ -12,16 +12,14 @@ Prerequisites
 Depending on Your Scientific Goal
 ---------------------------------
 
-1. Understanding Basic Concepts
-   ----------------------------
+1. **Understanding Basic Concepts**
 
    If you are new to **CompactObject** and wish to familiarize yourself with its basic concepts and introduction:
 
    - **Index Page:** Explore the `Index Page <https://chunhuangphy.github.io/CompactObject/index.html>`_ for an overview of the package.
    - **README:** Review the `README <https://github.com/ChunHuangPhy/CompactObject/blob/main/README.md>`_ on GitHub to understand the package’s purpose and features.
 
-2. Generating Equations of State (EOS)
-   ------------------------------------
+2. **Generating Equations of State (EOS)**
 
    To use **CompactObject** for generating equations of state:
 
@@ -35,8 +33,7 @@ Depending on Your Scientific Goal
      - **Density-Dependent EOS Model** proposed in `(Typel et al. 2010) <https://journals.aps.org/prc/abstract/10.1103/PhysRevC.81.015803>`_.
      - *...and more*
 
-3. Using the Tolman–Oppenheimer–Volkoff (TOV) Solver
-   -------------------------------------------------
+3. **Using the Tolman-Oppenheimer-Volkoff (TOV) Solver**
 
    To utilize the TOV solver integrated within **CompactObject**:
 
@@ -47,8 +44,7 @@ Depending on Your Scientific Goal
      - **Radius**
      - **Tidal Deformability**
 
-4. Performing Bayesian Inference on the EOS
-   -----------------------------------------
+4. **Performing Bayesian Inference on the EOS**
 
    **CompactObject** offers robust tools for Bayesian inference related to neutron star EOS. There are two primary scenarios:
 
@@ -85,15 +81,13 @@ Depending on Your Scientific Goal
    **Contribution Invitation:**  
    Consider contributing your EOS to our community if you are using our package! This will boost the influence of your work and make you a collaborator on this project. We can also promote your results on our page. Please check the `Instructions for Contributors <https://chunhuangphy.github.io/CompactObject/Contributor.html>`_ if you wish to contribute.
 
-5. Performing Bayesian Inference in Other Fields
-   ----------------------------------------------
+5. **Performing Bayesian Inference in Other Fields**
 
    If you aim to use the inference modules of **CompactObject** for Bayesian inference outside of EOS studies, such as in high-energy physics or other astrophysical fields:
 
    - **Example Notebook:** Refer to the `Sample Glitch Bayesian Inference Notebook <https://github.com/ChunHuangPhy/CompactObject/blob/main/Test_Case/Sample_glitchBayesian.ipynb>`_ for an example of how to apply **CompactObject** to different inference scenarios.
 
-6. Advanced Usage: Modifying Solvers or APIs
-   ------------------------------------------
+6. **Advanced Usage: Modifying Solvers or APIs**
 
    If the existing tutorials do not cover your specific needs, such as:
 
