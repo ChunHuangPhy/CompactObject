@@ -42,7 +42,6 @@ release = '1.9.9'
 # ones.
 extensions = ['sphinx.ext.autodoc',
                 'sphinx.ext.napoleon',
-                'sphinx.ext.intersphinx',
                 'sphinx.ext.viewcode',
                 'sphinx.ext.coverage',
                 'sphinx.ext.mathjax',
@@ -51,19 +50,16 @@ extensions = ['sphinx.ext.autodoc',
                 'nbsphinx'
 ]
 
-intersphinx_mapping = {'sphinx': ('https://www.sphinx-doc.org/en/master', None),
-           'numpy': ('https://numpy.org/doc/stable', None),
-           'UltraNest': ('https://johannesbuchner.github.io/UltraNest/', None),
-           'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-           }
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-source_suffix = ['.rst','.md']
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'restructuredtext',
+}
 master_doc = 'index'
 language = 'en'
 pygments_style = 'sphinx'

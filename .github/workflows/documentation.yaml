@@ -25,7 +25,7 @@ jobs:
       - name: Install package and notebook dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[notebooks,fast]"
+          python -m pip install -e ".[notebooks]"
       - name: Execute EOS generator notebook
         run: |
           jupyter nbconvert \
@@ -50,7 +50,7 @@ jobs:
       - name: Install package and docs dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[docs,notebooks,fast]"
+          python -m pip install -e ".[docs,notebooks]"
       - name: Sphinx build
         run: |
           sphinx-build -W docs/source _build
