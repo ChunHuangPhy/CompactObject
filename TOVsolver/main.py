@@ -6,7 +6,28 @@ from scipy.interpolate import interp1d
 import TOVsolver.solver_code as TOV_solver
 import TOVsolver.EoS_import as EoS_import
 import TOVsolver.speed_of_sound as speed_of_sound
-from TOVsolver.unit import g_cm_3, G, c
+from TOVsolver.unit import g_cm_3, G, c, km, Msun
+
+
+def _has_physical_mr_points(mass, radius):
+    """Return True when an MR sequence contains enough plausible NS points."""
+    if len(mass) < 3 or len(radius) < 3:
+        return False
+
+    mass = np.asarray(mass, dtype=float)
+    radius = np.asarray(radius, dtype=float)
+    radius_km = radius / km
+    mass_msun = mass / Msun
+
+    physical = (
+        np.isfinite(radius_km)
+        & np.isfinite(mass_msun)
+        & (radius_km > 4.0)
+        & (radius_km < 40.0)
+        & (mass_msun > 0.02)
+        & (mass_msun < 4.0)
+    )
+    return np.count_nonzero(physical) >= 3
 
 # Global Variables
 def OutputMR(input_file="", density=[], pressure=[], central_density_range=np.logspace(14.3, 15.6, 50) * g_cm_3):
@@ -23,6 +44,8 @@ def OutputMR(input_file="", density=[], pressure=[], central_density_range=np.lo
     #############This is something we need to change, like the input for this EOS import should
     ############# be one file contatining Whole EOS. that first column is density and second is pressure
     energy_density, pressure = EoS_import.EOS_import(input_file, density, pressure)
+    original_energy_density = energy_density.copy()
+    original_pressure = pressure.copy()
     ############# Lets the user only input the EOS file path, then this EOS_import should have file
     ############# as input. and the outputMR should have a file as input too?
 
@@ -66,6 +89,22 @@ def OutputMR(input_file="", density=[], pressure=[], central_density_range=np.lo
         except OverflowError as e:
             # print("This EOS is ill-defined to reach an infinity result, that is not phyiscal, No Mass radius will be generated.")
             break
+
+    if not _has_physical_mr_points(Mass, Radius):
+        Radius = []
+        Mass = []
+        for center_density in central_density_range:
+            try:
+                M, R, _ = TOV_solver.solveTOV_tidal(
+                    center_density,
+                    original_energy_density,
+                    original_pressure,
+                )
+                Mass.append(M)
+                Radius.append(R)
+            except OverflowError:
+                break
+
     MR = np.vstack((Mass, Radius)).T
     # print("Mass Radius file will be generated and stored as  2-d array. The first column is mass, second one is Radius")
 
