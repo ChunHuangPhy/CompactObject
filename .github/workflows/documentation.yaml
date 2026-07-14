@@ -26,12 +26,18 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -e ".[notebooks]"
-      - name: Execute EOS generator notebook
+      - name: Execute example notebooks
         run: |
           jupyter nbconvert \
             --to notebook \
             --execute Test_Case/test_EOSgenerators.ipynb \
             --output /tmp/test_EOSgenerators.executed.ipynb \
+            --ExecutePreprocessor.timeout=900 \
+            --ExecutePreprocessor.kernel_name=python3
+          jupyter nbconvert \
+            --to notebook \
+            --execute Test_Case/test_TOVsolver.ipynb \
+            --output /tmp/test_TOVsolver.executed.ipynb \
             --ExecutePreprocessor.timeout=900 \
             --ExecutePreprocessor.kernel_name=python3
 
