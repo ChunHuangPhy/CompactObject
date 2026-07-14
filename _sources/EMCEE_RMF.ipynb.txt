@@ -1,0 +1,467 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## RMF EOS emcee workflow\n",
+    "First you need to install emcee package, to do MCMC sampling"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pip install emcee"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### What EMCEE does ?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "emcee is an open-source Python library designed for MCMC sampling. Here's how it operates:\n",
+    "\n",
+    "1. Walkers: emcee uses multiple \"walkers\" that explore the parameter space. Each walker represents a point in the parameter space and moves around based on the probabilities defined by the log likelihood and log prior.\n",
+    "\n",
+    "\n",
+    "2. Sampling Process: During each step, each walker proposes a new position based on its current position and a set of random perturbations. The new position is then accepted or rejected based on the Metropolis-Hastings criterion, which ensures that points with higher probabilities are more likely to be accepted.\n",
+    "\n",
+    "\n",
+    "3. Convergence: Over many iterations, the walkers explore the parameter space, allowing for convergence to the posterior distribution of the parameters. After a sufficient number of steps, the samples from the walkers can be used to estimate the posterior distributions and uncertainties of the parameters."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Import necessary libraries"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import emcee\n",
+    "import math\n",
+    "import InferenceWorkflow.Likelihood as likelihood\n",
+    "import InferenceWorkflow.prior as prior\n",
+    "import TOVsolver.constant as const\n",
+    "import TOVsolver.main as main\n",
+    "import EOSgenerators.crust_EOS as crust\n",
+    "import EOSgenerators.RMF_EOS as RMF\n",
+    "import scipy.stats as stats"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Loading Crust Model Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load crust model data\n",
+    "Tolos_crust_out = np.loadtxt('/Users/DELL/CompactOject/Test_Case/Tolos_crust_out.txt', delimiter=None, comments='#', usecols=(0, 1, 2, 3, 4))\n",
+    "eps_crust_out = Tolos_crust_out[:, 3] * const.G / const.c**2\n",
+    "pres_crust_out = Tolos_crust_out[:, 4] * const.G / const.c**4\n",
+    "eps_crust, pres_crust = crust.PolyInterpolate(eps_crust_out, pres_crust_out)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Prior"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This function defines the log prior probability for the parameters. The prior is flat within specified bounds. If the parameters fall outside these bounds, the function returns \n",
+    "−∞, indicating that the parameters are not valid."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the prior functions\n",
+    "def log_prior(params):\n",
+    "    # Unpack parameters\n",
+    "    central_density, other_param = params  # Adjust based on your actual parameters\n",
+    "\n",
+    "    # Define prior ranges\n",
+    "    if 0 < central_density < 2.5 and 0 < other_param < 1:  # example ranges\n",
+    "        return 0.0  # Flat prior\n",
+    "    return -np.inf  # Log of zero for out of bounds\n",
+    "\n",
+    "# Define the log likelihood function\n",
+    "def log_likelihood(params):\n",
+    "    central_density, other_param = params  # Adjust based on your actual parameters\n",
+    "    \n",
+    "    # Compute the equation of state\n",
+    "    RMF.compute_EOS(central_density, other_param)  # Add your specific EOS calculations\n",
+    "    mass_radius = main.OutputMR()  # Get the mass-radius output\n",
+    "\n",
+    "    # Calculate likelihood based on your data and model\n",
+    "    # For example, if you have observed data `obs_data`:\n",
+    "    obs_data = ...  # Define your observed data\n",
+    "    likelihood_value = likelihood.calculate(mass_radius, obs_data)  # Replace with actual calculation\n",
+    "    \n",
+    "    return likelihood_value"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define parameters for the model\n",
+    "parameters = ['g_sigma', 'g_omega', 'g_rho', 'kappa', 'lambda_0', 'zeta', 'Lambda_w', 'd1']\n",
+    "# For two or more MR measurements, define d2 or more depending on complexity\n",
+    "# parameters = ['g_sigma', 'g_omega', 'g_rho', 'kappa', 'lambda_0', 'zeta', 'Lambda_w', 'd1', 'd2']\n",
+    "\n",
+    "def prior_transform(cube):\n",
+    "    # Transform cube values into physical parameters\n",
+    "    params = cube.copy()\n",
+    "    \n",
+    "    # Normal and flat prior transformations\n",
+    "    params[0] = math.sqrt(prior.normal_Prior(107.5, 7.5, cube[0]))  # g_sigma\n",
+    "    params[1] = math.sqrt(prior.flat_prior(150, 210, cube[1]))  # g_omega\n",
+    "    params[2] = math.sqrt(prior.flat_prior(75, 210, cube[2]))  # g_rho\n",
+    "    params[3] = prior.normal_Prior(2.525 / oneoverfm_MeV, 1.525 / oneoverfm_MeV, cube[3])  # kappa\n",
+    "    params[4] = prior.normal_Prior(0.0045, 0.0205, cube[4])  # lambda_0\n",
+    "    params[5] = prior.flat_prior(0, 0.04, cube[5])  # zeta\n",
+    "    params[6] = prior.flat_prior(0, 0.045, cube[6])  # Lambda_w\n",
+    "\n",
+    "    # Constants\n",
+    "    g_sigma = params[0]\n",
+    "    g_omega = params[1]\n",
+    "    g_rho = params[2]\n",
+    "    kappa = params[3]\n",
+    "    lambda_0 = params[4]\n",
+    "    zeta = params[5]\n",
+    "    Lambda_w = params[6]\n",
+    "    m_sig = 495 / oneoverfm_MeV\n",
+    "\n",
+    "    # Parameter array for RMF\n",
+    "    theta = np.array([m_sig, m_w, m_rho, g_sigma, g_omega, g_rho, kappa, lambda_0, zeta, Lambda_w])\n",
+    "\n",
+    "    # Compute EOS\n",
+    "    ep, pr = RMF.compute_EOS(eps_crust, pres_crust, theta)\n",
+    "\n",
+    "    # Stack energy density and pressure\n",
+    "    eps_total = np.hstack((eps_crust, ep))\n",
+    "    pres_total = np.hstack((pres_crust, pr))\n",
+    "\n",
+    "    # Initialize lists for mass-radius\n",
+    "    RFSU2R = []\n",
+    "    MFSU2R = []\n",
+    "    density = np.logspace(14.3, 15.6, 50)\n",
+    "\n",
+    "    # Check monotonicity of total energy density and pressure\n",
+    "    if all(x < y for x, y in zip(eps_total[:-1], eps_total[1:])) and all(x < y for x, y in zip(pres_total[:-1], pres_total[1:])):\n",
+    "        MR = main.OutputMR('', eps_total, pres_total).T\n",
+    "        if MR[1].size == 0:\n",
+    "            params[7] = 0  # No valid MR\n",
+    "        else:\n",
+    "            for i in range(len(MR[1])):\n",
+    "                RFSU2R.append(MR[0][i])\n",
+    "                MFSU2R.append(MR[1][i])\n",
+    "                if i > 20 and MR[1][i] - MR[1][i - 1] < 0:\n",
+    "                    break\n",
+    "\n",
+    "    # Set d1 parameter based on maximum mass\n",
+    "    if len(MFSU2R) == 0:\n",
+    "        params[7] = 0  # No valid MR\n",
+    "    else:\n",
+    "        max_index = len(MFSU2R)\n",
+    "        max_d = np.log10(density[max_index - 1])\n",
+    "        params[7] = 14.3 + (max_d - 14.3) * cube[7]  # Transform d1 parameter\n",
+    "    return params\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Log Likelihood in EMCEE \n",
+    "\n",
+    "This function computes the log likelihood of the model given the parameters. It calls the functions to compute the equation of state and retrieves the mass-radius relation. Then, it calculates the likelihood based on observed data."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# # Define the log likelihood function\n",
+    "# def log_likelihood(params):\n",
+    "#     central_density, other_param = params  # Adjust based on your actual parameters\n",
+    "    \n",
+    "#     # Compute the equation of state\n",
+    "#     RMF.compute_EOS(central_density, other_param)  # Call the function to compute EOS\n",
+    "#     mass_radius = main.OutputMR()  # Get the mass-radius output\n",
+    "\n",
+    "#     # Calculate likelihood based on your data and model\n",
+    "#     obs_data = ...  # Define your observed data\n",
+    "#     likelihood_value = likelihood.calculate(mass_radius, obs_data)  # Replace with actual calculation\n",
+    "    \n",
+    "#     return likelihood_value\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Likelihood for our NS model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the likelihood transformation function\n",
+    "def likelihood_transform(theta):\n",
+    "    eps_crust, pres_crust = crust.PolyInterpolate(eps_crust_out, pres_crust_out)\n",
+    "    g_sigma, g_omega, g_rho, kappa, lambda_0, zeta, Lambda_w, d1 = theta\n",
+    "\n",
+    "    # Compute EOS\n",
+    "    m_sig = 495 / const.oneoverfm_MeV\n",
+    "    m_w = 3.96544\n",
+    "    m_rho = 3.86662\n",
+    "    theta1 = np.array([m_sig, m_w, m_rho, g_sigma, g_omega, g_rho, kappa, lambda_0, zeta, Lambda_w])\n",
+    "    ep, pr = RMF.compute_EOS(eps_crust, pres_crust, theta1)\n",
+    "\n",
+    "    eps_total = np.hstack((eps_crust, ep))\n",
+    "    pres_total = np.hstack((pres_crust, pr))\n",
+    "\n",
+    "    # Compute MR likelihood from simulated MR measurement\n",
+    "    probMRgaussian = likelihood.MRlikihood_Gaussian(eps_total, pres_total, (1.4, 13, 0.07, 0.65), d1)\n",
+    "\n",
+    "    # Gravitational wave event likelihood\n",
+    "    GW170817 = np.load('GW170817_McQL1L2weights.npy')\n",
+    "    chrip170817 = stats.gaussian_kde(GW170817[:, 0], weights=GW170817[:, 4])\n",
+    "    kernelGW = stats.gaussian_kde(GW170817.T[0:4], weights=GW170817[:, 4])\n",
+    "    probGW = likelihood.TidalLikihood_kernel(eps_total, pres_total, (kernelGW, chrip170817), d1)\n",
+    "\n",
+    "    # Combine all likelihoods\n",
+    "    prob = probMRgaussian + probGW\n",
+    "    return prob"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Random Walker and log Probability Function"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the log probability function\n",
+    "def log_probability(params):\n",
+    "    lp = log_prior(params)\n",
+    "    if not np.isfinite(lp):\n",
+    "        return -np.inf\n",
+    "    return lp + log_likelihood(params)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Setting up the sampler "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " This block initializes the MCMC sampler. It defines the number of walkers (simultaneous sampling processes) and the number of parameters being estimated. It generates random initial positions for each walker within specified bounds."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Set up the sampler\n",
+    "nwalkers = 50  # Number of walkers\n",
+    "ndim = 2  # Number of dimensions (parameters)\n",
+    "p0 = [np.random.rand(ndim) * [2.5, 1] for _ in range(nwalkers)]  # Initial positions of walkers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Define the log probability function for emcee\n",
+    "def log_probability(theta):\n",
+    "    lp = prior_transform(theta)  # Get prior parameters\n",
+    "    if not np.isfinite(lp).all():\n",
+    "        return -np.inf\n",
+    "    return likelihood_transform(lp)\n",
+    "\n",
+    "# Set up the MCMC sampler\n",
+    "nwalkers = 50  # Number of walkers\n",
+    "ndim = 8  # Number of dimensions (parameters)\n",
+    "p0 = [prior_transform(np.random.rand(ndim)) for _ in range(nwalkers)]  # Initial positions of walkers\n",
+    "\n",
+    "# Initialize the emcee sampler\n",
+    "sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability)\n",
+    "\n",
+    "# Analyze the results\n",
+    "samples = sampler.get_chain(flat=True)\n",
+    "np.save('mcmc_samples.npy', samples)  # Save the samples for later analysis\n",
+    "\n",
+    "# Example: Compute and print parameter estimates\n",
+    "parameter_estimates = np.mean(samples, axis=0)\n",
+    "for i, param in enumerate(['g_sigma', 'g_omega', 'g_rho', 'kappa', 'lambda_0', 'zeta', 'Lambda_w', 'd1']):\n",
+    "    print(f\"Estimated {param}: {parameter_estimates[i]}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Initialize and Run\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here, the EnsembleSampler from emcee is created with the defined log probability function. The MCMC sampling is executed for a specified number of steps, allowing progress tracking."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Initialize the emcee sampler\n",
+    "sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability)\n",
+    "\n",
+    "# Run the MCMC sampling\n",
+    "nsteps = 1000  # Number of steps\n",
+    "sampler.run_mcmc(p0, nsteps, progress=True)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### For our NS Model"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Results "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# # Analyze the results\n",
+    "# samples = sampler.get_chain(flat=True)\n",
+    "# np.save('mcmc_samples.npy', samples)  # Save the samples for later analysis\n",
+    "\n",
+    "# # Example: Compute and print parameter estimates\n",
+    "# central_density_estimate = np.mean(samples[:, 0])\n",
+    "# other_param_estimate = np.mean(samples[:, 1])\n",
+    "# print(f\"Estimated Central Density: {central_density_estimate}\")\n",
+    "# print(f\"Estimated Other Parameter: {other_param_estimate}\")\n",
+    "\n",
+    "\n",
+    "# Analyze the results\n",
+    "samples = sampler.get_chain(flat=True)\n",
+    "np.save('mcmc_samples.npy', samples)  # Save the samples for later analysis\n",
+    "\n",
+    "# Example: Compute and print parameter estimates\n",
+    "parameter_estimates = np.mean(samples, axis=0)\n",
+    "for i, param in enumerate(['g_sigma', 'g_omega', 'g_rho', 'kappa', 'lambda_0', 'zeta', 'Lambda_w', 'd1']):\n",
+    "    print(f\"Estimated {param}: {parameter_estimates[i]}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "figure = corner.corner(samples, labels=labels,\n",
+    "                       smooth=0.9,\n",
+    "                       label_kwargs=dict(fontsize=22),\n",
+    "                       title_kwargs=dict(fontsize=22),\n",
+    "                       quantiles=[0.16, 0.5, 0.84],\n",
+    "                       levels=(1 - np.exp(-0.5), 1 - np.exp(-2), 1 - np.exp(-9 / 2.)),\n",
+    "                       plot_density=False,\n",
+    "                       plot_datapoints=False,\n",
+    "                       fill_contours=True,\n",
+    "                       show_titles=True,\n",
+    "                       max_n_ticks=3,\n",
+    "                       title_fmt='.2f')"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

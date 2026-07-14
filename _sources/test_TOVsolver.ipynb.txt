@@ -1,0 +1,198 @@
+{
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## TOVsolver module guide\n",
+    "\n",
+    "TOV solver part we have multiple function, we can generate a Mass radius function from 'Test_EOS.csv' file here easily"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pathlib import Path\n",
+    "import sys\n",
+    "\n",
+    "\n",
+    "def find_repo_root(start=Path.cwd()):\n",
+    "    for path in (start, *start.parents):\n",
+    "        if (path / \"pyproject.toml\").exists():\n",
+    "            return path\n",
+    "    return start\n",
+    "\n",
+    "\n",
+    "NOTEBOOK_DIR = Path.cwd()\n",
+    "REPO_ROOT = find_repo_root(NOTEBOOK_DIR)\n",
+    "if str(REPO_ROOT) not in sys.path:\n",
+    "    sys.path.insert(0, str(REPO_ROOT))\n",
+    "\n",
+    "import matplotlib.pyplot as plt\n",
+    "import TOVsolver.main as main\n",
+    "from TOVsolver.unit import km, Msun\n",
+    "\n",
+    "\n",
+    "def find_test_eos():\n",
+    "    candidates = [\n",
+    "        NOTEBOOK_DIR / \"Test_EOS.csv\",\n",
+    "        NOTEBOOK_DIR / \"Test_Case\" / \"Test_EOS.csv\",\n",
+    "        REPO_ROOT / \"Test_Case\" / \"Test_EOS.csv\",\n",
+    "    ]\n",
+    "    checked = []\n",
+    "    for candidate in candidates:\n",
+    "        candidate = candidate.resolve()\n",
+    "        if candidate in checked:\n",
+    "            continue\n",
+    "        checked.append(candidate)\n",
+    "        if candidate.exists():\n",
+    "            return candidate\n",
+    "    paths = \", \".join(str(path) for path in checked)\n",
+    "    raise FileNotFoundError(f\"Could not find Test_EOS.csv. Checked: {paths}\")\n",
+    "\n",
+    "\n",
+    "TEST_EOS_PATH = find_test_eos()\n",
+    "\n",
+    "# Main has two functions\n",
+    "#   OutputMR() returns mass and radius\n",
+    "#   OutputMRT() returns radius, mass, and tidal deformability\n",
+    "#   OutputC_s() returns the speed of sound and density grid\n",
+    "# The input can be either a CSV path or density/pressure arrays.\n",
+    "MR = main.OutputMR(str(TEST_EOS_PATH)).T\n",
+    "\n",
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(MR[1] / km, MR[0] / Msun, lw=2)\n",
+    "ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "ax.set_xlim(8.0, 20.0)\n",
+    "ax.set_ylim(0, 3)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can generate the tidal property from it also,like tidal deformability"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Try solving the tidal property.\n",
+    "MRT = main.OutputMRT(str(TEST_EOS_PATH)).T\n",
+    "\n",
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(MRT[0] / km, MRT[2], lw=2)\n",
+    "ax.set_ylabel(r\"$\\Lambda$\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "ax.set_xlim(8.0, 20.0)\n",
+    "ax.set_ylim(0, 1000)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Plot out Tidal with mass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(MRT[1] / Msun, MRT[2], lw=2)\n",
+    "ax.set_ylabel(r\"$\\Lambda$\", fontsize=16)\n",
+    "ax.set_xlabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlim(0.0, 3.0)\n",
+    "ax.set_ylim(0, 1000)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Can generate the speed of sound from the given equation of state. This do not need to solve TOV equation, the speed of sound is defined by the derivative of P(rho) curve, this quantity is very of interest, since whether there is a upper limit of this speed of sound (except for the casaulity limit c_s < 1 ) is a very interesting and hot topic"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# OutputC_s returns c_s^2/c^2 and the geometrized energy-density grid.\n",
+    "C_s, rho = main.OutputC_s(str(TEST_EOS_PATH))\n",
+    "\n",
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(rho, C_s, lw=2)\n",
+    "ax.set_xlabel(r\"$\\epsilon$ [$G\\,\\mathrm{g\\,cm^{-3}}/c^2$]\", fontsize=16)\n",
+    "ax.set_ylabel(r\"$c_s^2/c^2$\", fontsize=16)\n",
+    "plt.xscale(\"log\")\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This package can easily integrated into a Baysian inference flow, to do bayesian inference, Here, we generated several (50) EoSs from RMF model, and try to use a loop to compute out all of their MRT property. That could be a in-between step of doing bayesian inference of neutron star EoS. Remember these EoS could also be polytrope, or anything that generate from your own EoS computation code. Next step for us will be integrate our EoS computation into this package and also the Bayesian analysis."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "base",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.13"
+  },
+  "orig_nbformat": 4,
+  "vscode": {
+   "interpreter": {
+    "hash": "e4481115b400f107b26d360e6549f546bb0e8bc1af70e4e66085bfa77a017a39"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

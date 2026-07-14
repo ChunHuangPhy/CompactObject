@@ -1,0 +1,1438 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# EOSGenerators module guide\n",
+    "\n",
+    "## RMF EOS \n",
+    "\n",
+    "First import all of the package that will be used here."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from pathlib import Path\n",
+    "import sys\n",
+    "import math\n",
+    "\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "\n",
+    "def find_repo_root(start=Path.cwd()):\n",
+    "    for path in (start, *start.parents):\n",
+    "        if (path / \"pyproject.toml\").exists():\n",
+    "            return path\n",
+    "    return start\n",
+    "\n",
+    "\n",
+    "NOTEBOOK_DIR = Path.cwd()\n",
+    "REPO_ROOT = find_repo_root(NOTEBOOK_DIR)\n",
+    "if str(REPO_ROOT) not in sys.path:\n",
+    "    sys.path.insert(0, str(REPO_ROOT))\n",
+    "\n",
+    "import EOSgenerators.crust_EOS as crust\n",
+    "import EOSgenerators.RMF_EOS as RMF\n",
+    "import EOSgenerators.Polytrope_EOS as Polytrope\n",
+    "import EOSgenerators.Strangeon_EOS as Strangeon\n",
+    "import TOVsolver.main as main\n",
+    "from TOVsolver.unit import g_cm_3, dyn_cm_2, km, Msun, MeV, fm\n",
+    "from TOVsolver.maximum_central_density import maximum_central_density\n",
+    "\n",
+    "\n",
+    "def mr_to_km_msun(mr):\n",
+    "    \"\"\"Normalize OutputMR output to radius [km] and mass [Msun].\"\"\"\n",
+    "    arr = np.asarray(mr, dtype=float)\n",
+    "    if arr.ndim != 2:\n",
+    "        raise RuntimeError(f\"OutputMR returned an unexpected shape: {arr.shape}\")\n",
+    "\n",
+    "    orientations = []\n",
+    "    if arr.shape[1] >= 2:\n",
+    "        orientations.append((\"columns\", arr[:, 0], arr[:, 1]))\n",
+    "    if arr.shape[0] >= 2:\n",
+    "        orientations.append((\"rows\", arr[0], arr[1]))\n",
+    "\n",
+    "    unit_candidates = []\n",
+    "    for orientation, raw_mass, raw_radius in orientations:\n",
+    "        unit_candidates.extend(\n",
+    "            [\n",
+    "                (f\"{orientation}, natural units\", raw_radius / km, raw_mass / Msun),\n",
+    "                (f\"{orientation}, already km/Msun\", raw_radius, raw_mass),\n",
+    "                (f\"{orientation}, cgs cm/g\", raw_radius / 1.0e5, raw_mass / 1.989e33),\n",
+    "                (f\"{orientation}, geometric cm\", raw_radius / 1.0e5, raw_mass / 1.47662504e5),\n",
+    "            ]\n",
+    "        )\n",
+    "\n",
+    "    best = None\n",
+    "    best_score = np.inf\n",
+    "    for label, radius, mass in unit_candidates:\n",
+    "        radius = np.asarray(radius, dtype=float)\n",
+    "        mass = np.asarray(mass, dtype=float)\n",
+    "        valid = np.isfinite(radius) & np.isfinite(mass) & (radius > 0) & (mass > 0)\n",
+    "        if np.count_nonzero(valid) < 3:\n",
+    "            continue\n",
+    "\n",
+    "        radius_valid = radius[valid]\n",
+    "        mass_valid = mass[valid]\n",
+    "        physical = (radius_valid > 4.0) & (radius_valid < 40.0) & (mass_valid > 0.02) & (mass_valid < 4.0)\n",
+    "        physical_count = np.count_nonzero(physical)\n",
+    "        if physical_count < 3:\n",
+    "            continue\n",
+    "\n",
+    "        radius_physical = radius_valid[physical]\n",
+    "        mass_physical = mass_valid[physical]\n",
+    "        score = (\n",
+    "            -physical_count\n",
+    "            + abs(np.nanmedian(radius_physical) - 12.0) / 12.0\n",
+    "            + abs(np.nanmax(mass_physical) - 2.0) / 2.0\n",
+    "        )\n",
+    "        if score < best_score:\n",
+    "            best_score = score\n",
+    "            best = (radius, mass, valid, label)\n",
+    "\n",
+    "    if best is None:\n",
+    "        ranges = []\n",
+    "        for label, radius, mass in unit_candidates:\n",
+    "            radius = np.asarray(radius, dtype=float)\n",
+    "            mass = np.asarray(mass, dtype=float)\n",
+    "            if radius.size and mass.size:\n",
+    "                ranges.append(\n",
+    "                    f\"{label}: R=[{np.nanmin(radius):.3e}, {np.nanmax(radius):.3e}], \"\n",
+    "                    f\"M=[{np.nanmin(mass):.3e}, {np.nanmax(mass):.3e}]\"\n",
+    "                )\n",
+    "        raise RuntimeError(\"Could not normalize OutputMR result to physical km/Msun values. \" + \"; \".join(ranges))\n",
+    "\n",
+    "    return best\n",
+    "\n",
+    "\n",
+    "def load_tolos_crust():\n",
+    "    candidates = [\n",
+    "        NOTEBOOK_DIR / \"Tolos_crust_out.txt\",\n",
+    "        NOTEBOOK_DIR / \"Test_Case\" / \"Tolos_crust_out.txt\",\n",
+    "        REPO_ROOT / \"Test_Case\" / \"Tolos_crust_out.txt\",\n",
+    "    ]\n",
+    "    checked = []\n",
+    "    for candidate in candidates:\n",
+    "        candidate = candidate.resolve()\n",
+    "        if candidate in checked:\n",
+    "            continue\n",
+    "        checked.append(candidate)\n",
+    "        if candidate.exists():\n",
+    "            return np.loadtxt(candidate)\n",
+    "    paths = \", \".join(str(path) for path in checked)\n",
+    "    raise FileNotFoundError(f\"Could not find Tolos_crust_out.txt. Checked: {paths}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "###  (a) Load crust EOS and prepare interface EOS\n",
+    "\n",
+    "Define constants, and load the crust EOS into this notebook, since when we solve the equation of state to TOV equation, we need full scope of the equation of state. Here, crust eos file is 'Tolos_crust_out.txt', while we need to times g_cm_3 for energy density and dyn_cm_2 for pressure, that will be easier for treatment, no need worry about G and c.\n",
+    "\n",
+    "Then just connect the crust part with the interface part(the part between core equation of state and crust) by a PolyInterpolate function"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Tolos_crust_out = load_tolos_crust()\n",
+    "eps_crust_T_out = Tolos_crust_out[:, 3] * g_cm_3\n",
+    "pres_crust_T_out = Tolos_crust_out[:, 4] * dyn_cm_2\n",
+    "eps_com, pres_com = crust.PolyInterpolate(eps_crust_T_out, pres_crust_T_out)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Example of RMF"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (b) Defining the paramters\n",
+    "\n",
+    "Defining the free prameters that we need to compute the equation of state, you could check our intro part of documentation or just check the original paper of us about details. [Huang et al,2023](https://arxiv.org/abs/2303.17518)\n",
+    "\n",
+    "After defined the equation of state parameters, we could call the 'compute_EOS' function from RMF, to compute full core equation of state."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "m_sig = 495.0 / 197.33\n",
+    "m_w = 3.96544\n",
+    "m_rho = 3.86662\n",
+    "\n",
+    "g_sigma = math.sqrt(107.5751)\n",
+    "g_omega = math.sqrt(182.3949)\n",
+    "g_rho = math.sqrt(206.4260)\n",
+    "\n",
+    "kappa = 3.09114168 / 197.33\n",
+    "lambda_0 = -0.00168015405\n",
+    "zeta = 0.024\n",
+    "Lambda_w = 0.045\n",
+    "theta_rmf = np.array(\n",
+    "    [m_sig, m_w, m_rho, g_sigma, g_omega, g_rho, kappa, lambda_0, zeta, Lambda_w]\n",
+    ")\n",
+    "eps, pres = RMF.compute_EOS(eps_com, pres_com, theta_rmf)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (c) Connecting Core and crust EOS\n",
+    "\n",
+    "These two line can easily connect the Equation of state we computed for core part by setting the parameters and the crust equation of state, to a full equation of state that prepared for next step output\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "eps_total = np.array([*eps_com, *eps])\n",
+    "pres_total = np.array([*pres_com, *pres])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here below is one of the possiblity, use our defined function, 'OutputMR' to compute out what the mass radius curve corresponding to this equation of state."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MR = main.OutputMR(\"\", eps_total, pres_total)\n",
+    "radius_rmf, mass_rmf, valid_rmf, mr_units = mr_to_km_msun(MR)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(radius_rmf[valid_rmf], mass_rmf[valid_rmf], lw=2)\n",
+    "ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "\n",
+    "standard_xlim = (8.0, 20.0)\n",
+    "standard_ylim = (0.0, 3.0)\n",
+    "visible_in_standard_window = (\n",
+    "    valid_rmf\n",
+    "    & (radius_rmf >= standard_xlim[0])\n",
+    "    & (radius_rmf <= standard_xlim[1])\n",
+    "    & (mass_rmf >= standard_ylim[0])\n",
+    "    & (mass_rmf <= standard_ylim[1])\n",
+    ")\n",
+    "if np.any(visible_in_standard_window):\n",
+    "    ax.set_xlim(*standard_xlim)\n",
+    "    ax.set_ylim(*standard_ylim)\n",
+    "else:\n",
+    "    radius_margin = 0.05 * np.ptp(radius_rmf[valid_rmf]) if np.ptp(radius_rmf[valid_rmf]) > 0 else 1.0\n",
+    "    mass_margin = 0.05 * np.ptp(mass_rmf[valid_rmf]) if np.ptp(mass_rmf[valid_rmf]) > 0 else 0.1\n",
+    "    ax.set_xlim(np.min(radius_rmf[valid_rmf]) - radius_margin, np.max(radius_rmf[valid_rmf]) + radius_margin)\n",
+    "    ax.set_ylim(max(0.0, np.min(mass_rmf[valid_rmf]) - mass_margin), np.max(mass_rmf[valid_rmf]) + mass_margin)\n",
+    "\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (d) Chemical potential ($\\mu$) and proton fraction ($X_p$)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Both `EOSgenerators.RMF_EOS` and `EOSgenerators.fastRMF_EoS` provide functionality to return an equation of state (EoS) array along with the chemical potentials for neutrons, protons, electrons, muons, and the proton fraction. As shown in the previous section (a), the default output format includes separate lists for energy and pressure.\n",
+    "\n",
+    "To obtain the compositional information of the $\\beta$-equilibrium EoS, you can set the `return_tag` parameter to `True`. \n",
+    "\n",
+    "When `return_tag=True`:\n",
+    "- The function returns a 1D NumPy array containing various EoS components:\n",
+    "    - `EoS[0]`: Number density in fm\u207b\u00b3\n",
+    "    - `EoS[1]`: Energy density in natural units\n",
+    "    - `EoS[2]`: Pressure in natural units\n",
+    "    - `EoS[3]`: Proton chemical potential in natural units\n",
+    "    - `EoS[4]`: Neutron chemical potential in natural units\n",
+    "    - `EoS[5]`: Electron chemical potential in natural units\n",
+    "    - `EoS[6]`: Muon chemical potential in natural units\n",
+    "    - `EoS[7]`: Proton fraction (dimensionless)\n",
+    "\n",
+    "Example:\n",
+    "```python\n",
+    "EoS_composition = RMF.compute_EOS(eps_com, pres_com, theta_rmf, return_tag=True)\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Compute the EoS composition in beta equilibrium\n",
+    "EoS_composition = RMF.compute_EOS(eps_com, pres_com, theta_rmf, return_tag=True)\n",
+    "\n",
+    "# Number density in fm^-3\n",
+    "rho = EoS_composition[0]\n",
+    "\n",
+    "# Convert energy density and pressure from natural units to MeV.fm^-3\n",
+    "e = EoS_composition[1] / (MeV * fm**(-3))    # Energy density in MeV.fm^-3\n",
+    "p = EoS_composition[2] / (MeV * fm**(-3))    # Pressure in MeV.fm^-3\n",
+    "\n",
+    "# Convert chemical potentials to MeV\n",
+    "mu_p = EoS_composition[3] / MeV  # Proton chemical potential in MeV\n",
+    "mu_n = EoS_composition[4] / MeV  # Neutron chemical potential in MeV\n",
+    "mu_e = EoS_composition[5] / MeV  # Electron chemical potential in MeV\n",
+    "mu_mu = EoS_composition[6] / MeV # Muon chemical potential in MeV\n",
+    "\n",
+    "# Proton fraction (dimensionless)\n",
+    "xp = EoS_composition[7]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Create a 2x2 subplot\n",
+    "fig, axs = plt.subplots(2, 2, figsize=(12, 12))\n",
+    "fig.suptitle(\"Equation of State (EoS) Analysis\",fontsize=22)\n",
+    "\n",
+    "# Panel a) e vs p\n",
+    "axs[0, 0].plot(e, p, color='blue', label='Energy vs Pressure')\n",
+    "axs[0, 0].set_xlabel(\"Energy Density (MeV.fm\u207b\u00b3)\" ,fontsize=15)\n",
+    "axs[0, 0].set_ylabel(\"Pressure (MeV.fm\u207b\u00b3)\",fontsize=15)\n",
+    "axs[0, 0].legend(fontsize=15)\n",
+    "axs[0, 0].grid(True)\n",
+    "\n",
+    "# Panel b) rho vs p\n",
+    "axs[0, 1].plot(rho, xp, color='green', label='Density vs $x_p$')\n",
+    "axs[0, 1].set_xlabel(\"Number Density (fm\u207b\u00b3)\",fontsize=15)\n",
+    "axs[0, 1].set_ylabel(\"Proton fraction\",fontsize=15)\n",
+    "axs[0, 1].legend(fontsize=15)\n",
+    "axs[0, 1].grid(True)\n",
+    "\n",
+    "# Panel c) mu_n vs p\n",
+    "axs[1, 0].plot(mu_n, p, color='red', label='Neutron Chemical Potential vs Pressure')\n",
+    "axs[1, 0].set_xlabel(\"Neutron Chemical Potential (MeV)\",fontsize=15)\n",
+    "axs[1, 0].set_ylabel(\"Pressure (MeV.fm\u207b\u00b3)\",fontsize=15)\n",
+    "axs[1, 0].legend(fontsize=15)\n",
+    "axs[1, 0].grid(True)\n",
+    "\n",
+    "# Panel d) rho vs mu_n, mu_p, and mu_e\n",
+    "axs[1, 1].plot(rho, mu_n, color='red', label='Neutron')\n",
+    "axs[1, 1].plot(rho, mu_p, color='blue', label='Proton')\n",
+    "axs[1, 1].plot(rho, mu_e, color='green', label='Electron')\n",
+    "axs[1, 1].set_xlabel(\"Number Density (fm\u207b\u00b3)\",fontsize=15)\n",
+    "axs[1, 1].set_ylabel(\"Chemical Potential (MeV)\",fontsize=15)\n",
+    "axs[1, 1].legend(fontsize=15)\n",
+    "axs[1, 1].grid(True)\n",
+    "\n",
+    "plt.tight_layout(rect=[0, 0, 1, 0.96])\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## A Microscopic Approach with Density-Dependent Coupling in Relativistic Mean field Models\n",
+    "\n",
+    "This notebook explores a microscopic approach to modeling hadrons based on relativistic mean-field theory, where hadrons interact through density-dependent couplings with mesons (DDH). This approach, unlike constant coupling methods, incorporates quantal fluctuations of baryon fields even in the ground state, as demonstrated by Lenske and Fuchs (1995, *Physical Review B*, 345, 355).\n",
+    "\n",
+    "The DDH parameterization has been particularly effective in describing both the properties of nuclear matter and finite nuclei. Notably, Typel and Wolter (1999, *Nuclear Physics A*, 656, 331) developed a DDH parameterization that captures essential nuclear characteristics accurately.\n",
+    "\n",
+    "### Types of Density-Dependent Functional Dependence for Couplings\n",
+    "\n",
+    "The literature explores various functional dependencies for isoscalar and isovector couplings in the DDH model. Three well-known types are:\n",
+    "\n",
+    "1. **Typel-Wolter Type (1999)**: The original functional form introduced by Typel and Wolter (1999) in *Nuclear Physics A*.\n",
+    "2. **DDB (Density-Dependent Bayesian) Type**: Introduced in *Astrophysical Journal* (930, 2022, 17) and detailed in e-Print: 2201.12552, this parameterization leverages Bayesian approaches for improved model precision.\n",
+    "3. **Char23 Type**: A more recent functional form, as seen in arXiv:2307.12364.\n",
+    "4. Possibility of implementing Different Density-Dependent Functionals: Our density-dependent relativistic mean-field (RMF) model supports all three types of functional dependencies, allowing users to select or define custom functional forms based on specific research needs."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import EOSgenerators.RMF_DDH as DDH\n",
+    "from TOVsolver.constant import oneoverfm_MeV,G,c"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## (a) Compute DDH EOS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The function `DDH.Function` calculates the density-dependent coupling constants $g_{\\sigma}(\r",
+    "ho)$, $g_{\\omega}(\r",
+    "ho)$, and $g_{\r",
+    "ho}(\r",
+    "ho)$, together with their density derivatives. These functions can then be evaluated over the density range used by the DDH EOS solver.\n",
+    "\n",
+    "### Key Parameters\n",
+    "\n",
+    "- **type**: Specifies the density-dependence model. Options include:\n",
+    "    - `\"Typel99\"` (default): Implements the DD-MEX model from Typel99 (Reference: 2008.04491).\n",
+    "    - `\"Malik22\"`: Uses the DDBm model parameters as detailed in Malik22 (Reference: 2201.12552).\n",
+    "    - `\"Char23\"`: Model I from Char23 (Reference: 2307.12364).\n",
+    "    - `\"UserDefined\"`: Allows custom expressions for each coupling.\n",
+    "\n",
+    "- **couplings**: Specifies the coupling constants for the selected model.\n",
+    "    - `\"Default\"`: Uses preset values for the selected model.\n",
+    "    - Custom list: Users can input specific values if `\"Default\"` is not selected.\n",
+    "\n",
+    "### Function Output\n",
+    "\n",
+    "The `DDH.Function` function returns a tuple containing callable expressions for each meson coupling and derivative:\n",
+    "\n",
+    "1. $g_{\\sigma}(\r",
+    "ho)$: sigma meson coupling\n",
+    "2. $g_{\\omega}(\r",
+    "ho)$: omega meson coupling\n",
+    "3. $g_{\r",
+    "ho}(\r",
+    "ho)$: rho meson coupling\n",
+    "4. $\f",
+    "rac{d g_{\\sigma}}{d \r",
+    "ho}$: derivative of sigma coupling with respect to density\n",
+    "5. $\f",
+    "rac{d g_{\\omega}}{d \r",
+    "ho}$: derivative of omega coupling with respect to density\n",
+    "6. $\f",
+    "rac{d g_{\r",
+    "ho}}{d \r",
+    "ho}$: derivative of rho coupling with respect to density\n",
+    "\n",
+    "### Example Usage\n",
+    "\n",
+    "```python\n",
+    "gs, gw, gr, dgs, dgw, dgr = DDH.Function(type=\"Typel99\", couplings=\"Default\")\n",
+    "```\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "## DDMEX model (Huang et al, arxiv: 2008.04491)\n",
+    "m_sig_ddmex = 547.3327 / oneoverfm_MeV\n",
+    "m_w_ddmex = 783 / oneoverfm_MeV\n",
+    "m_rho_ddmex = 763 / oneoverfm_MeV\n",
+    "rho0_ddmex = 0.153\n",
+    "\n",
+    "ddmex_gs, ddmex_gw, ddmex_gr, ddmex_dgs, ddmex_dgw, ddmex_dgr = DDH.Function(type=\"Typel99\")\n",
+    "theta_ddmex = np.array(\n",
+    "    [m_sig_ddmex, m_w_ddmex, m_rho_ddmex, ddmex_gs, ddmex_gw, ddmex_gr, ddmex_dgs, ddmex_dgw, ddmex_dgr, rho0_ddmex],\n",
+    "    dtype=object,\n",
+    ")\n",
+    "EoS_DDMEX = DDH.compute_eos(eps_com, pres_com, theta_ddmex)\n",
+    "\n",
+    "## DDBm model (Malik et al, arxiv: 2201.12552)\n",
+    "m_sig_ddbm = 550 / oneoverfm_MeV\n",
+    "m_w_ddbm = m_w_ddmex\n",
+    "m_rho_ddbm = m_rho_ddmex\n",
+    "rho0_ddbm = 0.153\n",
+    "\n",
+    "ddbm_gs, ddbm_gw, ddbm_gr, ddbm_dgs, ddbm_dgw, ddbm_dgr = DDH.Function(type=\"Malik22\")\n",
+    "theta_ddbm = np.array(\n",
+    "    [m_sig_ddbm, m_w_ddbm, m_rho_ddbm, ddbm_gs, ddbm_gw, ddbm_gr, ddbm_dgs, ddbm_dgw, ddbm_dgr, rho0_ddbm],\n",
+    "    dtype=object,\n",
+    ")\n",
+    "EoS_DDBm = DDH.compute_eos(eps_com, pres_com, theta_ddbm)\n",
+    "\n",
+    "## Model I (Char et al, arxiv: 2307.12364)\n",
+    "m_sig_char23 = 550.0 / oneoverfm_MeV\n",
+    "m_w_char23 = 782.6 / oneoverfm_MeV\n",
+    "m_rho_char23 = 769 / oneoverfm_MeV\n",
+    "rho0_char23 = 0.153\n",
+    "\n",
+    "char23_gs, char23_gw, char23_gr, char23_dgs, char23_dgw, char23_dgr = DDH.Function(type=\"Char23\")\n",
+    "theta_char23 = np.array(\n",
+    "    [m_sig_char23, m_w_char23, m_rho_char23, char23_gs, char23_gw, char23_gr, char23_dgs, char23_dgw, char23_dgr, rho0_char23],\n",
+    "    dtype=object,\n",
+    ")\n",
+    "EoS_Char23 = DDH.compute_eos(eps_com, pres_com, theta_char23)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rho_DDMEX = EoS_DDMEX[0] # in fm-3\n",
+    "e_DDMEX   = EoS_DDMEX[1]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "p_DDMEX   = EoS_DDMEX[2]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "xp_DDMEX  = EoS_DDMEX[3]  ## dimentionless\n",
+    "\n",
+    "rho_DDBm = EoS_DDBm[0] # in fm-3\n",
+    "e_DDBm   = EoS_DDBm[1]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "p_DDBm   = EoS_DDBm[2]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "xp_DDBm  = EoS_DDBm[3]  ## dimentionless\n",
+    "\n",
+    "rho_char23 = EoS_Char23[0] # in fm-3\n",
+    "e_char23   = EoS_Char23[1]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "p_char23   = EoS_Char23[2]/(MeV*fm**(-3)) ## in MeV.fm-3\n",
+    "xp_char23  = EoS_Char23[3]  ## dimentionless\n",
+    "     \n",
+    "    \n",
+    "    \n",
+    "# Create a two-panel plot\n",
+    "fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))\n",
+    "\n",
+    "# First panel: Energy density and Pressure vs Number density\n",
+    "ax1.plot(e_DDMEX, p_DDMEX, label=\"DDMEX \")\n",
+    "ax1.plot(e_DDBm, p_DDBm, label=\"DDBm\")\n",
+    "ax1.plot(e_char23, p_char23, label=\"Model I (Char 23)\")\n",
+    "ax1.set_xlabel(r\"Energy Density (MeV.fm$^{-3}$)\", fontsize=15)\n",
+    "ax1.set_ylabel(r\"Pressure (MeV.fm$^{-3}$)\", fontsize=15)\n",
+    "ax1.legend(fontsize=16)\n",
+    "ax1.grid(True)\n",
+    "\n",
+    "# Second panel: Proton fraction vs Number density\n",
+    "ax2.plot(rho_DDMEX, xp_DDMEX, label=\"DDMEX\")\n",
+    "ax2.plot(rho_DDBm, xp_DDBm, label=\"DDBm\")\n",
+    "ax2.plot(rho_char23, xp_char23, label=\"Model I (Char 23)\")\n",
+    "ax2.set_xlabel(r\"Number Density $\\rho$ (fm$^{-3}$)\", fontsize=15)\n",
+    "ax2.set_ylabel(r\"Proton Fraction ($x_p$)\", fontsize=15)\n",
+    "ax2.legend(fontsize=16)\n",
+    "ax2.grid(True)\n",
+    "\n",
+    "plt.tight_layout()\n",
+    "plt.show()                 "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## (b) Compute the TOV"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "eps_DDMEX  = np.array([*eps_com, *EoS_DDMEX[1]])\n",
+    "pres_DDMEX = np.array([*pres_com, *EoS_DDMEX[2]])\n",
+    "MR_DDMEX   = main.OutputMR(\"\", eps_DDMEX, pres_DDMEX).T\n",
+    "\n",
+    "eps_DDBm  = np.array([*eps_com, *EoS_DDBm[1]])\n",
+    "pres_DDBm = np.array([*pres_com, *EoS_DDBm[2]])\n",
+    "MR_DDBm   = main.OutputMR(\"\", eps_DDBm, pres_DDBm).T\n",
+    "\n",
+    "eps_char23  = np.array([*eps_com, *EoS_Char23[1]])\n",
+    "pres_char23 = np.array([*pres_com, *EoS_Char23[2]])\n",
+    "MR_char23   = main.OutputMR(\"\", eps_char23, pres_char23).T"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(6,6))\n",
+    "ax.plot(MR_DDMEX[1] / km, MR_DDMEX[0] / Msun, lw=2, label=\"DDMEX\")\n",
+    "ax.plot(MR_DDBm[1] / km, MR_DDBm[0] / Msun, lw=2,  label=\"DDBm\")\n",
+    "ax.plot(MR_char23[1]  / km, MR_char23[0]  / Msun, lw=2, label=\"Model I (Char 23)\")\n",
+    "ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=12)\n",
+    "ax.set_xlim(9.0, 15)\n",
+    "ax.set_ylim(0, 3)\n",
+    "ax.grid(True)\n",
+    "plt.legend(loc=\"lower left\", fontsize=12)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## (c) DDH exciting feature on User defined functions\n",
+    "\n",
+    "Example: re-compute Model I ( char23 ) and with User defined feature "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##### Model I (Char et al, arxiv: 2307.12364)\n",
+    "char_gs, char_gw, char_gr, char_dgs, char_dgw, char_dgr = DDH.Function(type=\"Char23\")\n",
+    "theta_char23 = np.array(\n",
+    "    [m_sig_char23, m_w_char23, m_rho_char23, char_gs, char_gw, char_gr, char_dgs, char_dgw, char_dgr, rho0_char23],\n",
+    "    dtype=object,\n",
+    ")\n",
+    "EoS_Char = DDH.compute_eos(eps_com, pres_com, theta_char23)\n",
+    "\n",
+    "e_char = EoS_Char[1] / (MeV * fm**(-3))\n",
+    "p_char = EoS_Char[2] / (MeV * fm**(-3))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##### User Defined #########\n",
+    "as_user, av_user, ar_user, bs_user, bv_user, br_user, cs_user, cv_user, cr_user, ds_user, dv_user, dr_user, rho0_user = [\n",
+    "    8.225494, 10.426752, 0.64584657,\n",
+    "    2.7079569, 1.6468675, 5.2033131,\n",
+    "    2.4776689, 6.8349408, 0.4262597,\n",
+    "    3.8630221, 1.4458185, -0.1824181, 0.16194209,\n",
+    "]\n",
+    "n0 = 0.16\n",
+    "\n",
+    "coupling_functions = [\n",
+    "    f\"{as_user} + ({bs_user} + {ds_user}*(x/{n0})**(3))*exp(-{cs_user}*x/{n0})\",\n",
+    "    f\"{av_user} + ({bv_user} + {dv_user}*(x/{n0})**(3))*exp(-{cv_user}*x/{n0})\",\n",
+    "    f\"({ar_user} + ({br_user} + {dr_user}*(x/{n0})**(3))*exp(-{cr_user}*x/{n0}))*2\",\n",
+    "]\n",
+    "\n",
+    "user_gs, user_gw, user_gr, user_dgs, user_dgw, user_dgr = DDH.Function(\n",
+    "    couplings=coupling_functions,\n",
+    "    type=\"UserDefined\",\n",
+    ")\n",
+    "theta_user = np.array(\n",
+    "    [m_sig_char23, m_w_char23, m_rho_char23, user_gs, user_gw, user_gr, user_dgs, user_dgw, user_dgr, rho0_user],\n",
+    "    dtype=object,\n",
+    ")\n",
+    "EoS_user = DDH.compute_eos(eps_com, pres_com, theta_user)\n",
+    "\n",
+    "e_user = EoS_user[1] / (MeV * fm**(-3))\n",
+    "p_user = EoS_user[2] / (MeV * fm**(-3))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax1 = plt.subplots(1, 1, figsize=(12, 8))\n",
+    "\n",
+    "# First panel: Energy density and Pressure vs Number density\n",
+    "ax1.plot(e_user, p_user, label=\"User Defined (Char 23)\", lw=8, alpha=0.5)\n",
+    "ax1.plot(e_char, p_char, label=\"Model I (Char 23)\", lw=2, alpha=1, c=\"red\", linestyle=\"--\")\n",
+    "ax1.set_xlabel(r\"Energy Density (MeV.fm$^{-3}$)\", fontsize=15)\n",
+    "ax1.set_ylabel(r\"Pressure (MeV.fm$^{-3}$)\", fontsize=15)\n",
+    "ax1.set_xlim(180, 1000)\n",
+    "ax1.legend(fontsize=16)\n",
+    "ax1.grid(True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Illustrating the power of Numba accelerated EoS Generation\n",
+    "\n",
+    "We shall now run the same code but with the Numba accelerated version, comparing the times for EoS Generation.\n",
+    "\n",
+    "Keep in mind all previous definitions are still valid, all we need to change is a single line of code.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "try:\n",
+    "    import EOSgenerators.fastRMF_EoS as FastRMF\n",
+    "    FAST_RMF_AVAILABLE = True\n",
+    "    FAST_RMF_IMPORT_ERROR = None\n",
+    "except (ImportError, OSError) as exc:\n",
+    "    FastRMF = None\n",
+    "    FAST_RMF_AVAILABLE = False\n",
+    "    FAST_RMF_IMPORT_ERROR = exc\n",
+    "    print(\n",
+    "        \"FastRMF benchmark skipped because optional dependency NumbaMinpack is unavailable. \"\n",
+    "        \"Install a Fortran compiler first (for example, `brew install gcc` on macOS), \"\n",
+    "        \"then run `python -m pip install NumbaMinpack`.\"\n",
+    "    )\n",
+    "\n",
+    "import time\n",
+    "\n",
+    "Tolos_crust_out = load_tolos_crust()\n",
+    "eps_crust_T_out = Tolos_crust_out[:, 3] * g_cm_3\n",
+    "pres_crust_T_out = Tolos_crust_out[:, 4] * dyn_cm_2\n",
+    "eps_com, pres_com = crust.PolyInterpolate(eps_crust_T_out, pres_crust_T_out)\n",
+    "\n",
+    "m_sig_fast = 495.0 / 197.33\n",
+    "m_w_fast = 3.96544\n",
+    "m_rho_fast = 3.86662\n",
+    "\n",
+    "g_sigma_fast = math.sqrt(107.5751)\n",
+    "g_omega_fast = math.sqrt(182.3949)\n",
+    "g_rho_fast = math.sqrt(206.4260)\n",
+    "\n",
+    "kappa_fast = 3.09114168 / 197.33\n",
+    "lambda_0_fast = -0.00168015405\n",
+    "zeta_fast = 0.024\n",
+    "Lambda_w_fast = 0.045\n",
+    "theta_rmf_fast = np.array(\n",
+    "    [m_sig_fast, m_w_fast, m_rho_fast, g_sigma_fast, g_omega_fast, g_rho_fast, kappa_fast, lambda_0_fast, zeta_fast, Lambda_w_fast]\n",
+    ")\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (a) Comparing the time it takes to generate the EoS\n",
+    "\n",
+    "The reason why we test the time it takes to generate the EoS here is due to the fact that Numba is compiling the code, and as such the first run will take considerably longer to complete, but all other runs will be greatly faster.\n",
+    "\n",
+    "Warning: Do not rerun this cell, as the compilation time will be gone.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### Normal RMF ####\n",
+    "\n",
+    "first_run_time_normal = time.time()\n",
+    "eps_normal_benchmark, pres_normal_benchmark = RMF.compute_EOS(eps_com, pres_com, theta_rmf_fast)\n",
+    "first_run_time_normal = time.time() - first_run_time_normal\n",
+    "\n",
+    "time_for_20_runs_normal = time.time()\n",
+    "for _ in range(20):\n",
+    "    eps_normal_benchmark, pres_normal_benchmark = RMF.compute_EOS(eps_com, pres_com, theta_rmf_fast)\n",
+    "time_for_20_runs_normal = time.time() - time_for_20_runs_normal\n",
+    "\n",
+    "\n",
+    "##### Fast RMF #####\n",
+    "\n",
+    "if FAST_RMF_AVAILABLE:\n",
+    "    first_run_time = time.time()\n",
+    "    eps_fast, pres_fast = FastRMF.compute_EOS(eps_com, pres_com, theta_rmf_fast)\n",
+    "    first_run_time = time.time() - first_run_time\n",
+    "\n",
+    "    time_for_20_runs = time.time()\n",
+    "    for _ in range(20):\n",
+    "        eps_fast, pres_fast = FastRMF.compute_EOS(eps_com, pres_com, theta_rmf_fast)\n",
+    "    time_for_20_runs = time.time() - time_for_20_runs\n",
+    "\n",
+    "    print(f\"--------------------------------------------------------------------------------------\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*32 + \"Time Comparison Table\" + \" \"*31 + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for first run  with RMF-Normal  = {first_run_time_normal*1000:6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for first run  with RMF-Fast    = {first_run_time*1000       :6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for   20  runs with RMF-Normal  = {time_for_20_runs_normal*1000:6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for   20  runs with RMF-Fast    = {time_for_20_runs*1000       :6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for  all  runs with RMF-Normal  = {(first_run_time_normal + time_for_20_runs_normal)*1000:6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for  all  runs with RMF-Fast    = {(first_run_time        + time_for_20_runs       )*1000:6.0f} ms (Has Compilation) \" + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for   1   run  with RMF-Normal  = {time_for_20_runs_normal*1000/20:6.0f} ms  \" + \" \"*17 + \"|\")\n",
+    "    print(f\"|\" + \" \"*17 + f\"Time for   1   run  with RMF-Fast    = {time_for_20_runs       *1000/20:6.0f} ms\" + \" \"*19 + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*84 + \"|\")\n",
+    "    print(f\"|\" + \" \"*30 + f\"Total Speed Up = {time_for_20_runs_normal/time_for_20_runs:.2f} x\" + \" \"*30 + \"|\" )\n",
+    "    print(f\"--------------------------------------------------------------------------------------\")\n",
+    "else:\n",
+    "    eps_fast = None\n",
+    "    pres_fast = None\n",
+    "    print(f\"Time for first run with RMF-Normal = {first_run_time_normal*1000:.0f} ms\")\n",
+    "    print(f\"Time for 20 runs with RMF-Normal = {time_for_20_runs_normal*1000:.0f} ms\")\n",
+    "    print(f\"FastRMF benchmark skipped: {FAST_RMF_IMPORT_ERROR}\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if eps_fast is not None and pres_fast is not None:\n",
+    "    eps_total_fast = np.array([*eps_com, *eps_fast])\n",
+    "    pres_total_fast = np.array([*pres_com, *pres_fast])\n",
+    "\n",
+    "    compare_fig1, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "\n",
+    "    ax.plot(eps_total_fast, pres_total_fast, lw=2, label=\"Fast Version\")\n",
+    "    ax.plot(eps_total, pres_total, lw=6, label=\"Normal Version\", alpha=0.3)\n",
+    "    ax.set_ylabel(r\"P $[fm^{-4}]$\", fontsize=16)\n",
+    "    ax.set_xlabel(r\"$\\epsilon$ $[fm^{-4}]$\", fontsize=16)\n",
+    "    ax.set_xlim(0, 6)\n",
+    "    ax.set_ylim(0, 2)\n",
+    "    ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "    ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "    plt.legend()\n",
+    "    compare_fig1.tight_layout()\n",
+    "    plt.show()\n",
+    "else:\n",
+    "    print(\"FastRMF EOS comparison plot skipped because FastRMF is unavailable.\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "if eps_fast is not None and pres_fast is not None:\n",
+    "    MR_fast = main.OutputMR(\"\", eps_total_fast, pres_total_fast)\n",
+    "    radius_fast, mass_fast, valid_fast, mr_units_fast = mr_to_km_msun(MR_fast)\n",
+    "\n",
+    "    compare_fig2, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "\n",
+    "    ax.plot(radius_fast[valid_fast], mass_fast[valid_fast], lw=2, label=\"Fast Version\")\n",
+    "    ax.plot(radius_rmf[valid_rmf], mass_rmf[valid_rmf], lw=6, label=\"Normal Version\", alpha=0.3)\n",
+    "    ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "    ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "    ax.set_xlim(8.0, 20.0)\n",
+    "    ax.set_ylim(0, 3)\n",
+    "    ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "    ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "    plt.legend()\n",
+    "    compare_fig2.tight_layout()\n",
+    "    plt.show()\n",
+    "else:\n",
+    "    print(\"FastRMF mass-radius comparison plot skipped because FastRMF is unavailable.\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Polytrope EOS \n",
+    "\n",
+    "First import all the package that will be used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import math\n",
+    "import TOVsolver.main as main\n",
+    "import matplotlib.pyplot as plt\n",
+    "from scipy.integrate import ode\n",
+    "import EOSgenerators.Polytrope_EOS as Polytrope\n",
+    "import EOSgenerators.Strangeon_EOS as Strangeon\n",
+    "import EOSgenerators.crust_EOS as crust\n",
+    "from TOVsolver.unit import  km, Msun, MeV,fm,g_cm_3,dyn_cm_2, G,c "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The polytropic equation of state (Polytrope) is the most commonly used EOS in astrophysics, its advantage is assumed to be capable to simulate all EOS shape with given parameters. Here, we provide one of the computation for polytrope."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (a) Connecting outer crust with polytropic part"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For polytrope, we first connecting it with crust as we did in RMF"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Tolos_crust_out = load_tolos_crust()\n",
+    "eps_crust_T_out = Tolos_crust_out[:, 3] * g_cm_3\n",
+    "pres_crust_T_out = Tolos_crust_out[:, 4] * dyn_cm_2\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We define a set of parameters, first three in theta are the parameters control the slope of each polytrope, and the last two are transition point from one segment to another. Details see the documentation about polytrope"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "gammas = np.array([1.03, 2.62, 1.38])\n",
+    "rho_ts = np.array([8.087e13, 1.8078e15]) * g_cm_3\n",
+    "theta_polytrope = np.append(gammas, rho_ts)\n",
+    "\n",
+    "eps_set = np.logspace(11.7, 15.6, 100, base=10) * g_cm_3\n",
+    "pres_out = Polytrope.compute_EOS(eps_set, theta_polytrope, eps_crust_T_out[-1], pres_crust_T_out[-1])\n",
+    "\n",
+    "eps_total = np.hstack((eps_crust_T_out, eps_set))\n",
+    "pres_total = np.hstack((pres_crust_T_out, pres_out))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(dpi=200)\n",
+    "plt.plot(eps_total / g_cm_3, pres_total / dyn_cm_2)\n",
+    "plt.xscale(\"log\")\n",
+    "plt.yscale(\"log\")\n",
+    "plt.xlabel(r\"$\\epsilon\\quad [g/cm^3]$\")\n",
+    "plt.ylabel(r\"$P\\quad [dyn/cm^2]$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (b) Solve TOV with this EOS\n",
+    "\n",
+    "Here below we use the strangeon matter EOS to compute the mass radius curve.\n",
+    "\n",
+    "The following code calculates the mass and radius of the strange stars for the given EOS of the polytrope using our main.OutputMR"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MR = main.OutputMR('',eps_total, pres_total)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(MR[:,1]/km , MR[:,0]/Msun, lw=2)\n",
+    "# ax.scatter(R /km, M / Msun, c='r')\n",
+    "ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "ax.set_xlim(8.0, 20.0)\n",
+    "ax.set_ylim(0, 3)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Strangeon matter EOS \n",
+    "\n",
+    "First import all the package that will be used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import math\n",
+    "import TOVsolver.main as main\n",
+    "import matplotlib.pyplot as plt\n",
+    "from scipy.integrate import ode\n",
+    "from EOSgenerators import Strangeon_EOS\n",
+    "\n",
+    "from TOVsolver.unit import  km, Msun, MeV,fm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The strangeon matter EOS describes the strongly interacting matter in the solid state, and the compact star can be a self-bound quark star composed of strangeon matter. Therefore, in the following we present the bare quark star EOS without a crust.\n",
+    "\n",
+    "Note that the strangeon matter parameters we input are in the natural unit system. The quentity returned by the Strangeon_compute_EOS function is in the Geometric Unit System. Thus, here, the parameter epsilon and ns are in the units of $MeV/fm^{-3}$. So follow the unite conversion rule, if we are using this unit, we just time this unit to do compute"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (a) Defining the EOS parameters"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Define the strangeon matter EOS that we will use to calculate the energy densities and pressures of the system.\n",
+    "The following is an example of how to define the theta and Nq.\n",
+    "For example, theta=[50, 0.24] means the example values for epsilon and ns:\n",
+    "epsilon in units of MeV, ns in units of $fm^-3$.\n",
+    "Nq is an integer, e.g. Nq=9, 12, 15, 18, 21, 24, 27\n",
+    "\n",
+    "For the definition of parameter n, the minimum value is 3*ns/Nq, the maximum value is about 0.16*8*3/Nq.\n",
+    "Then we can generate,for example, 1000 points for the input of the srangeon matter EOS. Special note: If you are using this EOS, need a very fine grid for the EOS. From our test, 1000 points for this EOS is the minimum requirement\n",
+    "\n",
+    "Once we define the EOS parameters already, we can use the Strangeon_compute_EOS function to calcute the energy_density and pressure."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Nq = 18\n",
+    "epsilon = 50\n",
+    "ns = 0.24\n",
+    "theta_strangeon = np.array([Nq, epsilon, ns])\n",
+    "n_min = 3 * theta_strangeon[2] / theta_strangeon[0]\n",
+    "n_max = 0.16 * 8 * 3 / theta_strangeon[0]\n",
+    "n_values = np.linspace(n_min, n_max, 2000)\n",
+    "\n",
+    "energy_densities, pressures = Strangeon_EOS.compute_EOS(n_values, theta_strangeon)\n",
+    "print(\"n values:\", n_values)\n",
+    "print(\"Energy densities:\", energy_densities)\n",
+    "print(\"Pressures:\", pressures)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (b) Solve TOV with this EOS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here below we use the strangeon matter EOS to compute the mass radius curve.\n",
+    "\n",
+    "The following code calculates the mass and radius of the strange stars for the given EOS of the strange matter EOS. Since our energy_density and pressure are all in same unit $MeV/fm^{-3}$ so all we need is to time this unit\n",
+    "\n",
+    "Input a given central pressure and central energy density, you will obtain the radius where the pressure is zero and the mass at that radius."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Solve the TOV equations using each central pressure and energy density"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "MR= main.OutputMR('',energy_densities* MeV/fm**3   , pressures* MeV/fm**3)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(dpi=200)\n",
+    "plt.plot(energy_densities / g_cm_3, pressures / dyn_cm_2)\n",
+    "plt.xscale(\"log\")\n",
+    "plt.yscale(\"log\")\n",
+    "plt.xlabel(r\"$\\epsilon\\quad [g/cm^3]$\")\n",
+    "plt.ylabel(r\"$P\\quad [dyn/cm^2]$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1, 1, figsize=(9, 6))\n",
+    "ax.plot(MR[:,1]/km , MR[:,0]/Msun, lw=2)\n",
+    "\n",
+    "ax.set_ylabel(r\"M [$M_{\\odot}$]\", fontsize=16)\n",
+    "ax.set_xlabel(\"R [km]\", fontsize=16)\n",
+    "# ax.set_xlim(8.0, 20.0)\n",
+    "# ax.set_ylim(0, 3)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "ax.tick_params(top=1, right=1, which=\"both\", direction=\"in\", labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Speed of sound EOS \n",
+    "\n",
+    "First import all the package that will be used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import TOVsolver.main as main\n",
+    "import matplotlib.pyplot as plt\n",
+    "from EOSgenerators import SpeedofSound_EOS\n",
+    "import EOSgenerators.crust_EOS as crust\n",
+    "from TOVsolver.unit import g_cm_3, dyn_cm_2, km, Msun"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The Speed of sound EOS describes the core EOS of a compact star, \n",
+    "so it should be connected with the crust EOS to form a full EOS.\n",
+    "See https://arxiv.org/abs/1812.08188 for details."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Tolos_crust_out = load_tolos_crust()\n",
+    "eps_crust_T_out = Tolos_crust_out[:, 3] * g_cm_3\n",
+    "pres_crust_T_out = Tolos_crust_out[:, 4] * dyn_cm_2\n",
+    "eps_com, pres_com = crust.PolyInterpolate(eps_crust_T_out, pres_crust_T_out)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (a) Defining the EOS parameters"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "To construct the Speed of sound EOS, we need to specify the outer crust EOS and \n",
+    "the interface EOS, and then connect them with the core EOS."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x_last = eps_com[-1]\n",
+    "y_last = pres_com[-1]\n",
+    "dydx_last = (pres_com[-1] - pres_com[-2]) / (eps_com[-1] - eps_com[-2])\n",
+    "CS_EOS = SpeedofSound_EOS.compute_EOS(x_last, y_last, dydx_last)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In order to generate the parameters of the Speed of sound EOS, we need a list\n",
+    "of 5 uniform random numbers between 0 and 1.\n",
+    "\n",
+    "After generate the parameters, we use function `check_a` to check if the parameters\n",
+    "are valid."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cs_a = CS_EOS.gen_a((0.2, 0.2, 0.3, 0.4, 0.5))\n",
+    "print(CS_EOS.check_a(cs_a))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (b) Solve TOV with this EOS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Here below we use the speed of sound EOS to compute the mass radius curve.\n",
+    "\n",
+    "First we calculate the core EOS."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "core_e_min = x_last\n",
+    "core_e_max = 2e16 * g_cm_3\n",
+    "n_core_e = 1000\n",
+    "core_e = np.geomspace(core_e_min, core_e_max, n_core_e)\n",
+    "core_p = CS_EOS.cal_core_p(core_e, cs_a)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Then we concat the core EOS with the crust EOS."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "full_e = np.concatenate((eps_com, core_e[1:]))\n",
+    "full_p = np.concatenate((pres_com, core_p[1:]))\n",
+    "plt.figure(dpi=200)\n",
+    "plt.plot(full_e / g_cm_3, full_p / dyn_cm_2)\n",
+    "plt.xscale(\"log\")\n",
+    "plt.yscale(\"log\")\n",
+    "plt.xlabel(r\"$\\epsilon\\quad [g/cm^3]$\")\n",
+    "plt.ylabel(r\"$P\\quad [dyn/cm^2]$\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally we compute the mass radius curve."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MR = main.OutputMR(\"\", full_e, full_p)\n",
+    "plt.figure(dpi=200)\n",
+    "plt.plot(MR[:, 1] / km, MR[:, 0] / Msun)\n",
+    "plt.xlim(6, 17)\n",
+    "plt.ylim(0, 2)\n",
+    "plt.xlabel(\"Radius [km]\")\n",
+    "plt.ylabel(\"Mass [Msun]\")\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## MIT bag model EOS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The MIT bag model, which has commonly been applied to strange quark stars, relates pressure to energy density with the simple equation of state $p=\\frac{\\epsilon}{3}-\\frac{4B}{3}$. There is only one parameter, the \"bag constant\" $B$. This represents the vacuum energy density, which creates a \"bag\" in which quarks are confined. See [Chodos et al. (1974)](https://doi.org/10.1103/PhysRevD.9.3471)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from EOSgenerators import MITbag_EOS\n",
+    "from TOVsolver.unit import MeV, fm, g_cm_3, dyn_cm_2, km, Msun"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (a) Defining the parameter"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "A \"typical\" value of 57 $MeVfm^{-3}$ for the bag constant is taken from [Alcock (1986)](http://dx.doi.org/10.1086/164679)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "B = 57\n",
+    "\n",
+    "epsilon,p = MITbag_EOS.MITbag_compute_EOS(B)\n",
+    "\n",
+    "print('energy density range:',epsilon[0],'to',epsilon[-1])\n",
+    "print('pressure range:',p[0],'to',p[-1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### (b) Computing the mass-radius relation"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can compute a mass-radius relation for this EOS by solving the TOV equation."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "import TOVsolver.main as main\n",
+    "import TOVsolver.EoS_import as EoS_import\n",
+    "from itertools import repeat"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "MR = main.OutputMR('',epsilon,p).T"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig, ax = plt.subplots(1,1, figsize=(9,6))\n",
+    "ax.plot(MR[1]/km, MR[0]/Msun,lw=2,label=f'B = {B:.2f} MeV $fm^{-3}$')\n",
+    "ax.set_ylabel(r'M [$M_{\\odot}$]', fontsize=16)\n",
+    "ax.set_xlabel('R [km]', fontsize=16)\n",
+    "ax.legend()\n",
+    "ax.tick_params(top=1,right=1, which='both', direction='in', labelsize=14)\n",
+    "ax.tick_params(top=1,right=1, which='both', direction='in', labelsize=14)\n",
+    "fig.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
