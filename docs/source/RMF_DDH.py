@@ -135,13 +135,16 @@ def Function(type='Typel99', couplings="Default"):
         x   = sp.symbols("x")
         n0  = 0.16   ## In calculation of Char23 the n0 plays as normalization factor and fixed to 0.16 fm-3
         
-        gs  = sp.lambdify(x, sp.simplify(f"{as_} + ({bs} + {ds}*(x/{n0})**(3))*exp(-{cs}*x/{n0})"))
-        gw  = sp.lambdify(x, sp.simplify(f"{av}  + ({bv} + {dv}*(x/{n0})**(3))*exp(-{cv}*x/{n0})"))
-        gr  = sp.lambdify(x, sp.simplify(f"({ar}  + ({br} + {dr}*(x/{n0})**(3))*exp(-{cr}*x/{n0}))*2"))   # Multiplied by 2 ( Lagrange density defintion is different )
+        gs_expr = sp.simplify(f"{as_} + ({bs} + {ds}*(x/{n0})**(3))*exp(-{cs}*x/{n0})")
+        gw_expr = sp.simplify(f"{av}  + ({bv} + {dv}*(x/{n0})**(3))*exp(-{cv}*x/{n0})")
+        gr_expr = sp.simplify(f"({ar}  + ({br} + {dr}*(x/{n0})**(3))*exp(-{cr}*x/{n0}))*2")   # Multiplied by 2 ( Lagrange density defintion is different )
 
-        dgs = sp.lambdify(x,sp.simplify(f"(3*{ds}*(x/{n0})**(2) - {cs}*({bs} + {ds}*(x/{n0})**(3)) )*exp(-{cs}*(x/{n0}))"))
-        dgw = sp.lambdify(x,sp.simplify(f"(3*{dv}*(x/{n0})**(2) - {cv}*({bv} + {dv}*(x/{n0})**(3)) )*exp(-{cv}*(x/{n0}))"))
-        dgr = sp.lambdify(x,sp.simplify(f"((3*{dr}*(x/{n0})**(2) - {cr}*({br} + {dr}*(x/{n0})**(3)) )*exp(-{cr}*(x/{n0})))*2"))  # Multiplied by 2
+        dgs = sp.lambdify(x, sp.diff(gs_expr, x))
+        dgw = sp.lambdify(x, sp.diff(gw_expr, x))
+        dgr = sp.lambdify(x, sp.diff(gr_expr, x))
+        gs  = sp.lambdify(x, gs_expr)
+        gw  = sp.lambdify(x, gw_expr)
+        gr  = sp.lambdify(x, gr_expr)
 
         return gs, gw, gr, dgs, dgw, dgr
     
