@@ -129,6 +129,13 @@ See the [installation
 guide](https://chunhuangphy.github.io/CompactObject/installation.html) for
 notebook, development, and optional FastRMF dependencies.
 
+NumbaMinpack is optional and only needed for the accelerated FastRMF solver.
+Its PyPI release can fail to build with newer CMake versions. If this happens,
+install it from the upstream GitHub source; the [FastRMF installation
+instructions](https://chunhuangphy.github.io/CompactObject/installation.html#optional-fastrmf-installation)
+include the build prerequisites, direct GitHub and clone commands, and an
+import check. Run these commands in the same environment as CompactObject.
+
 ### Running the Tests
 
 From a source checkout:

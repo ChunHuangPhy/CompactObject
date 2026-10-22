@@ -80,6 +80,8 @@ integration. Exact package versions belong in a generated lock file for a
 specific reproducible analysis, not in the library's installation
 instructions.
 
+.. _optional-fastrmf-installation:
+
 Optional FastRMF dependency
 ---------------------------
 
@@ -87,47 +89,84 @@ Optional FastRMF dependency
 ``EOSgenerators.fastRMF_EoS`` path. This dependency is optional; the standard
 RMF and DDH implementations work without it.
 
-``NumbaMinpack`` requires a Fortran compiler. On macOS, install GCC before the
-package:
+The `NumbaMinpack release on PyPI
+<https://pypi.org/project/NumbaMinpack/>`_ (0.1.3, November 2021) can fail to
+build with newer CMake versions. The `upstream GitHub source
+<https://github.com/Nicholaswogan/NumbaMinpack>`_ contains updated CMake
+requirements that are not included in that release. If the PyPI installation
+fails with a CMake compatibility error, install from GitHub as described below,
+following the recommendation in `CompactObject issue #137
+<https://github.com/ChunHuangPhy/CompactObject/issues/137>`_.
+
+NumbaMinpack requires a Fortran compiler. First install the compiler, CMake,
+and Git. On macOS:
 
 .. code-block:: bash
 
-   brew install gcc
-   python -m pip install NumbaMinpack
+   brew install gcc cmake git
 
-On Debian or Ubuntu, install ``gfortran`` and CMake first:
-
-.. code-block:: bash
-
-   sudo apt-get install gfortran cmake
-   python -m pip install NumbaMinpack
-
-``NumbaMinpack`` builds a native library during installation. Some current
-CMake, compiler, Python, and platform combinations still fail in that upstream
-build even after the documented prerequisites are installed. For example,
-upstream `issue #10
-<https://github.com/Nicholaswogan/NumbaMinpack/issues/10>`_ reports a CMake
-compatibility failure on a newer Linux/Python environment.
-
-This does not block the standard CompactObject solvers. If the native build
-fails, omit the ``fast`` extra and continue with:
+On Debian or Ubuntu:
 
 .. code-block:: bash
 
-   python -m pip install -e ".[docs,notebooks]"
+   sudo apt-get update
+   sudo apt-get install build-essential gfortran cmake git
 
-The example notebook will skip only the FastRMF benchmark. Build and platform
-problems with ``NumbaMinpack`` should be reported to its `upstream issue
-tracker <https://github.com/Nicholaswogan/NumbaMinpack/issues>`_.
+After installing CompactObject, activate the same Python environment used for
+CompactObject and the notebooks (whether managed by ``venv``, pyenv, or Conda).
+Install NumbaMinpack directly from GitHub:
 
-From a source checkout, the equivalent optional extra is:
+.. code-block:: bash
+
+   python -m pip install --force-reinstall --no-deps "git+https://github.com/Nicholaswogan/NumbaMinpack.git"
+
+Alternatively, clone the upstream repository and install the local source:
+
+.. code-block:: bash
+
+   git clone https://github.com/Nicholaswogan/NumbaMinpack.git
+   python -m pip install --force-reinstall --no-deps ./NumbaMinpack
+
+``--force-reinstall`` replaces any existing PyPI installation, since the GitHub
+source currently has the same package version. ``--no-deps`` preserves the
+NumPy and Numba versions already installed with CompactObject; pip still
+installs the isolated build dependencies declared by NumbaMinpack.
+
+Verify the installation in that environment:
+
+.. code-block:: bash
+
+   python -c "from NumbaMinpack import lmdif, hybrd, minpack_sig; print('NumbaMinpack import OK')"
+
+Restart the notebook kernel after installation and ensure it uses this Python
+environment.
+
+From a CompactObject source checkout, the ``fast`` extra declares this optional
+dependency but still resolves it from PyPI by default:
 
 .. code-block:: bash
 
    python -m pip install -e ".[fast]"
 
-For documentation and notebook development with the optional accelerated path:
+Install the GitHub source first if you encounter the CMake error. A subsequent
+installation of the ``fast`` extra will accept the installed NumbaMinpack. For
+documentation and notebook development with the optional accelerated path:
 
 .. code-block:: bash
 
    python -m pip install -e ".[docs,notebooks,fast]"
+
+NumbaMinpack builds a native library, and the GitHub source may still fail on
+some compiler, Python, or platform combinations. See, for example, upstream
+`issue #10 <https://github.com/Nicholaswogan/NumbaMinpack/issues/10>`_. Report
+remaining build or platform problems to the `upstream issue tracker
+<https://github.com/Nicholaswogan/NumbaMinpack/issues>`_.
+
+If the native build remains unavailable, omit the ``fast`` extra and use:
+
+.. code-block:: bash
+
+   python -m pip install -e ".[notebooks]"
+
+The example notebook will skip only the FastRMF benchmark. The standard RMF
+and DDH examples do not require NumbaMinpack.
