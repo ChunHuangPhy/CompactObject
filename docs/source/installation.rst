@@ -23,6 +23,19 @@ Install the released package:
 
    python -m pip install CompactObject-TOV
 
+Release `2.1.1 <https://pypi.org/project/CompactObject-TOV/2.1.1/>`_ includes
+the standard example-notebook dependencies, including ``pandas``, ``sympy``,
+``ultranest``, ``h5py``, and ``numba``. If CompactObject is already installed,
+upgrade it in the same Python environment before running the notebooks:
+
+.. code-block:: bash
+
+   python -m pip install --upgrade CompactObject-TOV
+
+The optional FastRMF dependency ``NumbaMinpack`` is installed separately; see
+:ref:`optional-fastrmf-installation` for its prerequisites and GitHub
+installation instructions.
+
 To run the example notebooks from a source checkout, install the package's
 ``notebooks`` extra:
 
