@@ -98,3 +98,30 @@ Continuous integration
 The pytest configuration is stored in ``pyproject.toml``. Runtime warnings are
 treated as failures so numerical domain errors cannot pass unnoticed. GitHub
 Actions runs the complete suite automatically for pushes and pull requests.
+
+Polytrope tutorial checks
+-------------------------
+
+``test_Inference_polytrope.ipynb`` separates the inexpensive EOS unit check
+from stellar integrations and full inference. Its default unit check draws
+three EOS curves without calling the TOV solver. The optional mass-radius
+survey is enabled with ``RUN_MASS_RADIUS_CHECK=True`` and prints progress for
+each curve.
+
+The default UltraNest interface check uses eight live points and a coarse
+six-point central-density grid over log10 density 14.6–15.6 with a small
+call/iteration budget. This restricted demonstration prior checks execution
+only; its output is not a converged posterior or evidence estimate.
+The full inference is enabled separately with ``RUN_FULL_INFERENCE=True`` and
+uses the 50-point density grid over log10 density 14.3–15.6. Individual TOV integrations can remain slow,
+so a call budget is not a wall-clock timeout.
+
+The documentation workflow executes the default notebook checks with
+``jupyter nbconvert`` and excludes cells tagged ``long-running``. Regression
+tests exercise both the tutorial and documentation notebook copies, checking
+EOS units, the density grid used by the prior, empty stellar sequences, and
+the absence of TOV calls in the default unit check:
+
+.. code-block:: bash
+
+   python -m pytest tests/test_polytrope_notebook.py
